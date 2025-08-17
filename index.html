@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hychao Wang — Academic Homepage</title>
+  <meta name="description" content="Academic homepage of Hychao Wang" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- 可换任意你喜欢的 Google Fonts；若被屏蔽也会退回系统字体 -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <!-- Font Awesome 图标 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Markdown 解析：marked（CDN） -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+  <div class="layout">
+    <!-- 左侧侧边栏 -->
+    <aside class="site-sidebar">
+      <div class="identity">
+        <img src="assets/photo.jpg" alt="Portrait of Hychao Wang" class="avatar" />
+        <div class="who">
+          <h1>Hychao Wang</h1>
+          <p class="tagline">Master Student<br>Tsinghua University</p>
+          <div class="social-icons">
+            <a href="mailto:hychaowang@outlook.com" title="Email" aria-label="Email">
+              <i class="fas fa-envelope"></i>
+            </a>
+            <a href="https://scholar.google.com/citations?user=-exqY3gAAAAJ&hl=en" target="_blank" title="Google Scholar" aria-label="Google Scholar">
+              <i class="fas fa-graduation-cap"></i>
+            </a>
+            <a href="https://github.com/hychaowang" target="_blank" title="GitHub" aria-label="GitHub">
+              <i class="fab fa-github"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 右侧主内容 -->
+    <main class="site-main">
+      <section id="about" class="card">
+        <h2>About</h2>
+        <div id="about-content" class="markdown"></div>
+      </section>
+
+      <section id="publications" class="card">
+        <div class="section-head">
+          <h2>Publications</h2>
+          <div class="filters">
+            <input id="pub-search" type="search" placeholder="Search…" aria-label="Search publications"/>
+          </div>
+        </div>
+        <div id="pub-list" class="pubs"></div>
+        <p id="pub-empty" class="muted" hidden>No matching results.</p>
+      </section>
+
+      <footer class="site-footer">
+        <p>© <span id="year"></span> Your Name. All rights reserved.</p>
+      </footer>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

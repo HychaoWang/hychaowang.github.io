@@ -1,0 +1,57 @@
+publications:
+  - title: "Teacher Assistant-Based Knowledge Distillation Extracting Multi-level Features on Single Channel Sleep EEG"
+    authors: "Heng Liang, Yucheng Liu, Haichao Wang, Ziyu Jia, B Center"
+    venue: "Proceedings of the Thirty-Second International Joint Conference on Artificial Intelligence"
+    year: 2023
+    tags: "IJCAI2023, Knowledge Distillation, Sleep EEG"
+    links:
+      - label: PDF
+        href: https://example.com/paper.pdf
+
+  - title: "Emotionkd: a cross-modal knowledge distillation framework for emotion recognition based on physiological signals"
+    authors: "Yucheng Liu, Ziyu Jia, Haichao Wang"
+    venue: "Proceedings of the 31st ACM international conference on multimedia"
+    year: 2023
+    pages: "6122-6131"
+    tags: "ACMMM2023, Knowledge Distillation, Emotion Recognition"
+    links:
+      - label: PDF
+        href: https://example.com/paper.pdf
+
+  - title: "Distillsleepnet: Heterogeneous multi-level knowledge distillation via teacher assistant for sleep staging"
+    authors: "Ziyu Jia, Heng Liang, Yucheng Liu, Haichao Wang, T Jiang"
+    venue: "IEEE Transactions on Big Data"
+    year: 2024
+    tags: "TBD, Knowledge Distillation, Sleep Staging"
+    links:
+      - label: PDF
+        href: https://example.com/paper.pdf
+
+  - title: "Mutual distillation extracting spatial-temporal knowledge for lightweight multi-channel sleep stage classification"
+    authors: "Ziyu Jia, Haichao Wang, Yucheng Liu, T Jiang"
+    venue: "Proceedings of the 30th ACM SIGKDD Conference on Knowledge Discovery and Data Mining"
+    year: 2024
+    tags: "KDD2024, Mutual Distillation, Sleep Classification, Spatial-temporal Learning"
+    links:
+      - label: PDF
+        href: https://example.com/paper.pdf
+
+  - title: "Efficient Video Neural Network Processing Based on Motion Estimation"
+    authors: "Haichao Wang, J Wen, Y Han"
+    venue: "arXiv preprint"
+    year: 2025
+    arxiv: "arXiv:2501.15119"
+    tags: "arXiv, Motion Estimation, Bayer Domain"
+    links:
+      - label: arXiv
+        href: https://arxiv.org/abs/2501.15119
+
+  - title: "Fast Motion Estimation and Context-Aware Refinement for Efficient Bayer-Domain Video Vision"
+    authors: "Haichao Wang, X Xi, J Wen, Y Han"
+    venue: "arXiv preprint"
+    year: 2025
+    arxiv: "arXiv:2508.05990"
+    tags: "arXiv, Motion Estimation, Bayer Domain"
+    links:
+      - label: arXiv
+        href: https://arxiv.org/abs/2508.05990
