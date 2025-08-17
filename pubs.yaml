@@ -5,8 +5,8 @@ publications:
     year: 2023
     tags: "IJCAI2023, Knowledge Distillation, Sleep EEG"
     links:
-      - label: PDF
-        href: https://example.com/paper.pdf
+      - label: Paper
+        href: http://ijcai.org/proceedings/2023/0439.pdf
 
   - title: "Emotionkd: a cross-modal knowledge distillation framework for emotion recognition based on physiological signals"
     authors: "Yucheng Liu, Ziyu Jia, Haichao Wang"
@@ -15,8 +15,8 @@ publications:
     pages: "6122-6131"
     tags: "ACMMM2023, Knowledge Distillation, Emotion Recognition"
     links:
-      - label: PDF
-        href: https://example.com/paper.pdf
+      - label: Paper
+        href: https://dl.acm.org/doi/abs/10.1145/3581783.3612277
 
   - title: "Distillsleepnet: Heterogeneous multi-level knowledge distillation via teacher assistant for sleep staging"
     authors: "Ziyu Jia, Heng Liang, Yucheng Liu, Haichao Wang, T Jiang"
@@ -24,8 +24,8 @@ publications:
     year: 2024
     tags: "TBD, Knowledge Distillation, Sleep Staging"
     links:
-      - label: PDF
-        href: https://example.com/paper.pdf
+      - label: Paper
+        href: https://ieeexplore.ieee.org/abstract/document/10663937
 
   - title: "Mutual distillation extracting spatial-temporal knowledge for lightweight multi-channel sleep stage classification"
     authors: "Ziyu Jia, Haichao Wang, Yucheng Liu, T Jiang"
@@ -33,8 +33,8 @@ publications:
     year: 2024
     tags: "KDD2024, Mutual Distillation, Sleep Classification, Spatial-temporal Learning"
     links:
-      - label: PDF
-        href: https://example.com/paper.pdf
+      - label: Paper
+        href: https://dl.acm.org/doi/abs/10.1145/3637528.3671981
 
   - title: "Efficient Video Neural Network Processing Based on Motion Estimation"
     authors: "Haichao Wang, J Wen, Y Han"
