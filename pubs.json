@@ -2,7 +2,7 @@
   "publications": [
     {
       "title": "Teacher Assistant-Based Knowledge Distillation Extracting Multi-level Features on Single Channel Sleep EEG",
-      "authors": "Heng Liang, Yucheng Liu, Haichao Wang, Ziyu Jia",
+      "authors": "Heng Liang, Yucheng Liu, Haichao Wang(Co-first Author), Ziyu Jia*",
       "venue": "IJCAI",
       "year": 2023,
       "tags": "IJCAI2023, Knowledge Distillation, Sleep EEG",
@@ -11,8 +11,8 @@
       ]
     },
     {
-      "title": "Emotionkd: a cross-modal knowledge distillation framework for emotion recognition based on physiological signals",
-      "authors": "Yucheng Liu, Ziyu Jia, Haichao Wang",
+      "title": "Emotionkd: A Cross-modal Knowledge Distillation Framework for Emotion Recognition Based on Physiological Signals",
+      "authors": "Yucheng Liu, Ziyu Jia*, Haichao Wang",
       "venue": "ACM MM",
       "year": 2023,
       "tags": "ACMMM2023, Knowledge Distillation, Emotion Recognition",
@@ -21,8 +21,8 @@
       ]
     },
     {
-      "title": "Distillsleepnet: Heterogeneous multi-level knowledge distillation via teacher assistant for sleep staging",
-      "authors": "Ziyu Jia, Heng Liang, Yucheng Liu, Haichao Wang, T Jiang",
+      "title": "Distillsleepnet: Heterogeneous Multi-level Knowledge Distillation via Teacher Assistant for Sleep Staging",
+      "authors": "Ziyu Jia, Heng Liang, Yucheng Liu, Haichao Wang, Tianzi Jiang",
       "venue": "IEEE Transactions on Big Data",
       "year": 2024,
       "tags": "TBD, Knowledge Distillation, Sleep Staging",
@@ -31,8 +31,8 @@
       ]
     },
     {
-      "title": "Mutual distillation extracting spatial-temporal knowledge for lightweight multi-channel sleep stage classification",
-      "authors": "Ziyu Jia, Haichao Wang, Yucheng Liu, T Jiang",
+      "title": "Mutual Distillation Extracting Spatial-Temporal Knowledge for Lightweight Multi-channel Sleep Stage Classification",
+      "authors": "Ziyu Jia, Haichao Wang*, Yucheng Liu, Tianzi Jiang",
       "venue": "ACM SIGKDD",
       "year": 2024,
       "tags": "KDD2024, Mutual Distillation, Sleep Classification, Spatial-temporal Learning",
@@ -42,7 +42,7 @@
     },
     {
       "title": "Efficient Video Neural Network Processing Based on Motion Estimation",
-      "authors": "Haichao Wang, J Wen, Y Han",
+      "authors": "Haichao Wang, Jiangtao Wen, Yuxing Han*",
       "venue": "arXiv preprint",
       "year": 2025,
       "tags": "arXiv, Motion Estimation, Bayer Domain",
@@ -52,7 +52,7 @@
     },
     {
       "title": "Efficient Bayer-Domain Video Computer Vision with Fast Motion Estimation and Learned Perception Residual",
-      "authors": "Haichao Wang, J Wen, Y Han",
+      "authors": "Haichao Wang, Jiangtao Wen, Yuxing Han*",
       "venue": "arXiv preprint",
       "year": 2025,
       "tags": "arXiv, Motion Estimation, Bayer Domain",

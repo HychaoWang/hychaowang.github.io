@@ -66,10 +66,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   // 1) Load About (Markdown via marked)
   await loadAbout();
 
-  // 2) Load Publications (YAML via js-yaml)
+  // 2) Load Education (YAML via js-yaml)
+  await loadEducation();
+
+  // 3) Load Publications (YAML via js-yaml)
   await loadPublications();
   
-  // 3) Navbar scroll effect
+  // 4) Navbar scroll effect
   initNavbar();
 });
 
@@ -183,18 +186,16 @@ async function loadPublications(){
 
     function renderPubs(list){
       pubContainer.innerHTML = "";
-      list.forEach((p, index) => {
+      list.forEach((p) => {
         const el = document.createElement("article");
-        // 循环使用10种主题色
-        const themeNum = (index % 10) + 1;
-        el.className = `pub theme-${themeNum}`;
+        el.className = "pub";
+        
+        // 构建会议/期刊信息
+        const venueInfo = p.venue && p.year ? ` · ${escapeHtml(p.venue)}, ${escapeHtml(String(p.year))}` : "";
         
         el.innerHTML = `
-          <div class="pub-header">
-            <span class="venue-badge">${escapeHtml(p.venue)} ${escapeHtml(String(p.year))}</span>
-          </div>
           <h3 class="pub-title">${escapeHtml(p.title)}</h3>
-          <p class="pub-meta">${escapeHtml(p.authors)}</p>
+          <p class="pub-meta">${escapeHtml(p.authors)}${venueInfo}</p>
           ${Array.isArray(p.links) && p.links.length > 0 ? `
             <div class="pub-actions">
               ${p.links.map(l => {
@@ -226,4 +227,57 @@ function normalizePubs(data){
     tags: item?.tags ?? "",
     links: Array.isArray(item?.links) ? item.links.filter(Boolean) : []
   }));
+}
+
+/* -------------------- Education loader -------------------- */
+async function loadEducation() {
+  const eduContainer = $("edu-list");
+  if (!eduContainer) return;
+
+  try {
+    await loadScriptOnce("https://cdn.jsdelivr.net/npm/js-yaml@4/dist/js-yaml.min.js");
+    
+    const resp = await fetch("education.yaml");
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const text = await resp.text();
+    const data = jsyaml.load(text);
+    
+    if (!Array.isArray(data) || data.length === 0) {
+      eduContainer.innerHTML = `<p class="muted">No education data found.</p>`;
+      return;
+    }
+
+    renderEducation(data);
+
+  } catch (err) {
+    console.error(err);
+    eduContainer.innerHTML = `<p class="muted">Failed to load <code>education.yaml</code>.</p>`;
+  }
+}
+
+function renderEducation(list) {
+  const eduContainer = $("edu-list");
+  eduContainer.innerHTML = "";
+  
+  list.forEach((edu) => {
+    const el = document.createElement("div");
+    el.className = "edu-item";
+    
+    el.innerHTML = `
+      <div class="edu-header">
+        <div class="edu-main">
+          <h3 class="edu-degree">${escapeHtml(edu.degree || "")}</h3>
+          <p class="edu-major">${escapeHtml(edu.major || "")}</p>
+        </div>
+        <span class="edu-period">${escapeHtml(edu.period || "")}</span>
+      </div>
+      <div class="edu-details">
+        <p class="edu-school">${escapeHtml(edu.school || "")}</p>
+        ${edu.location ? `<p class="edu-location">${escapeHtml(edu.location)}</p>` : ""}
+        ${edu.advisor ? `<p class="edu-advisor">Advisor: ${escapeHtml(edu.advisor)}</p>` : ""}
+      </div>
+    `;
+    
+    eduContainer.appendChild(el);
+  });
 }
