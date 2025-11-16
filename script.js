@@ -84,7 +84,7 @@ function initNavbar() {
     const currentScroll = window.pageYOffset;
     
     if (currentScroll > 10) {
-      navbar.style.boxShadow = '0 2px 12px rgba(45,45,45,.08)';
+      navbar.style.boxShadow = '0 1px 0 rgba(0,0,0,.1)';
     } else {
       navbar.style.boxShadow = 'none';
     }
@@ -183,9 +183,11 @@ async function loadPublications(){
 
     function renderPubs(list){
       pubContainer.innerHTML = "";
-      list.forEach(p => {
+      list.forEach((p, index) => {
         const el = document.createElement("article");
-        el.className = "pub";
+        // 循环使用10种主题色
+        const themeNum = (index % 10) + 1;
+        el.className = `pub theme-${themeNum}`;
         
         el.innerHTML = `
           <div class="pub-header">
