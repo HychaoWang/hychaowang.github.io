@@ -2,7 +2,7 @@
   "publications": [
     {
       "title": "Teacher Assistant-Based Knowledge Distillation Extracting Multi-level Features on Single Channel Sleep EEG",
-      "authors": "Heng Liang, Yucheng Liu, Haichao Wang, Ziyu Jia, B Center",
+      "authors": "Heng Liang, Yucheng Liu, Haichao Wang, Ziyu Jia",
       "venue": "IJCAI",
       "year": 2023,
       "tags": "IJCAI2023, Knowledge Distillation, Sleep EEG",
