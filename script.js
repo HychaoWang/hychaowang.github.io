@@ -68,7 +68,30 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // 2) Load Publications (YAML via js-yaml)
   await loadPublications();
+  
+  // 3) Navbar scroll effect
+  initNavbar();
 });
+
+/* -------------------- Navbar -------------------- */
+function initNavbar() {
+  const navbar = document.querySelector('.navbar');
+  if (!navbar) return;
+  
+  let lastScroll = 0;
+  
+  window.addEventListener('scroll', () => {
+    const currentScroll = window.pageYOffset;
+    
+    if (currentScroll > 10) {
+      navbar.style.boxShadow = '0 2px 12px rgba(45,45,45,.08)';
+    } else {
+      navbar.style.boxShadow = 'none';
+    }
+    
+    lastScroll = currentScroll;
+  });
+}
 
 /* -------------------- About -------------------- */
 async function loadAbout(){
@@ -82,11 +105,36 @@ async function loadAbout(){
     const parts = md.split(marker);
     const aboutMd = (parts[0] || md).trim();
 
-    $("about-content").innerHTML = marked.parse(aboutMd);
+    // Load marked only when needed; provide fallback if CDN blocked
+    try {
+      await loadScriptOnce("https://cdn.jsdelivr.net/npm/marked/marked.min.js");
+      if (window.marked && typeof window.marked.parse === 'function') {
+        $("about-content").innerHTML = window.marked.parse(aboutMd);
+      } else {
+        $("about-content").innerHTML = minimalMarkdownToHtml(aboutMd);
+      }
+    } catch {
+      $("about-content").innerHTML = minimalMarkdownToHtml(aboutMd);
+    }
   } catch (err) {
     console.error(err);
     $("about-content").innerHTML = `<p class="muted">Failed to load <code>content.md</code>. Please check the file.</p>`;
   }
+}
+
+// Extremely small markdown fallback (headings, paragraphs, links)
+function minimalMarkdownToHtml(src = ""){
+  const esc = (s) => s.replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+  return src
+    .split(/\n{2,}/)
+    .map(block => {
+      const line = block.trim();
+      if (line.startsWith('## ')) return `<h3>${esc(line.slice(3))}</h3>`;
+      if (line.startsWith('# ')) return `<h2>${esc(line.slice(2))}</h2>`;
+      const withLinks = esc(line).replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+      return `<p>${withLinks.replace(/\n/g, '<br>')}</p>`;
+    })
+    .join("\n");
 }
 
 /* -------------------- Publications (YAML) -------------------- */
@@ -96,15 +144,23 @@ async function loadPublications(){
   const searchInput = $("pub-search");
 
   try {
-    // Load js-yaml only when needed
-    await loadScriptOnce("https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js");
+    // Prefer JSON if available (no extra library); fall back to YAML + js-yaml
+    let data;
+    try {
+      const jsonRes = await fetch("pubs.json", { cache: "no-cache" });
+      if (jsonRes.ok) {
+        data = await jsonRes.json();
+      }
+    } catch {}
 
-    const res = await fetch("pubs.yaml", { cache: "no-cache" });
-    if (!res.ok) throw new Error(`Failed to fetch pubs.yaml: ${res.status}`);
-    const text = await res.text();
-
-    // Parse YAML -> JS object (assumes window.jsyaml is available)
-    const data = window.jsyaml.load(text);
+    if (!data) {
+      await loadScriptOnce("https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js");
+      const yRes = await fetch("pubs.yaml", { cache: "no-cache" });
+      if (!yRes.ok) throw new Error(`Failed to fetch pubs.yaml: ${yRes.status}`);
+      const text = await yRes.text();
+      if (!window.jsyaml) throw new Error("js-yaml not loaded");
+      data = window.jsyaml.load(text);
+    }
 
     // Expected structure:
     // publications:
@@ -131,26 +187,21 @@ async function loadPublications(){
         const el = document.createElement("article");
         el.className = "pub";
         
-        // 处理tags，将逗号分隔的字符串转换为胶囊
-        const tagsHtml = p.tags ? 
-          p.tags.split(',').map(tag => {
-            const trimmedTag = tag.trim();
-            return `<span class="tag-pill" style="${pillStyle(trimmedTag)}">${escapeHtml(trimmedTag)}</span>`;
-          }).join('') : '';
-        
         el.innerHTML = `
-          ${tagsHtml ? `<div class="pub-tags">${tagsHtml}</div>` : ''}
-          <h3 class="pub-title">
-            ${escapeHtml(p.title)}
-          </h3>
-          <p class="pub-meta">${escapeHtml(p.authors)} · <em>${escapeHtml(p.venue)}</em> · ${escapeHtml(String(p.year))}</p>
-          <div class="pub-actions">
-            ${Array.isArray(p.links) ? p.links.map(l => {
-              const href = (l && l.href) ? l.href : "#";
-              const label = (l && l.label) ? l.label : "Link";
-              return `<a href="${href}" target="_blank" rel="noopener">${escapeHtml(label)}</a>`;
-            }).join("") : ""}
+          <div class="pub-header">
+            <span class="venue-badge">${escapeHtml(p.venue)} ${escapeHtml(String(p.year))}</span>
           </div>
+          <h3 class="pub-title">${escapeHtml(p.title)}</h3>
+          <p class="pub-meta">${escapeHtml(p.authors)}</p>
+          ${Array.isArray(p.links) && p.links.length > 0 ? `
+            <div class="pub-actions">
+              ${p.links.map(l => {
+                const href = (l && l.href) ? l.href : "#";
+                const label = (l && l.label) ? l.label : "Link";
+                return `<a href="${href}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>`;
+              }).join("")}
+            </div>
+          ` : ''}
         `;
         pubContainer.appendChild(el);
       });

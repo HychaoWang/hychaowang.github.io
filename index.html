@@ -3,47 +3,59 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Hychao Wang — Academic Homepage</title>
-  <meta name="description" content="Academic homepage of Hychao Wang" />
+  <meta name="theme-color" content="#f5f3f0" />
+  <title>Haichao Wang — Academic Homepage</title>
+  <meta name="description" content="Academic homepage of Haichao Wang" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <!-- 可换任意你喜欢的 Google Fonts；若被屏蔽也会退回系统字体 -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-  <!-- Font Awesome 图标 -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="styles.css" />
-  <!-- Markdown 解析：marked（CDN） -->
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
-  <div class="layout">
-    <!-- 左侧侧边栏 -->
-    <aside class="site-sidebar">
-      <div class="identity">
-        <img src="assets/photo.jpg" alt="Portrait of Hychao Wang" class="avatar" />
-        <div class="who">
-          <h1>Hychao Wang</h1>
-          <p class="tagline">Master Student<br>Tsinghua University</p>
-          <div class="social-icons">
-            <a href="mailto:hychaowang@outlook.com" title="Email" aria-label="Email">
-              <i class="fas fa-envelope"></i>
-            </a>
-            <a href="https://scholar.google.com/citations?user=-exqY3gAAAAJ&hl=en" target="_blank" title="Google Scholar" aria-label="Google Scholar">
-              <i class="fas fa-graduation-cap"></i>
-            </a>
-            <a href="https://github.com/hychaowang" target="_blank" title="GitHub" aria-label="GitHub">
-              <i class="fab fa-github"></i>
-            </a>
-          </div>
-        </div>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-brand">Haichao Wang</a>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#publications">Publications</a>
       </div>
-    </aside>
-
-    <!-- 右侧主内容 -->
+    </div>
+  </nav>
+  
+  <div class="container">
     <main class="site-main">
       <section id="about" class="card">
-        <h2>About</h2>
-        <div id="about-content" class="markdown"></div>
+        <div class="card-content">
+          <div class="identity">
+            <img src="assets/photo.jpg" alt="Portrait of Haichao Wang" class="avatar" width="160" height="160" loading="lazy" decoding="async" />
+            <div class="who">
+              <h1>Haichao Wang</h1>
+              <p class="tagline">Master Student<br>Tsinghua University</p>
+            </div>
+            <div class="social-icons">
+              <a href="mailto:hychaowang@outlook.com" title="Email" aria-label="Email">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M20 4H4c-1.1 0-2 .9-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6c0-1.1-.9-2-2-2Zm0 4.5-8 5-8-5V6l8 5 8-5v2.5Z"/>
+                </svg>
+              </a>
+              <a href="https://scholar.google.com/citations?user=-exqY3gAAAAJ&hl=en" target="_blank" rel="noopener" title="Google Scholar" aria-label="Google Scholar">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12 3 1 9l11 6 9-4.91V17h2V9L12 3Zm0 8.18L5.45 9 12 5.82 18.55 9 12 11.18ZM4 13v6h6v-6H4Zm2 2h2v2H6v-2Z"/>
+                </svg>
+              </a>
+              <a href="https://github.com/hychaowang" target="_blank" rel="noopener" title="GitHub" aria-label="GitHub">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.17-3.37-1.17-.45-1.15-1.11-1.46-1.11-1.46-.9-.62.07-.61.07-.61 1 .07 1.52 1.02 1.52 1.02.89 1.52 2.34 1.08 2.91.83.09-.64.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.98 1.02-2.68-.1-.25-.44-1.27.1-2.65 0 0 .83-.27 2.73 1.02a9.5 9.5 0 0 1 4.98 0c1.9-1.3 2.73-1.02 2.73-1.02.54 1.38.2 2.4.1 2.65.64.7 1.02 1.59 1.02 2.68 0 3.85-2.34 4.7-4.57 4.95.36.31.68.92.68 1.86v2.76c0 .26.18.57.69.48A10 10 0 0 0 12 2Z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div id="about-content" class="markdown"></div>
+        </div>
+        <noscript>
+          <p class="muted">JavaScript is disabled; the About content from <code>content.md</code> cannot be loaded.</p>
+        </noscript>
       </section>
 
       <section id="publications" class="card">
@@ -55,6 +67,9 @@
         </div>
         <div id="pub-list" class="pubs"></div>
         <p id="pub-empty" class="muted" hidden>No matching results.</p>
+        <noscript>
+          <p class="muted">JavaScript is disabled; publications cannot be loaded.</p>
+        </noscript>
       </section>
 
       <footer class="site-footer">
@@ -63,6 +78,6 @@
     </main>
   </div>
 
-  <script src="script.js"></script>
+  <script defer src="script.js"></script>
 </body>
 </html>
