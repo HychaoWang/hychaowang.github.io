@@ -190,21 +190,23 @@ async function loadPublications(){
         const el = document.createElement("article");
         el.className = "pub";
         
-        // 构建会议/期刊信息
-        const venueInfo = p.venue && p.year ? ` · ${escapeHtml(p.venue)}, ${escapeHtml(String(p.year))}` : "";
+        // 获取第一个链接作为标题链接
+        const firstLink = Array.isArray(p.links) && p.links.length > 0 && p.links[0]?.href ? p.links[0].href : null;
+        
+        // 如果有链接，标题是链接；否则是普通文本
+        const titleHtml = firstLink 
+          ? `<h3 class="pub-title"><a href="${firstLink}" target="_blank" rel="noopener noreferrer">${escapeHtml(p.title)}</a></h3>`
+          : `<h3 class="pub-title">${escapeHtml(p.title)}</h3>`;
+        
+        // 构建会议/期刊信息（单独一行）
+        const venueHtml = p.venue && p.year 
+          ? `<p class="pub-venue">${escapeHtml(p.venue)}, ${escapeHtml(String(p.year))}</p>` 
+          : "";
         
         el.innerHTML = `
-          <h3 class="pub-title">${escapeHtml(p.title)}</h3>
-          <p class="pub-meta">${escapeHtml(p.authors)}${venueInfo}</p>
-          ${Array.isArray(p.links) && p.links.length > 0 ? `
-            <div class="pub-actions">
-              ${p.links.map(l => {
-                const href = (l && l.href) ? l.href : "#";
-                const label = (l && l.label) ? l.label : "Link";
-                return `<a href="${href}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>`;
-              }).join("")}
-            </div>
-          ` : ''}
+          ${titleHtml}
+          <p class="pub-meta">${escapeHtml(p.authors)}</p>
+          ${venueHtml}
         `;
         pubContainer.appendChild(el);
       });
