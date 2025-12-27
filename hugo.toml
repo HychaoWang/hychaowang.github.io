@@ -1,4 +1,56 @@
-baseURL = 'https://hychaowang.github.io'
-languageCode = 'en-us'
-title = 'StarHerder'
-theme = "PaperMod"
+baseURL = "https://hychaowang.github.io/"
+languageCode = "zh-cn"
+title = "StarHerder" # 你的博客标题
+theme = "mainroad"
+
+# --- 修复 1: 分页设置 (解决 paginate deprecated 警告) ---
+[pagination]
+  pagerSize = 10
+
+[params]
+  description = "这是我的个人博客，记录技术与生活"
+  subtitle = "Stay Hungry, Stay Foolish"
+  
+  widgets = ["search", "social", "recent", "categories", "taglist"]
+
+  # --- 修复 3: Sidebar 必须是对象，不能是列表 ---
+  # 这里定义侧边栏在“左边”还是“右边”
+  [params.sidebar]
+    home = "right"       # 首页侧边栏位置
+    list = "right"       # 列表页侧边栏位置
+    single = "right"     # 文章页侧边栏位置
+    # widgets = ["search", "social", "recent", "categories", "taglist"] # 为了兼容性，这里也可以保留一份
+
+  # --- 社交链接 ---
+  [params.social]
+    github = "https://github.com/你的用户名"
+    twitter = "https://twitter.com/你的账号"
+    email = "mailto:你的邮箱@example.com"
+
+  # --- 作者信息 ---
+  [params.author]
+    name = "StarHerder"
+    bio = "一名热爱探索的技术博主"
+
+# --- 顶部导航栏 ---
+[menu]
+  [[menu.main]]
+    name = "首页"
+    url = "/"
+    weight = 10
+  [[menu.main]]
+    name = "Blogs"
+    url = "/archives/"
+    weight = 20
+  [[menu.main]]
+    name = "关于我"
+    url = "/about/" 
+    weight = 30
+
+# --- 代码高亮设置 ---
+[markup]
+  [markup.highlight]
+    codeFences = true
+    guessSyntax = true
+    lineNos = true        # 显示行号 (可选)
+    style = "monokai"     # 配色风格，可选: monokai, dracula, solarized-dark
