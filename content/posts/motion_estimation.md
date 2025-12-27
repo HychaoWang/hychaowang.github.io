@@ -34,7 +34,17 @@ $$
 $$
 这个公式也可以表示为$\nabla V^T\textbf{v}+\frac{\partial V}{\partial t}=0$. $\nabla V=[\frac{\partial V}{\partial x},\frac{\partial V}{\partial y}]^T$ 是$V(x,y,t)$的空间梯度向量。$\textbf{v}=[v_x, v_y]=[\frac{d_x}{d_t}, \frac{d_y}{d_t}]$是速度向量。每个像素的速度向量$\textbf{v}$可以分解成两个正交分量$\textbf{v}=v_n\textbf{e}_n+v_t\textbf{e}_t$，其中$\textbf{e}_n$是图像梯度$\nabla{V}$的方向向量。因此公式3可以被转换为：
 $$
-v_n||\nabla V||+\frac{\partial V}{\partial t}=0 
+v_n||\nabla V||+\frac{\partial V}{\partial t}=0
 $$
+其中$||\nabla V||$是梯度向量的模长。在此方程中，速度向量是没有办法通过$||\nabla V||$和$\frac{\partial V}{\partial t}$得到的。因此需要一个额外的限制，利用像素邻域进行运动估计。
+
+运动估计的目标表示为
+$$
+E(u,v)=\int_\Omega \rho(V_xu+V_yx+I_t)dxdy
+$$
+其中$\rho$是数据保真度项。因此，运动估计的目标是得到最还原原始帧的运动向量的组合。
+
+## 运动估计的实现
+
 
 
