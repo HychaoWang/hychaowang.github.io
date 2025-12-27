@@ -15,3 +15,26 @@ $$
 \text{Vol} = 120\times60\times30\times1080\times1920\times24=10,749,542,400,000\approx10749\text{Gb}\approx1343\text{GB}
 $$
 很明显，我们平时下载电影，不会出现一个1343GB的文件，一般是1GB到几十GB不等的小文件。这是因为视频编码技术极大地压缩了视频文件。
+
+## 运动估计的基本原理
+
+视频压缩的基本方法是帧间压缩。帧间压缩的主要思想是，视频相邻帧变化很小，存在大量的冗余成分，因此，大量的冗余数据可以被节约，从而实现压缩。需要注意的是，视频压缩中虽然也有涉及帧内压缩，帧内压缩更多的是图像压缩技术，在此不做详细讨论。
+
+帧间压缩的主要实现方式是运动估计。运动估计是检测帧间冗余的方法，通过估计视频内容的运动，来匹配帧间相似的内容。运动估计的基本假设是光强一致性假设，即在相邻帧中，相同的物体的光强是一致的。假设$V(x,y,t)$ 为一个用空间坐标$(x,y)$和时间$t$形容的视频帧序列，那么光强一致性假设为
+$$
+V(x,y,t)=V(x+d_x,y+d_y,t+d_t)
+$$
+其中，$(d_x, d_y)$是相邻帧之间的偏移量，$d_t$是时间变化量。使用泰勒一阶展开，可以得到:
+$$
+\frac{\partial{V}}{\partial{x}}d_x+\frac{\partial{V}}{\partial{y}}d_y+\frac{\partial{V}}{\partial{t}}d_t=0
+$$
+两边同时除以$d_t$可以得到：
+$$
+\frac{\partial{V}}{\partial{x}}v_x+\frac{\partial{V}}{\partial{y}}v_y+\frac{\partial{V}}{\partial{t}}=0
+$$
+这个公式也可以表示为$\nabla V^T\textbf{v}+\frac{\partial V}{\partial t}=0$. $\nabla V=[\frac{\partial V}{\partial x},\frac{\partial V}{\partial y}]^T$ 是$V(x,y,t)$的空间梯度向量。$\textbf{v}=[v_x, v_y]=[\frac{d_x}{d_t}, \frac{d_y}{d_t}]$是速度向量。每个像素的速度向量$\textbf{v}$可以分解成两个正交分量$\textbf{v}=v_n\textbf{e}_n+v_t\textbf{e}_t$，其中$\textbf{e}_n$是图像梯度$\nabla{V}$的方向向量。因此公式3可以被转换为：
+$$
+v_n||\nabla V||+\frac{\partial V}{\partial t}=0 
+$$
+
+
