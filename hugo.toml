@@ -12,25 +12,22 @@ summaryLength = 40     # 摘要长度
 
 # --- 参数设置 ---
 [params]
-  math = true  # 开启公式支持
+  math = true
   description = "这是我的个人博客，记录技术与生活"
   subtitle = "Stay Hungry, Stay Foolish"
-  
-  # 侧边栏组件
-  widgets = ["search", "social", "recent", "categories", "taglist"]
 
-  # 侧边栏位置设置
   [params.sidebar]
     home = "right"       
     list = "right"       
-    single = "right"     
+    single = "right"
+    widgets = ["search", "recent", "taglist", "social"]     
 
-  # --- 社交链接 (修正版) ---
+  # --- 社交链接 (这也是一个子模块) ---
   [params.social]
-    github = "hychaowang"            # 👈 只填用户名
-    email = "hychaowang@outlook.com" # 👈 只填邮箱
+    github = "hychaowang" 
+    email = "hychaowang@outlook.com"
 
-  # --- 作者信息 ---
+  # --- 作者信息 (这也是一个子模块) ---
   [params.author]
     name = "StarHerder"
     bio = ""
