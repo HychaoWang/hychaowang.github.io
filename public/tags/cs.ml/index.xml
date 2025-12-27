@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>CS.ML on StarHerder</title>
+    <link>http://localhost:1313/tags/cs.ml/</link>
+    <description>Recent content in CS.ML on StarHerder</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 27 Dec 2025 13:33:17 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/cs.ml/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Flow Matching入门</title>
+      <link>http://localhost:1313/posts/flow_matching/</link>
+      <pubDate>Sat, 27 Dec 2025 13:33:17 +0800</pubDate>
+      <guid>http://localhost:1313/posts/flow_matching/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>

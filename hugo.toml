@@ -3,11 +3,15 @@ languageCode = "zh-cn"
 title = "StarHerder" # 你的博客标题
 theme = "mainroad"
 
+hasCJKLanguage = true  # 开启中日韩语言支持 (关键！)
+summaryLength = 40    # 首页显示多少个字后折叠 (比如 140 字)
+
 # --- 修复 1: 分页设置 (解决 paginate deprecated 警告) ---
 [pagination]
   pagerSize = 10
 
 [params]
+  math = true
   description = "这是我的个人博客，记录技术与生活"
   subtitle = "Stay Hungry, Stay Foolish"
   
@@ -23,14 +27,13 @@ theme = "mainroad"
 
   # --- 社交链接 ---
   [params.social]
-    github = "https://github.com/你的用户名"
-    twitter = "https://twitter.com/你的账号"
-    email = "mailto:你的邮箱@example.com"
+    github = "https://github.com/hychaowang"
+    email = "mailto:hychaowang@outlook.com"
 
   # --- 作者信息 ---
   [params.author]
     name = "StarHerder"
-    bio = "一名热爱探索的技术博主"
+    bio = ""
 
 # --- 顶部导航栏 ---
 [menu]
@@ -38,10 +41,6 @@ theme = "mainroad"
     name = "首页"
     url = "/"
     weight = 10
-  [[menu.main]]
-    name = "Blogs"
-    url = "/archives/"
-    weight = 20
   [[menu.main]]
     name = "关于我"
     url = "/about/" 
@@ -54,3 +53,12 @@ theme = "mainroad"
     guessSyntax = true
     lineNos = true        # 显示行号 (可选)
     style = "monokai"     # 配色风格，可选: monokai, dracula, solarized-dark
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true  # 允许 HTML (如果你需要嵌入 iframe视频等)
+  [markup.goldmark.extensions]
+    [markup.goldmark.extensions.passthrough]
+      enable = true
+      [markup.goldmark.extensions.passthrough.delimiters]
+        block = [['\[', '\]'], ['$$', '$$']]
+        inline = [['\(', '\)'], ['$', '$']]
