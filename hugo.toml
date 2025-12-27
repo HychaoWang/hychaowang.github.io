@@ -1,64 +1,69 @@
 baseURL = "https://hychaowang.github.io/"
 languageCode = "zh-cn"
-title = "StarHerder" # 你的博客标题
+title = "StarHerder" 
 theme = "mainroad"
 
-hasCJKLanguage = true  # 开启中日韩语言支持 (关键！)
-summaryLength = 40    # 首页显示多少个字后折叠 (比如 140 字)
+hasCJKLanguage = true  # 开启中日韩语言支持
+summaryLength = 40     # 摘要长度
 
-# --- 修复 1: 分页设置 (解决 paginate deprecated 警告) ---
+# --- 分页设置 ---
 [pagination]
   pagerSize = 10
 
+# --- 参数设置 ---
 [params]
-  math = true
+  math = true  # 开启公式支持
   description = "这是我的个人博客，记录技术与生活"
   subtitle = "Stay Hungry, Stay Foolish"
   
+  # 侧边栏组件
   widgets = ["search", "social", "recent", "categories", "taglist"]
 
-  # --- 修复 3: Sidebar 必须是对象，不能是列表 ---
-  # 这里定义侧边栏在“左边”还是“右边”
+  # 侧边栏位置设置
   [params.sidebar]
-    home = "right"       # 首页侧边栏位置
-    list = "right"       # 列表页侧边栏位置
-    single = "right"     # 文章页侧边栏位置
-    # widgets = ["search", "social", "recent", "categories", "taglist"] # 为了兼容性，这里也可以保留一份
+    home = "right"       
+    list = "right"       
+    single = "right"     
 
-  # --- 社交链接 ---
+  # --- 社交链接 (修正版) ---
   [params.social]
-    github = "https://github.com/hychaowang"
-    email = "mailto:hychaowang@outlook.com"
+    github = "hychaowang"            # 👈 只填用户名
+    email = "hychaowang@outlook.com" # 👈 只填邮箱
 
   # --- 作者信息 ---
   [params.author]
     name = "StarHerder"
     bio = ""
 
-# --- 顶部导航栏 ---
+# --- 顶部导航栏 (修正版) ---
 [menu]
   [[menu.main]]
     name = "首页"
     url = "/"
     weight = 10
   [[menu.main]]
+    name = "文章"      # 👈 加上这个，否则找不到博客列表
+    url = "/posts/" 
+    weight = 20
+  [[menu.main]]
     name = "关于我"
     url = "/about/" 
     weight = 30
 
-# --- 代码高亮设置 ---
+# --- 代码高亮与公式配置 (优化版) ---
 [markup]
   [markup.highlight]
     codeFences = true
     guessSyntax = true
-    lineNos = true        # 显示行号 (可选)
-    style = "monokai"     # 配色风格，可选: monokai, dracula, solarized-dark
-  [markup.goldmark]
-    [markup.goldmark.renderer]
-      unsafe = true  # 允许 HTML (如果你需要嵌入 iframe视频等)
-  [markup.goldmark.extensions]
-    [markup.goldmark.extensions.passthrough]
-      enable = true
-      [markup.goldmark.extensions.passthrough.delimiters]
-        block = [['\[', '\]'], ['$$', '$$']]
-        inline = [['\(', '\)'], ['$', '$']]
+    lineNos = true
+    style = "monokai"
+    
+  [markup.goldmark.renderer]
+    unsafe = true  # 允许 HTML
+
+  # 公式渲染配置 (透传设置)
+  [markup.goldmark.extensions.passthrough]
+    enable = true
+    [markup.goldmark.extensions.passthrough.delimiters]
+      block = [['\[', '\]'], ['$$', '$$']]
+      inline = [['\(', '\)'], ['$', '$']]
