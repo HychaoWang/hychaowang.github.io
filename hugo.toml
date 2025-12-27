@@ -13,8 +13,8 @@ summaryLength = 40     # 摘要长度
 # --- 参数设置 ---
 [params]
   math = true
-  description = "这是我的个人博客，记录技术与生活"
-  subtitle = "Stay Hungry, Stay Foolish"
+  description = ""
+  subtitle = "Shepherding stars in the cosmos."
 
   [params.sidebar]
     home = "right"       
