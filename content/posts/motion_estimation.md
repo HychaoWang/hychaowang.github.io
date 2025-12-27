@@ -40,7 +40,7 @@ $$
 
 运动估计的目标表示为
 $$
-E(u,v)=\int_\Omega \rho(V_xu+V_yx+I_t)dxdy
+E(u,v)=\int_\Omega \rho(V_xu+V_yv+I_t)dxdy
 $$
 其中$\rho$是数据保真度项。因此，运动估计的目标是得到最还原原始帧的运动向量的组合。
 
