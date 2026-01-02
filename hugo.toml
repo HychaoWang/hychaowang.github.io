@@ -1,6 +1,6 @@
 baseURL = "https://hychaowang.github.io/"
 languageCode = "zh-cn"
-title = "StarHerder" 
+title = "火星科学 Mars Science"
 theme = "mainroad"
 
 hasCJKLanguage = true  # 开启中日韩语言支持
@@ -15,7 +15,7 @@ summaryLength = 40     # 摘要长度
   math = true
   mathjax = true # 全局开启 MathJax
   description = ""
-  subtitle = "Shepherding stars in the cosmos."
+  subtitle = "点燃银河尽头的篝火 Lighting a bonfire at the end of the galaxy"
   customCSS = ["css/code-style.css"]
   customJS = ["js/copy-code.js"]
 
@@ -36,7 +36,7 @@ summaryLength = 40     # 摘要长度
 
   # --- 作者信息 (这也是一个子模块) ---
   [params.author]
-    name = "StarHerder"
+    name = "Mars Science"
     bio = ""
 
 # --- 顶部导航栏 (修正版) ---
