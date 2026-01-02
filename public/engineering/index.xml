@@ -13,7 +13,7 @@
       <link>http://localhost:1313/engineering/flow_matching_engineering/</link>
       <pubDate>Fri, 02 Jan 2026 13:51:15 +0800</pubDate>
       <guid>http://localhost:1313/engineering/flow_matching_engineering/</guid>
-      <description>&lt;p&gt;这是一个从零开始实现最基础 Flow Matching (Naive Flow Matching) 的方法，基于&lt;strong&gt;Optimal Transport Conditional Flow Matching (OT-CFM)&lt;/strong&gt; 路径来实现。&lt;/p&gt;</description>
+      <description>&lt;blockquote&gt;&#xA;&lt;p&gt;这是一个从零开始实现最基础 Flow Matching (Naive Flow Matching) 的方法，基于&lt;strong&gt;Optimal Transport Conditional Flow Matching (OT-CFM)&lt;/strong&gt; 路径来实现。&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

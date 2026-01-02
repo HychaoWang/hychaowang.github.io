@@ -7,8 +7,6 @@ mathjax = true
 +++
 
 > **摘要**：在AIGC爆发的今天，Stable Diffusion、Midjourney 等模型重新定义了数字艺术的创作方式。但这背后的魔法究竟是什么？不同于 GAN 的“博弈”或 VAE 的“压缩”，Diffusion Model 选择了一条基于非平衡热力学的独特路径：**通过学习逆转熵增的过程来创造数据**。
->
-> 本文将带你深入 Diffusion Model 的核心，从高斯分布的性质出发，一步步推导变分下界（ELBO），解构 DDPM、DDIM 以及 Latent Diffusion 的数学本质。无论你是算法工程师还是数学爱好者，这篇文章都将是你理解扩散模型的终极指南。
 
 ------
 
