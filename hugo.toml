@@ -1,6 +1,6 @@
 baseURL = "https://hychaowang.github.io/"
 languageCode = "zh-cn"
-title = "牧星人 StarHerder" 
+title = "StarHerder" 
 theme = "mainroad"
 
 hasCJKLanguage = true  # 开启中日韩语言支持
@@ -15,7 +15,7 @@ summaryLength = 40     # 摘要长度
   math = true
   mathjax = true # 全局开启 MathJax
   description = ""
-  subtitle = "长空牧群星 Shepherding stars in the cosmos."
+  subtitle = "Shepherding stars in the cosmos."
   customCSS = ["css/code-style.css"]
   customJS = ["js/copy-code.js"]
 

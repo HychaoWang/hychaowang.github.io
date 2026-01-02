@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>牧星人 StarHerder</title>
+    <title>StarHerder</title>
     <link>http://localhost:1313/</link>
-    <description>Recent content on 牧星人 StarHerder</description>
+    <description>Recent content on StarHerder</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <lastBuildDate>Fri, 02 Jan 2026 13:51:15 +0800</lastBuildDate>
