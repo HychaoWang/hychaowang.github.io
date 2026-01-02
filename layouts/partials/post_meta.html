@@ -1,0 +1,11 @@
+{{- $root := . -}}
+{{- $post_meta := .Site.Params.post_meta -}}
+{{- if reflect.IsMap $post_meta -}}
+    {{- $post_meta = $post_meta.order -}}
+{{- end -}}
+{{- with $post_meta -}}
+	{{- range $field := . -}}
+		{{- $p := printf "post_meta/%s.html" $field -}}
+		{{- partial $p $root -}}
+	{{- end -}}
+{{- end -}}
