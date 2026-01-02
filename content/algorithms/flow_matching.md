@@ -7,7 +7,7 @@ mathjax = true
 +++
 
 
-Flow Matching (FM) 是一种基于连续时间动力学的新型生成模型范式。不同于基于最大似然的连续归一化流 (CNF) 或基于随机微分方程 (SDE) 的扩散模型，FM 提供了一种无需模拟 (Simulation-Free) 的训练目标，通过直接回归向量场 (Velocity Field) 来构建从源分布到目标分布的概率路径。本文将详细论述 FM 的微分几何与概率论基础，推导条件流匹配 (CFM) 的核心定理，并分析其与最优传输 (Optimal Transport) 的联系。
+> Flow Matching (FM) 是一种基于连续时间动力学的新型生成模型范式。不同于基于最大似然的连续归一化流 (CNF) 或基于随机微分方程 (SDE) 的扩散模型，FM 提供了一种无需模拟 (Simulation-Free) 的训练目标，通过直接回归向量场 (Velocity Field) 来构建从源分布到目标分布的概率路径。本文将详细论述 FM 的微分几何与概率论基础，推导条件流匹配 (CFM) 的核心定理，并分析其与最优传输 (Optimal Transport) 的联系。
 
 ---
 

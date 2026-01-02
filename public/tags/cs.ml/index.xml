@@ -6,8 +6,15 @@
     <description>Recent content in CS.ML on StarHerder</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 02 Jan 2026 13:51:15 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 03 Jan 2026 00:58:04 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/cs.ml/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>从混沌到秩序：Diffusion Model 数学原理解析</title>
+      <link>http://localhost:1313/algorithms/diffusion/</link>
+      <pubDate>Sat, 03 Jan 2026 00:58:04 +0800</pubDate>
+      <guid>http://localhost:1313/algorithms/diffusion/</guid>
+      <description>&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;摘要&lt;/strong&gt;：在AIGC（人工智能生成内容）爆发的今天，Stable Diffusion、Midjourney 等模型重新定义了数字艺术的创作方式。但这背后的魔法究竟是什么？不同于 GAN 的“博弈”或 VAE 的“压缩”，Diffusion Model 选择了一条基于非平衡热力学的独特路径：&lt;strong&gt;通过学习逆转熵增的过程来创造数据&lt;/strong&gt;。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Flow Matching 工程实践：从零实现 OT-CFM</title>
       <link>http://localhost:1313/engineering/flow_matching_engineering/</link>

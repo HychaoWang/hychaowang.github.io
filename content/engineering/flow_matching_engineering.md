@@ -6,7 +6,7 @@ tags = ["CS.AI", "CS.ML", "Deep Research"]
 mathjax = true
 +++
 
-这是一个从零开始实现最基础 Flow Matching (Naive Flow Matching) 的方法，基于**Optimal Transport Conditional Flow Matching (OT-CFM)** 路径来实现。
+> 这是一个从零开始实现最基础 Flow Matching (Naive Flow Matching) 的方法，基于**Optimal Transport Conditional Flow Matching (OT-CFM)** 路径来实现。
 
 **目标**：训练一个模型，将标准高斯噪声（源分布）变换为 2D “双月” 数据（目标分布）。
 
