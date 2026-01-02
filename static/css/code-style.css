@@ -1,0 +1,149 @@
+/* 代码块容器优化 (Light Theme) */
+.highlight {
+    position: relative;
+    margin-bottom: 1.5em;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    background-color: #f8f8f8;
+    border: 1px solid #e5e5e5;
+    overflow-x: auto; /* 核心：开启容器横向滚动 */
+}
+
+/* 针对带有行号的表格结构进行特殊处理 */
+.highlight table {
+    margin: 0 !important;
+    border: none !important;
+    width: auto !important; /* 允许表格宽度根据内容自动撑开 */
+    min-width: 100%; /* 确保背景色至少铺满容器宽度 */
+    table-layout: auto !important;
+}
+
+.highlight td {
+    border: none !important;
+    padding: 0 !important;
+}
+
+/* 代码块主体样式 */
+.highlight pre {
+    margin: 0;
+    padding: 1em;
+    border: none;
+    border-radius: 8px;
+    background-color: transparent !important;
+    color: #333333;
+    
+    /* 强制不换行，这是横向滚动的关键 */
+    white-space: pre !important;
+    word-wrap: normal !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+    
+    font-family: "JetBrains Mono", "Fira Code", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.9em;
+    line-height: 1.5;
+    
+    /* pre 自身通常不需要 overflow-x，因为由父容器 .highlight 或 table 控制 */
+    /* 但如果是无行号模式，代码直接在 pre 里，pre 可能需要滚动，或者 pre 撑开 .highlight */
+    overflow-x: visible !important; 
+}
+
+.highlight code {
+    white-space: pre !important;
+    word-wrap: normal !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+}
+
+/* 复制按钮样式 (适配浅色背景) */
+.copy-code-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    padding: 4px 8px;
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #555;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.2s;
+    z-index: 10;
+}
+
+/* 即使滚动，按钮也应该固定在容器右上角？ 
+   如果在 .highlight 上滚动，按钮绝对定位是相对于 .highlight 的。
+   如果 .highlight 滚动了，按钮会随内容移出视图吗？
+   position: absolute 是相对于最近的 positioned ancestor。
+   如果 .highlight 是 relative，按钮会随内容滚动吗？
+   如果是 sticky 可能会更好，但 sticky 需要特定条件。
+   
+   实际上，如果 .highlight 滚动，absolute 元素通常会跟随内容滚动。
+   为了让按钮始终可见，它应该在 .highlight 外部，或者使用 sticky。
+   但是 .highlight 既是滚动容器又是定位容器。
+   
+   简单的修复：将按钮 position: sticky; right: 0; 
+   但这需要父容器支持。
+   
+   或者：接受按钮会滚动，或者将按钮放在一个不滚动的包装器里。
+   Hugo 生成的 HTML 结构很难插入额外的包装器。
+   
+   使用 sticky 尝试一下。
+*/
+.copy-code-btn {
+    position: sticky;
+    float: right; /* 辅助 sticky */
+    right: 5px;
+    margin-right: 5px; /* 调整位置 */
+    margin-top: -30px; /* 把它拉回到顶部 */
+    /* 这里的 sticky 逻辑比较复杂，因为 pre 也是流式内容。
+       如果简单保持 absolute，在长代码滚动时，按钮会跑掉。
+       
+       如果不改 HTML 结构，很难做到完美固定。
+       鉴于用户只要求横向滚动，我们可以先保持 absolute，
+       虽然滚动时按钮会移走，但这在长代码块中是常见行为，
+       或者用户需要先滚回到最右边才能看到按钮（其实是滚到最左边才看到，因为按钮在右）。
+       不对，按钮在 right: 5px。如果容器滚动，内容的右边缘会变得很远。
+       如果 .highlight 宽度固定，overflow auto。
+       absolute 元素相对于 padding box。
+       如果内容溢出，padding box 变大？不，是 scrollable area。
+       
+       通常这种情况下，最好的办法是让 copy 按钮 fixed 在屏幕或 sticky，
+       但在纯 CSS 和现有 HTML 结构下有局限。
+       
+       我们可以尝试让 .copy-code-btn position: sticky; left: ... 
+       不，它是靠右的。
+       
+       暂时先维持 absolute，这是最稳妥的展示方式。
+    */
+}
+
+.highlight:hover .copy-code-btn {
+    opacity: 1;
+}
+
+.copy-code-btn:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #000;
+}
+
+.copy-code-btn:active {
+    transform: translateY(1px);
+}
+
+/* 滚动条美化 (适配浅色背景) */
+.highlight::-webkit-scrollbar {
+    height: 8px;
+    background-color: #f8f8f8;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.highlight::-webkit-scrollbar-thumb {
+    background-color: #d0d0d0;
+    border-radius: 4px;
+}
+
+.highlight::-webkit-scrollbar-thumb:hover {
+    background-color: #b0b0b0;
+}

@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Flow Matching 工程实践：从零实现 OT-CFM - StarHerder</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/code-style.css">
+
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container header__container">
+		
+	<div class="logo">
+		<a class="logo__link" href="/" title="StarHerder" rel="home">
+			<div class="logo__item logo__text">
+					<div class="logo__title">StarHerder</div>
+					<div class="logo__tagline">Shepherding stars in the cosmos.</div>
+				</div>
+		</a>
+	</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">菜单</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/">
+				
+				<span class="menu__text">首页</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/posts/">
+				
+				<span class="menu__text">文章</span>
+				
+			</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/about/">
+				
+				<span class="menu__text">关于我</span>
+				
+			</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Flow Matching 工程实践：从零实现 OT-CFM</h1>
+			
+		</header>
+		<div class="content post__content clearfix">
+			<p>这是一个从零开始实现最基础 Flow Matching (Naive Flow Matching) 的方法，基于<strong>Optimal Transport Conditional Flow Matching (OT-CFM)</strong> 路径来实现。</p>
+<p><strong>目标</strong>：训练一个模型，将标准高斯噪声（源分布）变换为 2D “双月” 数据（目标分布）。</p>
+<p><strong>核心思想回顾</strong>：
+不需要复杂的 SDE 推导，我们只需要做三件事：</p>
+<ol>
+<li><strong>采样</strong>：取一个噪声点 $x_0$ 和一个数据点 $x_1$。</li>
+<li><strong>插值</strong>：在它们之间画一条直线，随机选一个时间 $t$，计算中间位置 $x_t$。</li>
+<li><strong>回归</strong>：训练神经网络在输入 $(t, x_t)$ 时，预测这条直线的方向（速度） $x_1 - x_0$。</li>
+</ol>
+<hr>
+<h3 id="环境准备">环境准备</h3>
+<p>你需要安装以下库：</p>
+<div class="highlight"><div style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install torch numpy matplotlib scikit-learn
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>第一步：准备数据 (Data Preparation)我们需要一个简单的 2D 数据集作为目标分布 $p_1$。这里使用 sklearn 的 make_moons。</p>
+<div class="highlight"><div style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Python" data-lang="Python"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">import</span> <span style="color:#000">torch</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">import</span> <span style="color:#000">numpy</span> <span style="color:#204a87;font-weight:bold">as</span> <span style="color:#000">np</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">from</span> <span style="color:#000">sklearn.datasets</span> <span style="color:#204a87;font-weight:bold">import</span> <span style="color:#000">make_moons</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">import</span> <span style="color:#000">matplotlib.pyplot</span> <span style="color:#204a87;font-weight:bold">as</span> <span style="color:#000">plt</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h1 id="1-数据集构建">1. 数据集构建</h1>
+<div class="highlight"><div style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Python" data-lang="Python"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">def</span> <span style="color:#000">get_data</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">n_samples</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#0000cf;font-weight:bold">10000</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic"># 生成双月数据</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">data</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">_</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">make_moons</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">n_samples</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#000">n_samples</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">noise</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#0000cf;font-weight:bold">0.05</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic"># 归一化数据，使其大致分布在 [-2, 2] 之间，便于训练</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">data</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">data</span> <span style="color:#ce5c00;font-weight:bold">-</span> <span style="color:#000">data</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">mean</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">axis</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">))</span> <span style="color:#ce5c00;font-weight:bold">/</span> <span style="color:#000">data</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">std</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">axis</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">torch</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">from_numpy</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">data</span><span style="color:#000;font-weight:bold">)</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">float</span><span style="color:#000;font-weight:bold">()</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># 可视化看一下目标分布</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">data</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">get_data</span><span style="color:#000;font-weight:bold">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">plt</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">figure</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">figsize</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">5</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">5</span><span style="color:#000;font-weight:bold">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">plt</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">scatter</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">data</span><span style="color:#000;font-weight:bold">[:,</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">data</span><span style="color:#000;font-weight:bold">[:,</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">s</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">alpha</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#0000cf;font-weight:bold">0.5</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">plt</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">title</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;Target Data Distribution (x1)&#34;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">plt</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">show</span><span style="color:#000;font-weight:bold">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>第二步：搭建向量场网络 (The Vector Field Network)这是 Flow Matching 的核心模型 $v_\theta(t, x)$。它接收时间 $t$ 和位置 $x$，输出速度向量。输入：时间 $t$ (维度 1) + 坐标 $x$ (维度 2) = 3。输出：速度 $v$ (维度 2)。技巧：为了让网络更好地感知时间 $t$，我们不仅将 $t$ 作为输入，还可以使用简单的 Embedding（或者直接拼接，对于简单 2D 任务直接拼接即可）。</p>
+<div class="highlight"><div style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Python" data-lang="Python"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">import</span> <span style="color:#000">torch.nn</span> <span style="color:#204a87;font-weight:bold">as</span> <span style="color:#000">nn</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">class</span> <span style="color:#000">VectorFieldNetwork</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">nn</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">Module</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">def</span> <span style="color:#000">__init__</span><span style="color:#000;font-weight:bold">(</span><span style="color:#3465a4">self</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">hidden_dim</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#0000cf;font-weight:bold">64</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87">super</span><span style="color:#000;font-weight:bold">()</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">__init__</span><span style="color:#000;font-weight:bold">()</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#8f5902;font-style:italic"># 简单的 MLP：输入 dim=3 (x, y, t)，输出 dim=2 (vx, vy)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#3465a4">self</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">net</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">nn</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">Sequential</span><span style="color:#000;font-weight:bold">(</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">nn</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">Linear</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">hidden_dim</span><span style="color:#000;font-weight:bold">),</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">nn</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">Tanh</span><span style="color:#000;font-weight:bold">(),</span> <span style="color:#8f5902;font-style:italic"># Tanh 或 Swish/SiLU 在流模型中通常比 ReLU 表现更好</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">nn</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">Linear</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">hidden_dim</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">hidden_dim</span><span style="color:#000;font-weight:bold">),</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">nn</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">Tanh</span><span style="color:#000;font-weight:bold">(),</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">nn</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">Linear</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">hidden_dim</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">hidden_dim</span><span style="color:#000;font-weight:bold">),</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">nn</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">Tanh</span><span style="color:#000;font-weight:bold">(),</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">nn</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">Linear</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">hidden_dim</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">def</span> <span style="color:#000">forward</span><span style="color:#000;font-weight:bold">(</span><span style="color:#3465a4">self</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">t</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">x</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#8f5902;font-style:italic"># t 的形状通常是 [batch, 1]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#8f5902;font-style:italic"># x 的形状是 [batch, 2]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#8f5902;font-style:italic"># 将它们拼接起来 -&gt; [batch, 3]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">inputs</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">torch</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">cat</span><span style="color:#000;font-weight:bold">([</span><span style="color:#000">x</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">t</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">dim</span><span style="color:#ce5c00;font-weight:bold">=-</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#3465a4">self</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">net</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">inputs</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># 实例化模型</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">model</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">VectorFieldNetwork</span><span style="color:#000;font-weight:bold">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">optimizer</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">torch</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">optim</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">Adam</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">model</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">parameters</span><span style="color:#000;font-weight:bold">(),</span> <span style="color:#000">lr</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#0000cf;font-weight:bold">1e-3</span><span style="color:#000;font-weight:bold">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>第三步：构建 Flow Matching 损失函数 (The Crucial Step)这是工程实现中最关键的一步。根据文档中的 OT-CFM 公式：路径：$x_t = (1 - t)x_0 + t x_1$目标速度：$u_t(x|x_0, x_1) = x_1 - x_0$我们需要在代码中动态构建这个训练对。</p>
+<div class="highlight"><div style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Python" data-lang="Python"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">def</span> <span style="color:#000">compute_loss</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">model</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">x1</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#4e9a06">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#4e9a06">    x1: 来自真实数据的样本 [batch_size, 2]
+</span></span></span><span style="display:flex;"><span><span style="color:#4e9a06">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">batch_size</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">x1</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">shape</span><span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic"># 1. 采样 x0: 从标准高斯噪声采样 [batch_size, 2]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">x0</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">torch</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">randn_like</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">x1</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic"># 2. 采样时间 t: 均匀分布 [0, 1] -&gt; [batch_size, 1]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">t</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">torch</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">rand</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">batch_size</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">)</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">to</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">x1</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">device</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic"># 3. 计算中间状态 xt (线性插值)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic"># 公式: xt = (1 - t) * x0 + t * x1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic"># 这一步体现了 Optimal Transport 的直线路径假设</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">xt</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">1</span> <span style="color:#ce5c00;font-weight:bold">-</span> <span style="color:#000">t</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">x0</span> <span style="color:#ce5c00;font-weight:bold">+</span> <span style="color:#000">t</span> <span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">x1</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic"># 4. 计算目标向量场 ut (Conditional Vector Field)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic"># 对于直线路径，速度就是终点减起点</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">ut</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">x1</span> <span style="color:#ce5c00;font-weight:bold">-</span> <span style="color:#000">x0</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic"># 5. 模型预测 vt</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">vt</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">model</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">t</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">xt</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic"># 6. 计算损失: MSE(预测速度, 真实速度)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">loss</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">torch</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">mean</span><span style="color:#000;font-weight:bold">((</span><span style="color:#000">vt</span> <span style="color:#ce5c00;font-weight:bold">-</span> <span style="color:#000">ut</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#ce5c00;font-weight:bold">**</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">loss</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>第四步：训练循环 (Training Loop)
+把上面的部分组合起来进行训练。</p>
+<div class="highlight"><div style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Python" data-lang="Python"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># 训练参数</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">n_steps</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">10000</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">batch_size</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">128</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">dataset</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">get_data</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">n_samples</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#0000cf;font-weight:bold">50000</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#8f5902;font-style:italic"># 生成足够多的数据</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">losses</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">[]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87">print</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;开始训练...&#34;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">step</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#204a87">range</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">n_steps</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic"># 随机抽取 batch</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">indices</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">torch</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">randint</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87">len</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">dataset</span><span style="color:#000;font-weight:bold">),</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">batch_size</span><span style="color:#000;font-weight:bold">,))</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">x1_batch</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">dataset</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">indices</span><span style="color:#000;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic"># 计算损失并更新</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">optimizer</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">zero_grad</span><span style="color:#000;font-weight:bold">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">loss</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">compute_loss</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">model</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">x1_batch</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">loss</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">backward</span><span style="color:#000;font-weight:bold">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">optimizer</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">step</span><span style="color:#000;font-weight:bold">()</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">step</span> <span style="color:#ce5c00;font-weight:bold">%</span> <span style="color:#0000cf;font-weight:bold">1000</span> <span style="color:#ce5c00;font-weight:bold">==</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87">print</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">f</span><span style="color:#4e9a06">&#34;Step </span><span style="color:#4e9a06">{</span><span style="color:#000">step</span><span style="color:#4e9a06">}</span><span style="color:#4e9a06">: Loss = </span><span style="color:#4e9a06">{</span><span style="color:#000">loss</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">item</span><span style="color:#000;font-weight:bold">()</span><span style="color:#4e9a06">:</span><span style="color:#4e9a06">.4f</span><span style="color:#4e9a06">}</span><span style="color:#4e9a06">&#34;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">losses</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">append</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">loss</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">item</span><span style="color:#000;font-weight:bold">())</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87">print</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;训练完成！&#34;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>第五步：采样/推理 (Inference via ODE Solver)训练好模型后，我们得到了一个向量场。要生成数据，我们需要从噪声 $x_0 \sim \mathcal{N}(0, I)$ 出发，沿着向量场积分到 $t=1$。这本质上是解一个 ODE（常微分方程）：</p>
+$$dx = v_\theta(t, x) dt$$<p>为了教学目的，我们手写一个最简单的 欧拉求解器 (Euler Solver)。</p>
+<div class="highlight"><div style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Python" data-lang="Python"><span style="display:flex;"><span><span style="color:#5c35cc;font-weight:bold">@torch.no_grad</span><span style="color:#000;font-weight:bold">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">def</span> <span style="color:#000">sample_euler</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">model</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">n_samples</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#0000cf;font-weight:bold">2000</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">n_steps</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#0000cf;font-weight:bold">100</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">x</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">torch</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">randn</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">n_samples</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#8f5902;font-style:italic"># 1. 初始化 x0 (噪声)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">dt</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">1.0</span> <span style="color:#ce5c00;font-weight:bold">/</span> <span style="color:#000">n_steps</span> <span style="color:#8f5902;font-style:italic"># 定义时间步长 dt</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">traj</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#000">x</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">clone</span><span style="color:#000;font-weight:bold">()]</span> <span style="color:#8f5902;font-style:italic"># 存储轨迹用于后续可视化 (可选)</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic"># 2. ODE 积分循环 (从 t=0 到 t=1)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">i</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#204a87">range</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">n_steps</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#8f5902;font-style:italic"># 当前时间 t (需要扩展为 [batch, 1] 形状)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">t</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">torch</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">ones</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">n_samples</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">dt</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#8f5902;font-style:italic"># 模型预测当前位置的速度</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">v_pred</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">model</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">t</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">x</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#8f5902;font-style:italic"># 欧拉更新: x_new = x_old + v * dt</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">x</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">x</span> <span style="color:#ce5c00;font-weight:bold">+</span> <span style="color:#000">v_pred</span> <span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">dt</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">traj</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">append</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">x</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">clone</span><span style="color:#000;font-weight:bold">())</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">x</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">traj</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># 执行采样</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">generated_data</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">trajectory</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">sample_euler</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">model</span><span style="color:#000;font-weight:bold">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>第六步：结果可视化 (Visualization)
+最后，我们将生成的样本与真实分布对比，并画出粒子移动的轨迹，以验证 Flow Matching 是否成功学习了“直线”路径。</p>
+<div class="highlight"><div style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Python" data-lang="Python"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># 转换数据为 numpy</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">traj_np</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">torch</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">stack</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">trajectory</span><span style="color:#000;font-weight:bold">)</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">numpy</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#8f5902;font-style:italic"># shape: [steps, samples, 2]</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">gen_np</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">generated_data</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">numpy</span><span style="color:#000;font-weight:bold">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">target_np</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">dataset</span><span style="color:#000;font-weight:bold">[:</span><span style="color:#0000cf;font-weight:bold">2000</span><span style="color:#000;font-weight:bold">]</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">numpy</span><span style="color:#000;font-weight:bold">()</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">plt</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">figure</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">figsize</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">12</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">5</span><span style="color:#000;font-weight:bold">))</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># 图 1: 生成结果 vs 真实数据</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">plt</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">subplot</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">plt</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">scatter</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">target_np</span><span style="color:#000;font-weight:bold">[:,</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">target_np</span><span style="color:#000;font-weight:bold">[:,</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">s</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">alpha</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#0000cf;font-weight:bold">0.5</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">label</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#4e9a06">&#39;Real Data&#39;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">c</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#4e9a06">&#39;gray&#39;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">plt</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">scatter</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">gen_np</span><span style="color:#000;font-weight:bold">[:,</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">gen_np</span><span style="color:#000;font-weight:bold">[:,</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">s</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">alpha</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#0000cf;font-weight:bold">0.5</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">label</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#4e9a06">&#39;Generated (Flow)&#39;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">c</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#4e9a06">&#39;red&#39;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">plt</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">legend</span><span style="color:#000;font-weight:bold">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">plt</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">title</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;Generation Result&#34;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># 图 2: 粒子轨迹 (Flow Trajectories)</span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># 只画前 50 个粒子的轨迹，避免太乱</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">plt</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">subplot</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">i</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#204a87">range</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">50</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">plt</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">plot</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">traj_np</span><span style="color:#000;font-weight:bold">[:,</span> <span style="color:#000">i</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">traj_np</span><span style="color:#000;font-weight:bold">[:,</span> <span style="color:#000">i</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">c</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#4e9a06">&#39;blue&#39;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">alpha</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#0000cf;font-weight:bold">0.3</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">linewidth</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#0000cf;font-weight:bold">0.5</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">plt</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">scatter</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">traj_np</span><span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000;font-weight:bold">:</span><span style="color:#0000cf;font-weight:bold">50</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">traj_np</span><span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000;font-weight:bold">:</span><span style="color:#0000cf;font-weight:bold">50</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">c</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#4e9a06">&#39;green&#39;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">s</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#0000cf;font-weight:bold">10</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">label</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#4e9a06">&#39;Start (Noise)&#39;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">plt</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">scatter</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">traj_np</span><span style="color:#000;font-weight:bold">[</span><span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000;font-weight:bold">:</span><span style="color:#0000cf;font-weight:bold">50</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">traj_np</span><span style="color:#000;font-weight:bold">[</span><span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000;font-weight:bold">:</span><span style="color:#0000cf;font-weight:bold">50</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">c</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#4e9a06">&#39;red&#39;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">s</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#0000cf;font-weight:bold">10</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">label</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#4e9a06">&#39;End (Data)&#39;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">plt</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">title</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;Particle Trajectories (Straight Lines?)&#34;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">plt</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">legend</span><span style="color:#000;font-weight:bold">()</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">plt</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">tight_layout</span><span style="color:#000;font-weight:bold">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">plt</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">show</span><span style="color:#000;font-weight:bold">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><figure><img src="assets/flow_matching_results.png" width="600"><figcaption>
+      <h4>运行结果</h4>
+    </figcaption>
+</figure>
+
+<p>这个教程实现了一个最简单的 Flow Matching 系统。在 Flow Matching (OT-CFM) 中，我们训练模型去逼近直线路径 ($x_1 - x_0$)。理想情况下，推理阶段的粒子轨迹应当是非常直的。这与扩散模型不同，扩散模型的逆向生成过程轨迹通常是弯曲且充满噪声的。轨迹越直，意味着我们可以用更大的步长（更少的 n_steps）来求解 ODE，这就是 Flow Matching 生成速度快的原因。代码关键点：Loss 计算：没有复杂的积分，仅仅是简单的 MSE 回归。时间输入：必须把 $t$ 喂给网络，因为向量场是随时间变化的 (Time-dependent)。</p>
+<p>Simulation-Free：训练过程中我们没有调用 ODE 求解器，只在最后生成时调用了一次。你可以尝试将 n_steps 在 sample_euler 中减少到 10 甚至 5，你会发现效果依然不错，这展示了 FM 的鲁棒性。</p>
+
+		</div>
+		<footer class="post__footer">
+			
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M4 0h8s2 0 4 2l15 15s2 2 0 4L21 31s-2 2-4 0L2 16s-2-2-2-4V3s0-3 4-3m3 10a3 3 0 0 0 0-6 3 3 0 0 0 0 6"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/cs.ai/" rel="tag">CS.AI</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/cs.ml/" rel="tag">CS.ML</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/deep-research/" rel="tag">Deep Research</a>
+		</li>
+	</ul>
+</div>
+		</footer>
+	</article>
+</main>
+
+
+
+
+			</div>
+			<aside class="sidebar"><div class="widget-search widget">
+	<form class="widget-search__form" role="search" method="get" action="https://google.com/search">
+		<input class="widget-search__field" type="search" placeholder="搜索…" value="" name="q" aria-label="搜索…">
+		<input class="widget-search__submit" type="submit" value="Search">
+		<input type="hidden" name="sitesearch" value="http://localhost:1313/">
+	</form>
+</div>
+<div class="widget-recent widget">
+	<h4 class="widget__title">近期文章</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/posts/flow_matching_engineering/">Flow Matching 工程实践：从零实现 OT-CFM</a></li>
+			<li class="widget__item"><a class="widget__link" href="/posts/motion_estimation/">视频运动估计技术简介</a></li>
+			<li class="widget__item"><a class="widget__link" href="/posts/flow_matching/">Flow Matching: 数学原理、推导与算法综述</a></li>
+		</ul>
+	</div>
+</div>
+<div class="widget-taglist widget">
+	<h4 class="widget__title">标签</h4>
+	<div class="widget__content">
+		<a class="widget-taglist__link widget__link btn" href="/tags/cs.ai/" title="CS.AI">CS.AI</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/cs.ml/" title="CS.ML">CS.ML</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/cs.mm/" title="CS.MM">CS.MM</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/cs.vd/" title="CS.VD">CS.VD</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/deep-research/" title="Deep Research">Deep Research</a>
+	</div>
+</div>
+</aside>
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2026 StarHerder.
+			<span class="footer__copyright-credits">基于 <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> 引擎和 <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> 主题</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="/js/copy-code.js"></script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']],
+    processEscapes: true,
+    processEnvironments: true
+  },
+  options: {
+    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+</body>
+</html>
