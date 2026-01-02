@@ -51,6 +51,8 @@ plt.title("Target Data Distribution (x1)")
 plt.show()
 ```
 
+{{< figure src="/img/assets/data_visualization.png" title="双月数据分布" width="300" >}}
+
 第二步：搭建向量场网络 (The Vector Field Network)这是 Flow Matching 的核心模型 $v_\theta(t, x)$。它接收时间 $t$ 和位置 $x$，输出速度向量。输入：时间 $t$ (维度 1) + 坐标 $x$ (维度 2) = 3。输出：速度 $v$ (维度 2)。技巧：为了让网络更好地感知时间 $t$，我们不仅将 $t$ 作为输入，还可以使用简单的 Embedding（或者直接拼接，对于简单 2D 任务直接拼接即可）。
 
 ```Python
@@ -202,7 +204,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-{{< figure src="assets/flow_matching_results.png" title="运行结果" width="600" >}}
+{{< figure src="/img/assets/flow_matching_results.png" title="运行结果" width="600" >}}
 
 
 这个教程实现了一个最简单的 Flow Matching 系统。在 Flow Matching (OT-CFM) 中，我们训练模型去逼近直线路径 ($x_1 - x_0$)。理想情况下，推理阶段的粒子轨迹应当是非常直的。这与扩散模型不同，扩散模型的逆向生成过程轨迹通常是弯曲且充满噪声的。轨迹越直，意味着我们可以用更大的步长（更少的 n_steps）来求解 ODE，这就是 Flow Matching 生成速度快的原因。代码关键点：Loss 计算：没有复杂的积分，仅仅是简单的 MSE 回归。时间输入：必须把 $t$ 喂给网络，因为向量场是随时间变化的 (Time-dependent)。

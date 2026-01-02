@@ -140,7 +140,12 @@
 </span></span><span style="display:flex;"><span><span style="color:#000">plt</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">show</span><span style="color:#000;font-weight:bold">()</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>第二步：搭建向量场网络 (The Vector Field Network)这是 Flow Matching 的核心模型 $v_\theta(t, x)$。它接收时间 $t$ 和位置 $x$，输出速度向量。输入：时间 $t$ (维度 1) + 坐标 $x$ (维度 2) = 3。输出：速度 $v$ (维度 2)。技巧：为了让网络更好地感知时间 $t$，我们不仅将 $t$ 作为输入，还可以使用简单的 Embedding（或者直接拼接，对于简单 2D 任务直接拼接即可）。</p>
+</div><figure><img src="/img/assets/data_visualization.png" width="300"><figcaption>
+      <h4>双月数据分布</h4>
+    </figcaption>
+</figure>
+
+<p>第二步：搭建向量场网络 (The Vector Field Network)这是 Flow Matching 的核心模型 $v_\theta(t, x)$。它接收时间 $t$ 和位置 $x$，输出速度向量。输入：时间 $t$ (维度 1) + 坐标 $x$ (维度 2) = 3。输出：速度 $v$ (维度 2)。技巧：为了让网络更好地感知时间 $t$，我们不仅将 $t$ 作为输入，还可以使用简单的 Embedding（或者直接拼接，对于简单 2D 任务直接拼接即可）。</p>
 <div class="highlight"><div style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
@@ -426,7 +431,7 @@ $$dx = v_\theta(t, x) dt$$<p>为了教学目的，我们手写一个最简单的
 </span></span><span style="display:flex;"><span><span style="color:#000">plt</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">show</span><span style="color:#000;font-weight:bold">()</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><figure><img src="assets/flow_matching_results.png" width="600"><figcaption>
+</div><figure><img src="/img/assets/flow_matching_results.png" width="600"><figcaption>
       <h4>运行结果</h4>
     </figcaption>
 </figure>
