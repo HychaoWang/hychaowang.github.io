@@ -1,13 +1,34 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tags on StarHerder</title>
+    <title>Tags on 牧星人 StarHerder</title>
     <link>http://localhost:1313/tags/</link>
-    <description>Recent content in Tags on StarHerder</description>
+    <description>Recent content in Tags on 牧星人 StarHerder</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 27 Dec 2025 14:50:42 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 02 Jan 2026 13:51:15 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CS.AI</title>
+      <link>http://localhost:1313/tags/cs.ai/</link>
+      <pubDate>Fri, 02 Jan 2026 13:51:15 +0800</pubDate>
+      <guid>http://localhost:1313/tags/cs.ai/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>CS.ML</title>
+      <link>http://localhost:1313/tags/cs.ml/</link>
+      <pubDate>Fri, 02 Jan 2026 13:51:15 +0800</pubDate>
+      <guid>http://localhost:1313/tags/cs.ml/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Deep Research</title>
+      <link>http://localhost:1313/tags/deep-research/</link>
+      <pubDate>Fri, 02 Jan 2026 13:51:15 +0800</pubDate>
+      <guid>http://localhost:1313/tags/deep-research/</guid>
+      <description></description>
+    </item>
     <item>
       <title>CS.MM</title>
       <link>http://localhost:1313/tags/cs.mm/</link>
@@ -20,27 +41,6 @@
       <link>http://localhost:1313/tags/cs.vd/</link>
       <pubDate>Sat, 27 Dec 2025 14:50:42 +0800</pubDate>
       <guid>http://localhost:1313/tags/cs.vd/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>CS.AI</title>
-      <link>http://localhost:1313/tags/cs.ai/</link>
-      <pubDate>Sat, 27 Dec 2025 13:33:17 +0800</pubDate>
-      <guid>http://localhost:1313/tags/cs.ai/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>CS.ML</title>
-      <link>http://localhost:1313/tags/cs.ml/</link>
-      <pubDate>Sat, 27 Dec 2025 13:33:17 +0800</pubDate>
-      <guid>http://localhost:1313/tags/cs.ml/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Deep Research</title>
-      <link>http://localhost:1313/tags/deep-research/</link>
-      <pubDate>Sat, 27 Dec 2025 13:33:17 +0800</pubDate>
-      <guid>http://localhost:1313/tags/deep-research/</guid>
       <description></description>
     </item>
   </channel>

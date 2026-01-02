@@ -18,7 +18,7 @@ mathjax = true
 
 ---
 
-### 环境准备
+### 0. 环境准备
 
 你需要安装以下库：
 ```bash
@@ -34,7 +34,7 @@ from sklearn.datasets import make_moons
 import matplotlib.pyplot as plt
 ```
 
-# 1. 数据集构建
+### 1. 数据集构建
 ```Python
 def get_data(n_samples=10000):
     # 生成双月数据
@@ -53,7 +53,8 @@ plt.show()
 
 {{< figure src="/img/assets/data_visualization.png" title="双月数据分布" width="300" >}}
 
-第二步：搭建向量场网络 (The Vector Field Network)这是 Flow Matching 的核心模型 $v_\theta(t, x)$。它接收时间 $t$ 和位置 $x$，输出速度向量。输入：时间 $t$ (维度 1) + 坐标 $x$ (维度 2) = 3。输出：速度 $v$ (维度 2)。技巧：为了让网络更好地感知时间 $t$，我们不仅将 $t$ 作为输入，还可以使用简单的 Embedding（或者直接拼接，对于简单 2D 任务直接拼接即可）。
+### 第二步：搭建向量场网络 (The Vector Field Network)
+这是 Flow Matching 的核心模型 $v_\theta(t, x)$。它接收时间 $t$ 和位置 $x$，输出速度向量。输入：时间 $t$ (维度 1) + 坐标 $x$ (维度 2) = 3。输出：速度 $v$ (维度 2)。技巧：为了让网络更好地感知时间 $t$，我们不仅将 $t$ 作为输入，还可以使用简单的 Embedding（或者直接拼接，对于简单 2D 任务直接拼接即可）。
 
 ```Python
 import torch.nn as nn
@@ -84,7 +85,8 @@ model = VectorFieldNetwork()
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
 ```
 
-第三步：构建 Flow Matching 损失函数 (The Crucial Step)这是工程实现中最关键的一步。根据文档中的 OT-CFM 公式：路径：$x_t = (1 - t)x_0 + t x_1$目标速度：$u_t(x|x_0, x_1) = x_1 - x_0$我们需要在代码中动态构建这个训练对。
+### 第三步：构建 Flow Matching 损失函数 (The Crucial Step)
+这是工程实现中最关键的一步。根据文档中的 OT-CFM 公式：路径：$x_t = (1 - t)x_0 + t x_1$目标速度：$u_t(x|x_0, x_1) = x_1 - x_0$我们需要在代码中动态构建这个训练对。
 
 ```Python
 def compute_loss(model, x1):
@@ -117,7 +119,7 @@ def compute_loss(model, x1):
     return loss
 ```
 
-第四步：训练循环 (Training Loop)
+### 第四步：训练循环 (Training Loop)
 把上面的部分组合起来进行训练。
 
 ```Python
@@ -147,7 +149,8 @@ for step in range(n_steps):
 print("训练完成！")
 ```
 
-第五步：采样/推理 (Inference via ODE Solver)训练好模型后，我们得到了一个向量场。要生成数据，我们需要从噪声 $x_0 \sim \mathcal{N}(0, I)$ 出发，沿着向量场积分到 $t=1$。这本质上是解一个 ODE（常微分方程）：$$dx = v_\theta(t, x) dt$$为了教学目的，我们手写一个最简单的 欧拉求解器 (Euler Solver)。
+### 第五步：采样/推理 (Inference via ODE Solver)
+训练好模型后，我们得到了一个向量场。要生成数据，我们需要从噪声 $x_0 \sim \mathcal{N}(0, I)$ 出发，沿着向量场积分到 $t=1$。这本质上是解一个 ODE（常微分方程）：$$dx = v_\theta(t, x) dt$$为了教学目的，我们手写一个最简单的 欧拉求解器 (Euler Solver)。
 
 ```Python
 @torch.no_grad()
@@ -172,7 +175,7 @@ def sample_euler(model, n_samples=2000, n_steps=100):
 generated_data, trajectory = sample_euler(model)
 ```
 
-第六步：结果可视化 (Visualization)
+### 第六步：结果可视化 (Visualization)
 最后，我们将生成的样本与真实分布对比，并画出粒子移动的轨迹，以验证 Flow Matching 是否成功学习了“直线”路径。
 
 ```Python

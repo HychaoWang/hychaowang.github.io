@@ -1,6 +1,6 @@
 baseURL = "https://hychaowang.github.io/"
 languageCode = "zh-cn"
-title = "StarHerder" 
+title = "牧星人 StarHerder" 
 theme = "mainroad"
 
 hasCJKLanguage = true  # 开启中日韩语言支持
@@ -13,8 +13,9 @@ summaryLength = 40     # 摘要长度
 # --- 参数设置 ---
 [params]
   math = true
+  mathjax = true # 全局开启 MathJax
   description = ""
-  subtitle = "Shepherding stars in the cosmos."
+  subtitle = "长空牧群星 Shepherding stars in the cosmos."
   customCSS = ["css/code-style.css"]
   customJS = ["js/copy-code.js"]
 
@@ -41,9 +42,17 @@ summaryLength = 40     # 摘要长度
     url = "/"
     weight = 10
   [[menu.main]]
-    name = "文章"      # 👈 加上这个，否则找不到博客列表
-    url = "/posts/" 
-    weight = 20
+    name = "理论"
+    url = "/theory/"
+    weight = 15
+  [[menu.main]]
+    name = "算法"
+    url = "/algorithms/"
+    weight = 16
+  [[menu.main]]
+    name = "工程"
+    url = "/engineering/"
+    weight = 17
   [[menu.main]]
     name = "关于我"
     url = "/about/" 

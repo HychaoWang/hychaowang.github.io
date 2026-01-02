@@ -3,7 +3,7 @@
 <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>About Me - 牧星人 StarHerder</title>
+	<title>视频运动估计技术简介 - 牧星人 StarHerder</title>
 	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
 	<meta name="description" content="">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -82,56 +82,64 @@
 <main class="main" role="main">
 	<article class="post">
 		<header class="post__header">
-			<h1 class="post__title">About Me</h1>
+			<h1 class="post__title">视频运动估计技术简介</h1>
 			
 		</header>
 		<div class="content post__content clearfix">
-			<p>I am a third-year master student in <a href="https://www.tsinghua.edu.cn">Tsinghua University</a>, under the supervision of Prof. Yuxing Han. I earned my bachelor&rsquo;s degree from <a href="https://www.bjtu.edu.cn">Beijing Jiaotong University</a> in 2023.</p>
-<p>My research interest focuses on <strong>Machine Learning</strong> and <strong>Computer Vision</strong>, especially <strong>Efficient AI</strong> algorithms and systems. From 2021, I started my research on efficient physiological time series analysis based on knowledge distillation. Now, I focus on efficient video computer vision systems with video motion estimation.</p>
-<p>Feel free to contact me by email if you are interest in discussion or collarboration with me.</p>
-<h2 id="publications">Publications</h2>
-<ol>
-<li>
-<p><strong>Efficient Bayer-Domain Video Computer Vision with Fast Motion Estimation and Learned Perception Residual</strong>,
-<strong>Haichao Wang</strong>, Jiangtao Wen, Yuxing Han*
-<em>arXiv preprint</em>, 2025.
-[ <a href="https://arxiv.org/abs/2508.05990">arXiv</a> ]</p>
-</li>
-<li>
-<p><strong>Efficient Video Neural Network Processing Based on Motion Estimation</strong>,
-<strong>Haichao Wang</strong>, Jiangtao Wen, Yuxing Han*
-<em>arXiv preprint</em>, 2025.
-[ <a href="https://arxiv.org/abs/2501.15119">arXiv</a> ]</p>
-</li>
-<li>
-<p><strong>Mutual Distillation Extracting Spatial-Temporal Knowledge for Lightweight Multi-channel Sleep Stage Classification</strong>,
-Ziyu Jia, <strong>Haichao Wang</strong>*, Yucheng Liu, Tianzi Jiang
-<em>ACM SIGKDD</em>, 2024.
-[ <a href="https://dl.acm.org/doi/abs/10.1145/3637528.3671981">Paper</a> ]</p>
-</li>
-<li>
-<p><strong>Distillsleepnet: Heterogeneous Multi-level Knowledge Distillation via Teacher Assistant for Sleep Staging</strong>,
-Ziyu Jia, Heng Liang, Yucheng Liu, <strong>Haichao Wang</strong>, Tianzi Jiang
-<em>IEEE Transactions on Big Data</em>, 2024.
-[ <a href="https://ieeexplore.ieee.org/abstract/document/10663937">Paper</a> ]</p>
-</li>
-<li>
-<p><strong>Emotionkd: A Cross-modal Knowledge Distillation Framework for Emotion Recognition Based on Physiological Signals</strong>,
-Yucheng Liu, Ziyu Jia*, <strong>Haichao Wang</strong>
-<em>ACM MM</em>, 2023.
-[ <a href="https://dl.acm.org/doi/abs/10.1145/3581783.3612277">Paper</a> ]</p>
-</li>
-<li>
-<p><strong>Teacher Assistant-Based Knowledge Distillation Extracting Multi-level Features on Single Channel Sleep EEG</strong>,
-Heng Liang, Yucheng Liu, <strong>Haichao Wang (Co-first Author)</strong>, Ziyu Jia*
-<em>IJCAI</em>, 2023.
-[ <a href="http://ijcai.org/proceedings/2023/0439.pdf">Paper</a> ]</p>
-</li>
-</ol>
-<hr>
-<p><em>Note: <code>*</code> indicates Corresponding Author.</em></p>
+			<p>视频编码技术是现代数字媒体技术的基石，运动估计是视频编码技术中一个重要的组件，用于检测视频帧之间的冗余，从而压缩视频文件的存储。本文将介绍运动估计的背景，基本原理，实现和一些应用。</p>
+<h2 id="视频的存储问题">视频的存储问题</h2>
+<p>视频已经是我们现代信息技术中最常用的一种数据形式，我们可以通过网络下载视频或者流媒体播放视频。但是，日常很少有人意识到视频其实是一个非常复杂的数据。我们考虑一个120分钟、30帧每秒的1080p的RGB格式电影，一共有 $1080 \times 1920$ 个像素点，每个像素点有RGB三个通道，每个通道上用一个8 bit的0～255之间的数值表示，那么每个像素点需要24个bit。120分钟的视频，每秒钟30帧，则有 $120 \times 60 \times 30$ 张图片，那么总的存储为
+</p>
+$$
+\text{Vol} \approx10749\text{Gb}\approx1343\text{GB}
+$$<p>
+很明显，我们平时下载电影，不会出现一个1343GB的文件，一般是1GB到几十GB不等的小文件。这是因为视频编码技术极大地压缩了视频文件。</p>
+<h2 id="运动估计的基本原理">运动估计的基本原理</h2>
+<p>视频压缩的基本方法是帧间压缩。帧间压缩的主要思想是，视频相邻帧变化很小，存在大量的冗余成分，因此，大量的冗余数据可以被节约，从而实现压缩。需要注意的是，视频压缩中虽然也有涉及帧内压缩，帧内压缩更多的是图像压缩技术，在此不做详细讨论。</p>
+<p>帧间压缩的主要实现方式是运动估计。运动估计是检测帧间冗余的方法，通过估计视频内容的运动，来匹配帧间相似的内容。运动估计的基本假设是光强一致性假设，即在相邻帧中，相同的物体的光强是一致的。假设$V(x,y,t)$ 为一个用空间坐标$(x,y)$和时间$t$形容的视频帧序列，那么光强一致性假设为
+</p>
+$$
+V(x,y,t)=V(x+d_x,y+d_y,t+d_t)
+$$<p>
+其中，$(d_x, d_y)$是相邻帧之间的偏移量，$d_t$是时间变化量。使用泰勒一阶展开，可以得到:
+</p>
+$$
+\frac{\partial{V}}{\partial{x}}d_x+\frac{\partial{V}}{\partial{y}}d_y+\frac{\partial{V}}{\partial{t}}d_t=0
+$$<p>
+两边同时除以$d_t$可以得到：
+</p>
+$$
+\frac{\partial{V}}{\partial{x}}v_x+\frac{\partial{V}}{\partial{y}}v_y+\frac{\partial{V}}{\partial{t}}=0
+$$<p>
+这个公式也可以表示为$\nabla V^T\textbf{v}+\frac{\partial V}{\partial t}=0$. $\nabla V=[\frac{\partial V}{\partial x},\frac{\partial V}{\partial y}]^T$ 是$V(x,y,t)$的空间梯度向量。$\textbf{v}=[v_x, v_y]=[\frac{d_x}{d_t}, \frac{d_y}{d_t}]$是速度向量。每个像素的速度向量$\textbf{v}$可以分解成两个正交分量$\textbf{v}=v_n\textbf{e}_n+v_t\textbf{e}_t$，其中$\textbf{e}_n$是图像梯度$\nabla{V}$的方向向量。因此公式3可以被转换为：
+</p>
+$$
+v_n||\nabla V||+\frac{\partial V}{\partial t}=0
+$$<p>
+其中$||\nabla V||$是梯度向量的模长。在此方程中，速度向量是没有办法通过$||\nabla V||$和$\frac{\partial V}{\partial t}$得到的。因此需要一个额外的限制，利用像素邻域进行运动估计。</p>
+<p>运动估计的目标表示为
+</p>
+$$
+E(u,v)=\int_\Omega \rho(V_xu+V_yv+I_t)dxdy
+$$<p>
+其中$\rho$是数据保真度项。因此，运动估计的目标是得到最还原原始帧的运动向量的组合。</p>
+<h2 id="运动估计的实现">运动估计的实现</h2>
 
 		</div>
+		<footer class="post__footer">
+			
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M4 0h8s2 0 4 2l15 15s2 2 0 4L21 31s-2 2-4 0L2 16s-2-2-2-4V3s0-3 4-3m3 10a3 3 0 0 0 0-6 3 3 0 0 0 0 6"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/cs.mm/" rel="tag">CS.MM</a>
+		</li>
+		<li class="tags__item">
+			<a class="tags__link btn" href="/tags/cs.vd/" rel="tag">CS.VD</a>
+		</li>
+	</ul>
+</div>
+		</footer>
 	</article>
 </main>
 

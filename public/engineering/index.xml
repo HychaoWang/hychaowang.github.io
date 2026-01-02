@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>工程 on 牧星人 StarHerder</title>
+    <link>http://localhost:1313/engineering/</link>
+    <description>Recent content in 工程 on 牧星人 StarHerder</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 02 Jan 2026 13:51:15 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/engineering/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Flow Matching 工程实践：从零实现 OT-CFM</title>
+      <link>http://localhost:1313/engineering/flow_matching_engineering/</link>
+      <pubDate>Fri, 02 Jan 2026 13:51:15 +0800</pubDate>
+      <guid>http://localhost:1313/engineering/flow_matching_engineering/</guid>
+      <description>&lt;p&gt;这是一个从零开始实现最基础 Flow Matching (Naive Flow Matching) 的方法，基于&lt;strong&gt;Optimal Transport Conditional Flow Matching (OT-CFM)&lt;/strong&gt; 路径来实现。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

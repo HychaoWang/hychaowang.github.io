@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>CS.VD on StarHerder</title>
+    <title>CS.VD on 牧星人 StarHerder</title>
     <link>http://localhost:1313/tags/cs.vd/</link>
-    <description>Recent content in CS.VD on StarHerder</description>
+    <description>Recent content in CS.VD on 牧星人 StarHerder</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <lastBuildDate>Sat, 27 Dec 2025 14:50:42 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/cs.vd/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>视频运动估计技术简介</title>
-      <link>http://localhost:1313/posts/motion_estimation/</link>
+      <link>http://localhost:1313/algorithms/motion_estimation/</link>
       <pubDate>Sat, 27 Dec 2025 14:50:42 +0800</pubDate>
-      <guid>http://localhost:1313/posts/motion_estimation/</guid>
+      <guid>http://localhost:1313/algorithms/motion_estimation/</guid>
       <description>&lt;p&gt;视频编码技术是现代数字媒体技术的基石，运动估计是视频编码技术中一个重要的组件，用于检测视频帧之间的冗余，从而压缩视频文件的存储。本文将介绍运动估计的背景，基本原理，实现和一些应用。&lt;/p&gt;</description>
     </item>
   </channel>
