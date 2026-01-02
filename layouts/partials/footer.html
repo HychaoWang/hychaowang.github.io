@@ -1,0 +1,24 @@
+<footer class="footer">
+	<div class="container footer__container flex">
+		{{ partial "footer_links.html" . }}
+		
+		<!-- 不蒜子统计 -->
+		<div class="footer__copyright">
+			<span id="busuanzi_container_site_pv">
+				本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+			</span>
+			&nbsp;|&nbsp;
+			<span id="busuanzi_container_site_uv">
+				访客数 <span id="busuanzi_value_site_uv"></span> 人
+			</span>
+		</div>
+
+		<div class="footer__copyright">
+			&copy; {{ now.Format "2006" }} {{ .Site.Params.copyright | default .Site.Title }}.
+			<span class="footer__copyright-credits">{{ T "footer_credits" | safeHTML }}</span>
+		</div>
+	</div>
+	
+	<!-- 不蒜子脚本 -->
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</footer>

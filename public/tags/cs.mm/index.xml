@@ -13,7 +13,7 @@
       <link>http://localhost:1313/algorithms/motion_estimation/</link>
       <pubDate>Sat, 27 Dec 2025 14:50:42 +0800</pubDate>
       <guid>http://localhost:1313/algorithms/motion_estimation/</guid>
-      <description>&lt;p&gt;视频编码技术是现代数字媒体技术的基石，运动估计是视频编码技术中一个重要的组件，用于检测视频帧之间的冗余，从而压缩视频文件的存储。本文将介绍运动估计的背景，基本原理，实现和一些应用。&lt;/p&gt;</description>
+      <description>&lt;blockquote&gt;&#xA;&lt;p&gt;视频编码技术是现代数字媒体技术的基石，运动估计是视频编码技术中一个重要的组件，用于检测视频帧之间的冗余，从而压缩视频文件的存储。本文将介绍运动估计的背景，基本原理，实现和一些应用。&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

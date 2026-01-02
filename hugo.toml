@@ -24,6 +24,10 @@ summaryLength = 40     # 摘要长度
     list = "right"       
     single = "right"
     widgets = ["search", "recent", "taglist", "social"]     
+    
+  [params.post_meta]
+    # 可选值: date, categories, translations, author, views
+    order = ["date", "categories", "views"]
 
   # --- 社交链接 (这也是一个子模块) ---
   [params.social]
