@@ -1,6 +1,6 @@
 +++
 date = '2026-01-02T13:51:15+08:00'
-draft = true
+draft = false
 title = 'Flow Matching 工程实践：从零实现 OT-CFM'
 tags = ["CS.AI", "CS.ML", "Deep Research"]
 mathjax = true
