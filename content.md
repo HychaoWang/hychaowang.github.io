@@ -29,6 +29,17 @@ Feel free to contact me by email if you are interest in discussion or collarbora
   - Computer Science and Technology, [Beijing Jiaotong University](https://www.bjtu.edu.cn)
   - 2019 - 2023
 
+
+## Main Publications
+
+1. Liang Heng, Yucheng Liu, **Haichao Wang**, and Ziyu Jia. "Teacher Assistant-Based Knowledge Distillation Extracting Multi-Level Features on Single Channel Sleep EEG." In *International Joint Conference on Artificial Intelligence (IJCAI)*. 2023. [[Paper]](http://ijcai.org/proceedings/2023/0439.pdf)
+
+2. Jia Ziyu, **Haichao Wang**, Yucheng Liu, and Tianzi Jiang. "Mutual Distillation Extracting Spatial-Temporal Knowledge for Lightweight Multi-Channel Sleep Stage Classification." In *ACM SIGKDD Conference on Knowledge Discovery and Data Mining*. 2024. [[Paper]](https://dl.acm.org/doi/abs/10.1145/3637528.3671981)
+
+3. **Haichao Wang**, Gene Wen, and Yuxing Han. "Leveraging Motion Estimation for Efficient Bayer-Domain Computer Vision." arXiv preprint arXiv:2501.15119 (2025). [[arXiv]](https://arxiv.org/abs/2501.15119)
+
+4. **Haichao Wang**, Gene Wen, and Yuxing Han. "Efficient Bayer-Domain Video Computer Vision with Fast Motion Estimation and Learned Perception Residual." arXiv preprint arXiv:2508.05990 (2025). [[arXiv]](https://arxiv.org/abs/2508.05990)
+
 ## Publications
 
 1. Liang Heng, Yucheng Liu, **Haichao Wang**, and Ziyu Jia. "Teacher Assistant-Based Knowledge Distillation Extracting Multi-Level Features on Single Channel Sleep EEG." In *International Joint Conference on Artificial Intelligence (IJCAI)*. 2023. [[Paper]](http://ijcai.org/proceedings/2023/0439.pdf)
