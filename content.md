@@ -31,15 +31,15 @@ Feel free to contact me by email if you are interest in discussion or collarbora
 
 ## Publications
 
-1. Liang, Heng, Yucheng Liu, **Haichao Wang**, and Ziyu Jia. "Teacher Assistant-Based Knowledge Distillation Extracting Multi-Level Features on Single Channel Sleep EEG." In *International Joint Conference on Artificial Intelligence (IJCAI)*. 2023. [[Paper]](http://ijcai.org/proceedings/2023/0439.pdf)
+1. Liang Heng, Yucheng Liu, **Haichao Wang**, and Ziyu Jia. "Teacher Assistant-Based Knowledge Distillation Extracting Multi-Level Features on Single Channel Sleep EEG." In *International Joint Conference on Artificial Intelligence (IJCAI)*. 2023. [[Paper]](http://ijcai.org/proceedings/2023/0439.pdf)
 
-2. Liu, Yucheng, Ziyu Jia, and **Haichao Wang**. "EmotionKD: A Cross-Modal Knowledge Distillation Framework for Emotion Recognition Based on Physiological Signals." In *ACM International Conference on Multimedia (ACM MM)*, 6122–31. 2023. [[Paper]](https://dl.acm.org/doi/abs/10.1145/3581783.3612277)
+2. Liu Yucheng, Ziyu Jia, and **Haichao Wang**. "EmotionKD: A Cross-Modal Knowledge Distillation Framework for Emotion Recognition Based on Physiological Signals." In *ACM International Conference on Multimedia (ACM MM)*, 6122–31. 2023. [[Paper]](https://dl.acm.org/doi/abs/10.1145/3581783.3612277)
 
-3. Jia, Ziyu, Heng Liang, Yucheng Liu, **Haichao Wang**, and Tianzi Jiang. "DistillSleepNet: Heterogeneous Multi-Level Knowledge Distillation via Teacher Assistant for Sleep Staging." *IEEE Transactions on Big Data*, 2024. [[Paper]](https://ieeexplore.ieee.org/abstract/document/10663937)
+3. Jia Ziyu, Heng Liang, Yucheng Liu, **Haichao Wang**, and Tianzi Jiang. "DistillSleepNet: Heterogeneous Multi-Level Knowledge Distillation via Teacher Assistant for Sleep Staging." *IEEE Transactions on Big Data*, 2024. [[Paper]](https://ieeexplore.ieee.org/abstract/document/10663937)
 
-4. Jia, Ziyu, **Haichao Wang**, Yucheng Liu, and Tianzi Jiang. "Mutual Distillation Extracting Spatial-Temporal Knowledge for Lightweight Multi-Channel Sleep Stage Classification." In *ACM SIGKDD Conference on Knowledge Discovery and Data Mining*. 2024. [[Paper]](https://dl.acm.org/doi/abs/10.1145/3637528.3671981)
+4. Jia Ziyu, **Haichao Wang**, Yucheng Liu, and Tianzi Jiang. "Mutual Distillation Extracting Spatial-Temporal Knowledge for Lightweight Multi-Channel Sleep Stage Classification." In *ACM SIGKDD Conference on Knowledge Discovery and Data Mining*. 2024. [[Paper]](https://dl.acm.org/doi/abs/10.1145/3637528.3671981)
 
-5. Jia, Ziyu, Heng Liang, **Haichao Wang**, Yucheng Liu, and Tianzi Jiang. "Cross-Modal Knowledge Distillation for Enhanced Unimodal Emotion Recognition." *IEEE Transactions on Affective Computing*, 2025. [[Paper]](https://ieeexplore.ieee.org/abstract/document/11052680)
+5. Jia Ziyu, Heng Liang, **Haichao Wang**, Yucheng Liu, and Tianzi Jiang. "Cross-Modal Knowledge Distillation for Enhanced Unimodal Emotion Recognition." *IEEE Transactions on Affective Computing*, 2025. [[Paper]](https://ieeexplore.ieee.org/abstract/document/11052680)
 
 6. **Haichao Wang**, Gene Wen, and Yuxing Han. "Leveraging Motion Estimation for Efficient Bayer-Domain Computer Vision." arXiv preprint arXiv:2501.15119 (2025). [[arXiv]](https://arxiv.org/abs/2501.15119)
 
