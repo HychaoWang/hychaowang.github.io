@@ -3,60 +3,55 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#fbfbfd" />
-  <title>Haichao Wang — Academic Homepage</title>
-  <meta name="description" content="Academic homepage of Haichao Wang" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- 可换任意你喜欢的 Google Fonts；若被屏蔽也会退回系统字体 -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <title>Haichao Wang</title>
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Custom style adjustments */
+    body {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+  </style>
 </head>
 <body>
-  <nav class="navbar banner">
-    <div class="nav-container">
-      <a href="index.html" class="nav-brand">Haichao Wang</a>
-      <div class="nav-links">
-        <a href="index.html" aria-current="page">Blog</a>
-        <a href="pubs.html">Publications</a>
-      </div>
-    </div>
-  </nav>
 
-  <div class="container">
-    <main class="site-main">
-      <section class="page-head">
-        <h1>Blog</h1>
-        <p class="muted">Latest posts and notes.</p>
-      </section>
+  <!-- Jemdoc Layout Structure -->
+  <table id="tlayout">
+    <tbody>
+      <tr>
+        <!-- Sidebar Menu -->
+        <td id="layout-menu">
+          <div class="menu-category">Haichao Wang</div>
+          <div class="menu-item"><a href="index.html" class="current">Home</a></div>
+          <div class="menu-category">Navigation</div>
+          <div class="menu-item"><a href="#about">About</a></div>
+          <div class="menu-item"><a href="#education">Education</a></div>
+          <div class="menu-item"><a href="#publications">Publications</a></div>
+          <div class="menu-category">Links</div>
+          <div class="menu-item"><a href="mailto:whc23@mails.tsinghua.edu.cn">Email</a></div>
+          <div class="menu-item"><a href="https://github.com/hychao">GitHub</a></div>
+          <div class="menu-item"><a href="#">Google Scholar</a></div>
+        </td>
 
-      <div class="layout">
-        <section id="blog" class="card">
-          <div id="blog-list" class="blog-list"></div>
-          <p id="blog-empty" class="muted" hidden>No blog posts yet.</p>
-          <noscript>
-            <p class="muted">JavaScript is disabled; blog posts cannot be loaded.</p>
-          </noscript>
-        </section>
+        <!-- Main Content -->
+        <td id="layout-content">
+          <div id="toptitle">
+            <h1>Haichao Wang</h1>
+          </div>
 
-        <div class="side-column">
-          <aside id="intro" class="card intro-card">
-            <div id="about-content" class="markdown"></div>
-            <noscript><p class="muted">Enable JavaScript to load <code>content.md</code>.</p></noscript>
-          </aside>
-          <aside class="card intro-card">
-            <h3 class="intro-subtitle">Education</h3>
-            <div class="education-list intro-edu edu-list"></div>
-            <noscript><p class="muted">Enable JavaScript to load education.</p></noscript>
-          </aside>
-        </div>
-      </div>
+          <div id="main-content" class="markdown"></div>
+          <noscript><p>Enable JavaScript to load content.md.</p></noscript>
 
-      <footer class="site-footer">
-        <p>© <span id="year"></span> Haichao Wang. All rights reserved.</p>
-      </footer>
-    </main>
-  </div>
+          <div id="footer">
+            <div id="footer-text">
+              © <span id="year"></span> Haichao Wang.
+            </div>
+          </div>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
   <script defer src="script.js"></script>
 </body>
