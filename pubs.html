@@ -4,11 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#fbfbfd" />
-  <title>Haichao Wang — Academic Homepage</title>
-  <meta name="description" content="Academic homepage of Haichao Wang" />
+  <title>Haichao Wang — Publications</title>
+  <meta name="description" content="Publications of Haichao Wang" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- 可换任意你喜欢的 Google Fonts；若被屏蔽也会退回系统字体 -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -17,8 +16,8 @@
     <div class="nav-container">
       <a href="index.html" class="nav-brand">Haichao Wang</a>
       <div class="nav-links">
-        <a href="index.html" aria-current="page">Blog</a>
-        <a href="pubs.html">Publications</a>
+        <a href="index.html">Blog</a>
+        <a href="pubs.html" aria-current="page">Publications</a>
       </div>
     </div>
   </nav>
@@ -26,21 +25,28 @@
   <div class="container">
     <main class="site-main">
       <section class="page-head">
-        <h1>Blog</h1>
-        <p class="muted">Latest posts and notes.</p>
+        <h1>Publications</h1>
+        <p class="muted">Search and browse recent work.</p>
       </section>
 
       <div class="layout">
-        <section id="blog" class="card">
-          <div id="blog-list" class="blog-list"></div>
-          <p id="blog-empty" class="muted" hidden>No blog posts yet.</p>
+        <section id="publications" class="card">
+          <div class="section-head">
+            <h2>All Publications</h2>
+            <div class="filters">
+              <input id="pub-search" type="search" placeholder="Search…" aria-label="Search publications"/>
+            </div>
+          </div>
+          <div id="pub-list" class="pubs"></div>
+          <p id="pub-empty" class="muted" hidden>No matching results.</p>
           <noscript>
-            <p class="muted">JavaScript is disabled; blog posts cannot be loaded.</p>
+            <p class="muted">JavaScript is disabled; publications cannot be loaded.</p>
           </noscript>
         </section>
 
         <div class="side-column">
           <aside id="intro" class="card intro-card">
+
             <div id="about-content" class="markdown"></div>
             <noscript><p class="muted">Enable JavaScript to load <code>content.md</code>.</p></noscript>
           </aside>

@@ -4,11 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#fbfbfd" />
-  <title>Haichao Wang — Academic Homepage</title>
-  <meta name="description" content="Academic homepage of Haichao Wang" />
+  <title>Haichao Wang — Blog Post</title>
+  <meta name="description" content="Blog post by Haichao Wang" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- 可换任意你喜欢的 Google Fonts；若被屏蔽也会退回系统字体 -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -17,7 +16,7 @@
     <div class="nav-container">
       <a href="index.html" class="nav-brand">Haichao Wang</a>
       <div class="nav-links">
-        <a href="index.html" aria-current="page">Blog</a>
+        <a href="index.html">Blog</a>
         <a href="pubs.html">Publications</a>
       </div>
     </div>
@@ -26,21 +25,23 @@
   <div class="container">
     <main class="site-main">
       <section class="page-head">
-        <h1>Blog</h1>
-        <p class="muted">Latest posts and notes.</p>
+        <h1>Blog Post</h1>
+        <p class="muted">Full content and notes.</p>
       </section>
 
       <div class="layout">
-        <section id="blog" class="card">
-          <div id="blog-list" class="blog-list"></div>
-          <p id="blog-empty" class="muted" hidden>No blog posts yet.</p>
-          <noscript>
-            <p class="muted">JavaScript is disabled; blog posts cannot be loaded.</p>
-          </noscript>
-        </section>
+        <article id="blog-post" class="card">
+          <p class="eyebrow"><a href="index.html" class="back-link">← Back to Blog</a></p>
+          <h1 id="post-title"></h1>
+          <p id="post-meta" class="muted"></p>
+          <div id="post-tags" class="blog-tags"></div>
+          <div id="post-body" class="markdown"></div>
+          <p id="post-missing" class="muted" hidden>Post not found.</p>
+        </article>
 
         <div class="side-column">
           <aside id="intro" class="card intro-card">
+
             <div id="about-content" class="markdown"></div>
             <noscript><p class="muted">Enable JavaScript to load <code>content.md</code>.</p></noscript>
           </aside>

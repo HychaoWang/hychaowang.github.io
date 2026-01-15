@@ -8,6 +8,15 @@
 /* -------------------- Helpers -------------------- */
 const $ = (id) => document.getElementById(id);
 
+function loadStyleOnce(href){
+  if (document.querySelector(`link[data-dynamic="${href}"]`)) return;
+  const l = document.createElement("link");
+  l.rel = "stylesheet";
+  l.href = href;
+  l.dataset.dynamic = href;
+  document.head.appendChild(l);
+}
+
 function escapeHtml(str){
   return (str || "").replace(/[&<>"']/g, (c) =>
     ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[c])
@@ -61,18 +70,16 @@ function pillStyle(venue = "") {
 
 /* -------------------- Main -------------------- */
 document.addEventListener("DOMContentLoaded", async () => {
-  $("year").textContent = new Date().getFullYear();
+  const yearEl = $("year");
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // 1) Load About (Markdown via marked)
-  await loadAbout();
-
-  // 2) Load Education (YAML via js-yaml)
-  await loadEducation();
-
-  // 3) Load Publications (YAML via js-yaml)
-  await loadPublications();
+  if ($("about-content")) await loadAbout();
+  if (document.querySelector('.edu-list')) await loadEducation();
+  if ($("pub-list")) await loadPublications();
+  if ($("blog-list")) await loadBlog();
+  if ($("blog-post")) await loadBlogPost();
   
-  // 4) Navbar scroll effect
+  // Navbar scroll effect
   initNavbar();
 });
 
@@ -98,6 +105,8 @@ function initNavbar() {
 
 /* -------------------- About -------------------- */
 async function loadAbout(){
+  const container = $("about-content");
+  if (!container) return;
   try {
     const res = await fetch("content.md", { cache: "no-cache" });
     if (!res.ok) throw new Error(`Failed to fetch content.md: ${res.status}`);
@@ -112,16 +121,16 @@ async function loadAbout(){
     try {
       await loadScriptOnce("https://cdn.jsdelivr.net/npm/marked/marked.min.js");
       if (window.marked && typeof window.marked.parse === 'function') {
-        $("about-content").innerHTML = window.marked.parse(aboutMd);
+        container.innerHTML = window.marked.parse(aboutMd);
       } else {
-        $("about-content").innerHTML = minimalMarkdownToHtml(aboutMd);
+        container.innerHTML = minimalMarkdownToHtml(aboutMd);
       }
     } catch {
-      $("about-content").innerHTML = minimalMarkdownToHtml(aboutMd);
+      container.innerHTML = minimalMarkdownToHtml(aboutMd);
     }
   } catch (err) {
     console.error(err);
-    $("about-content").innerHTML = `<p class="muted">Failed to load <code>content.md</code>. Please check the file.</p>`;
+    container.innerHTML = `<p class="muted">Failed to load <code>content.md</code>. Please check the file.</p>`;
   }
 }
 
@@ -140,9 +149,41 @@ function minimalMarkdownToHtml(src = ""){
     .join("\n");
 }
 
+
+async function renderMarkdown(md = ""){
+  try {
+    await loadScriptOnce("https://cdn.jsdelivr.net/npm/marked/marked.min.js");
+    if (window.marked && typeof window.marked.parse === 'function') {
+      return window.marked.parse(md);
+    }
+  } catch {}
+  return minimalMarkdownToHtml(md);
+}
+
+async function ensureMathRendering(container){
+  if (!container) return;
+  try {
+    loadStyleOnce("https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css");
+    await loadScriptOnce("https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js");
+    await loadScriptOnce("https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js");
+    if (window.renderMathInElement) {
+      window.renderMathInElement(container, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+      });
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 /* -------------------- Publications (YAML) -------------------- */
 async function loadPublications(){
   const pubContainer = $("pub-list");
+  if (!pubContainer) return;
   const pubEmpty = $("pub-empty");
   const searchInput = $("pub-search");
 
@@ -172,17 +213,19 @@ async function loadPublications(){
     const pubs = normalizePubs(data);
 
     renderPubs(pubs);
-    pubEmpty.hidden = pubs.length !== 0;
+    if (pubEmpty) pubEmpty.hidden = pubs.length !== 0;
 
     // Search behavior
-    searchInput.addEventListener("input", (e) => {
-      const q = e.target.value.toLowerCase().trim();
-      const filtered = pubs.filter(p =>
-        [p.title, p.venue, String(p.year), p.authors, p.tags].join(" ").toLowerCase().includes(q)
-      );
-      renderPubs(filtered);
-      pubEmpty.hidden = filtered.length !== 0;
-    });
+    if (searchInput) {
+      searchInput.addEventListener("input", (e) => {
+        const q = e.target.value.toLowerCase().trim();
+        const filtered = pubs.filter(p =>
+          [p.title, p.venue, String(p.year), p.authors, p.tags].join(" ").toLowerCase().includes(q)
+        );
+        renderPubs(filtered);
+        if (pubEmpty) pubEmpty.hidden = filtered.length !== 0;
+      });
+    }
 
     function renderPubs(list){
       pubContainer.innerHTML = "";
@@ -215,8 +258,123 @@ async function loadPublications(){
   } catch (err) {
     console.error(err);
     pubContainer.innerHTML = `<p class="muted">Failed to load <code>pubs.yaml</code>. Please add it to the project root.</p>`;
-    pubEmpty.hidden = true;
+    if (pubEmpty) pubEmpty.hidden = true;
   }
+}
+
+/* -------------------- Blog -------------------- */
+async function loadBlog(){
+  const blogContainer = $("blog-list");
+  const blogEmpty = $("blog-empty");
+  if (!blogContainer) return;
+
+  try {
+    const data = await loadBlogIndex();
+    const posts = normalizePosts(data).sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+    renderBlog(posts);
+    if (blogEmpty) blogEmpty.hidden = posts.length !== 0;
+
+    function renderBlog(list){
+      blogContainer.innerHTML = "";
+      list.forEach(post => {
+        const article = document.createElement("article");
+        article.className = "blog-post";
+
+        const detailHref = `post.html?slug=${encodeURIComponent(post.slug)}`;
+        const titleHtml = `<h3 class="blog-title"><a href="${detailHref}">${escapeHtml(post.title)}</a></h3>`;
+
+        const dateText = formatDate(post.date);
+        const metaHtml = dateText ? `<p class="blog-meta">${escapeHtml(dateText)}</p>` : "";
+        const summaryHtml = post.summary ? `<p class="blog-summary">${escapeHtml(post.summary)}</p>` : "";
+        const tagsHtml = post.tags.length
+          ? `<div class="blog-tags">${post.tags.map(t => `<span class="tag-chip">${escapeHtml(t)}</span>`).join("")}</div>`
+          : "";
+        const readMore = `<a class="read-more" href="${detailHref}">Read more →</a>`;
+
+        article.innerHTML = `${titleHtml}${metaHtml}${summaryHtml}${tagsHtml}${readMore}`;
+        blogContainer.appendChild(article);
+      });
+    }
+
+  } catch (err) {
+    console.error(err);
+    blogContainer.innerHTML = `<p class="muted">Failed to load <code>blog.json</code>. Please add it to the project root.</p>`;
+    if (blogEmpty) blogEmpty.hidden = true;
+  }
+}
+
+async function loadBlogPost(){
+  const slug = new URLSearchParams(window.location.search).get("slug");
+  const titleEl = $("post-title");
+  const metaEl = $("post-meta");
+  const tagsEl = $("post-tags");
+  const bodyEl = $("post-body");
+  const missingEl = $("post-missing");
+  if (!titleEl || !bodyEl) return;
+
+  try {
+    const data = await loadBlogIndex();
+    const posts = normalizePosts(data);
+    const post = posts.find(p => p.slug === slug) || null;
+
+    if (!post) {
+      if (missingEl) missingEl.hidden = false;
+      titleEl.textContent = "";
+      if (metaEl) metaEl.textContent = "";
+      bodyEl.innerHTML = "";
+      return;
+    }
+
+    titleEl.textContent = post.title;
+    const dateText = formatDate(post.date);
+    if (metaEl) metaEl.textContent = dateText;
+    if (tagsEl) {
+      tagsEl.innerHTML = post.tags.map(t => `<span class="tag-chip">${escapeHtml(t)}</span>`).join("");
+    }
+    const mdPath = post.slug ? `posts/${post.slug}.md` : null;
+    if (mdPath) {
+      try {
+        const res = await fetch(mdPath, { cache: "no-cache" });
+        if (res.ok) {
+          const mdText = await res.text();
+          bodyEl.innerHTML = await renderMarkdown(mdText);
+          await ensureMathRendering(bodyEl);
+        } else {
+          bodyEl.innerHTML = await renderMarkdown(post.content || post.summary || "");
+          await ensureMathRendering(bodyEl);
+        }
+      } catch {
+        bodyEl.innerHTML = await renderMarkdown(post.content || post.summary || "");
+        await ensureMathRendering(bodyEl);
+      }
+    } else {
+      bodyEl.innerHTML = await renderMarkdown(post.content || post.summary || "");
+      await ensureMathRendering(bodyEl);
+    }
+    if (missingEl) missingEl.hidden = true;
+  } catch (err) {
+    console.error(err);
+    if (missingEl) missingEl.hidden = false;
+  }
+}
+
+async function loadBlogIndex(){
+  let data;
+  try {
+    const res = await fetch("blog.json", { cache: "no-cache" });
+    if (res.ok) data = await res.json();
+  } catch {}
+
+  if (!data) {
+    await loadScriptOnce("https://cdn.jsdelivr.net/npm/js-yaml@4/dist/js-yaml.min.js");
+    const yRes = await fetch("blog.yaml", { cache: "no-cache" });
+    if (!yRes.ok) throw new Error(`Failed to fetch blog.yaml: ${yRes.status}`);
+    const text = await yRes.text();
+    const yaml = window.jsyaml || window.jsYaml || (typeof jsyaml !== "undefined" ? jsyaml : null);
+    if (!yaml) throw new Error("js-yaml not loaded");
+    data = yaml.load(text);
+  }
+  return data;
 }
 
 function normalizePubs(data){
@@ -231,10 +389,44 @@ function normalizePubs(data){
   }));
 }
 
+function normalizePosts(data){
+  const arr = (data && Array.isArray(data.posts)) ? data.posts : [];
+  return arr.map(item => ({
+    title: item?.title ?? "",
+    date: item?.date ?? "",
+    summary: item?.summary ?? "",
+    content: item?.content ?? "",
+    tags: normalizeTags(item?.tags),
+    slug: slugify(item?.slug || item?.title || "")
+  }));
+}
+
+function normalizeTags(raw){
+  if (Array.isArray(raw)) return raw.map(String).map(s => s.trim()).filter(Boolean);
+  if (typeof raw === "string") return raw.split(/[,，]/).map(s => s.trim()).filter(Boolean);
+  return [];
+}
+
+function formatDate(dateStr){
+  if (!dateStr) return "";
+  const d = new Date(dateStr);
+  if (Number.isNaN(d.getTime())) return dateStr;
+  return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+}
+
+function slugify(str = ""){
+  return str
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    || "post";
+}
+
 /* -------------------- Education loader -------------------- */
 async function loadEducation() {
-  const eduContainer = $("edu-list");
-  if (!eduContainer) return;
+  const eduContainers = Array.from(document.querySelectorAll(".edu-list"));
+  if (eduContainers.length === 0) return;
 
   try {
     await loadScriptOnce("https://cdn.jsdelivr.net/npm/js-yaml@4/dist/js-yaml.min.js");
@@ -245,41 +437,41 @@ async function loadEducation() {
     const data = jsyaml.load(text);
     
     if (!Array.isArray(data) || data.length === 0) {
-      eduContainer.innerHTML = `<p class="muted">No education data found.</p>`;
+      eduContainers.forEach(c => c.innerHTML = `<p class="muted">No education data found.</p>`);
       return;
     }
 
-    renderEducation(data);
+    renderEducation(data, eduContainers);
 
   } catch (err) {
     console.error(err);
-    eduContainer.innerHTML = `<p class="muted">Failed to load <code>education.yaml</code>.</p>`;
+    eduContainers.forEach(c => c.innerHTML = `<p class="muted">Failed to load <code>education.yaml</code>.</p>`);
   }
 }
 
-function renderEducation(list) {
-  const eduContainer = $("edu-list");
-  eduContainer.innerHTML = "";
-  
-  list.forEach((edu) => {
-    const el = document.createElement("div");
-    el.className = "edu-item";
-    
-    el.innerHTML = `
-      <div class="edu-header">
-        <div class="edu-main">
-          <h3 class="edu-degree">${escapeHtml(edu.degree || "")}</h3>
-          <p class="edu-major">${escapeHtml(edu.major || "")}</p>
+function renderEducation(list, containers) {
+  containers.forEach(eduContainer => {
+    eduContainer.innerHTML = "";
+    list.forEach((edu) => {
+      const el = document.createElement("div");
+      el.className = "edu-item";
+      
+      el.innerHTML = `
+        <div class="edu-header">
+          <div class="edu-main">
+            <h3 class="edu-degree">${escapeHtml(edu.degree || "")}</h3>
+            <p class="edu-major">${escapeHtml(edu.major || "")}</p>
+          </div>
         </div>
-        <span class="edu-period">${escapeHtml(edu.period || "")}</span>
-      </div>
-      <div class="edu-details">
-        <p class="edu-school">${escapeHtml(edu.school || "")}</p>
-        ${edu.location ? `<p class="edu-location">${escapeHtml(edu.location)}</p>` : ""}
-        ${edu.advisor ? `<p class="edu-advisor">Advisor: ${escapeHtml(edu.advisor)}</p>` : ""}
-      </div>
-    `;
-    
-    eduContainer.appendChild(el);
+        <div class="edu-details">
+          <p class="edu-school">${escapeHtml(edu.school || "")}</p>
+          ${edu.location ? `<p class="edu-location">${escapeHtml(edu.location)}</p>` : ""}
+          ${edu.period ? `<p class="edu-period">${escapeHtml(edu.period)}</p>` : ""}
+          ${edu.advisor ? `<p class="edu-advisor">Advisor: ${escapeHtml(edu.advisor)}</p>` : ""}
+        </div>
+      `;
+      
+      eduContainer.appendChild(el);
+    });
   });
 }
