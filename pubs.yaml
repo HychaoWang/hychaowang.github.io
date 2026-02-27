@@ -36,22 +36,11 @@ publications:
       - label: Paper
         href: https://dl.acm.org/doi/abs/10.1145/3637528.3671981
 
-  - title: "Efficient Video Neural Network Processing Based on Motion Estimation"
-    authors: "Haichao Wang, J Wen, Y Han"
-    venue: "arXiv preprint"
+  - title: "Cross-Modal Knowledge Distillation for Enhanced Unimodal Emotion Recognition"
+    authors: "Ziyu Jia, Heng Liang, Haichao Wang, Yucheng Liu, Tianzi Jiang"
+    venue: "IEEE Transactions on Affective Computing"
     year: 2025
-    arxiv: "arXiv:2501.15119"
-    tags: "arXiv, Motion Estimation, Bayer Domain"
+    tags: "IEEE TAC, Knowledge Distillation, Emotion Recognition"
     links:
-      - label: arXiv
-        href: https://arxiv.org/abs/2501.15119
-
-  - title: "Efficient Bayer-Domain Video Computer Vision with Fast Motion Estimation and Learned Perception Residual"
-    authors: "Haichao Wang, J Wen, Y Han"
-    venue: "arXiv preprint"
-    year: 2025
-    arxiv: "arXiv:2508.05990"
-    tags: "arXiv, Motion Estimation, Bayer Domain"
-    links:
-      - label: arXiv
-        href: https://arxiv.org/abs/2508.05990
+      - label: Paper
+        href: https://ieeexplore.ieee.org/abstract/document/11052680

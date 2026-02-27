@@ -64,6 +64,12 @@ async function loadContent(){
     } catch {
       container.innerHTML = minimalMarkdownToHtml(md);
     }
+
+    container.querySelectorAll("h2, h3").forEach(h => {
+      if (!h.id) {
+        h.id = h.textContent.trim().toLowerCase().replace(/\s+/g, "-").replace(/[^\w-]/g, "");
+      }
+    });
   } catch (err) {
     console.error(err);
     container.innerHTML = `<p class="muted">Failed to load <code>content.md</code>. Please check the file.</p>`;
