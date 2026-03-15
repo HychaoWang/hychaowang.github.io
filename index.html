@@ -5,54 +5,36 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Haichao Wang</title>
   <link rel="stylesheet" href="styles.css" />
-  <style>
-    /* Custom style adjustments */
-    body {
-      max-width: 960px;
-      margin: 0 auto;
-    }
-  </style>
 </head>
 <body>
 
-  <!-- Jemdoc Layout Structure -->
-  <table id="tlayout">
-    <tbody>
-      <tr>
-        <!-- Sidebar Menu -->
-        <td id="layout-menu">
-          <div class="menu-category">Navigation</div>
-          <div class="menu-item"><a href="index.html" class="current">Home</a></div>
-          <div class="menu-item"><a href="#about">About</a></div>
-          <div class="menu-item"><a href="#education">Education</a></div>
-          <div class="menu-item"><a href="#experience">Research Experience</a></div>
-          <div class="menu-item"><a href="#publications">Publications</a></div>
-          <div class="menu-item"><a href="#awards">Honors and Awards</a></div>
-          <div class="menu-category">Links</div>
-          <div class="menu-item"><a href="mailto:wanghc23@mails.tsinghua.edu.cn">Email</a></div>
-          <div class="menu-item"><a href="https://github.com/hychaowang">GitHub</a></div>
-          <div class="menu-item"><a href="https://scholar.google.com/citations?user=-exqY3gAAAAJ&hl=en">Google Scholar</a></div>
-        </td>
+  <!-- CVPR-style Top Navigation Bar -->
+  <header id="site-header">
+    <div class="header-inner">
+      <span class="site-name">Haichao Wang</span>
+      <nav>
+        <a href="#about" class="current">About</a>
+        <a href="#education">Education</a>
+        <a href="#research-experience">Experience</a>
+        <a href="#publications">Publications</a>
+        <a href="#honors-and-awards">Awards</a>
+        <span class="nav-divider"></span>
+        <a href="mailto:wanghc23@mails.tsinghua.edu.cn">Email</a>
+        <a href="https://github.com/hychaowang" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://scholar.google.com/citations?user=-exqY3gAAAAJ&hl=en" target="_blank" rel="noopener">Scholar</a>
+      </nav>
+    </div>
+  </header>
 
-        <!-- Main Content -->
-        <td id="layout-content">
-          <div id="toptitle">
-            <h1>Haichao Wang</h1>
-          </div>
+  <!-- Main Content -->
+  <main id="page-wrapper">
+    <div id="main-content"></div>
+    <noscript><p>Enable JavaScript to load content.</p></noscript>
 
-          <div id="main-content" class="markdown"></div>
-          <noscript><p>Enable JavaScript to load content.md.</p></noscript>
-
-          <div id="footer">
-            <div id="footer-text">
-              © <span id="year"></span> Haichao Wang.
-            </div>
-          </div>
-
-        </td>
-      </tr>
-    </tbody>
-  </table>
+    <footer id="site-footer">
+      <p>© <span id="year"></span> Haichao Wang &nbsp;·&nbsp; Tsinghua University</p>
+    </footer>
+  </main>
 
   <script defer src="script.js"></script>
 </body>

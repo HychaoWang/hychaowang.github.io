@@ -1,377 +1,447 @@
-/* Default css file for jemdoc. */
+/* CVPR-inspired Academic Personal Website Style */
 
-table#tlayout {
-  border: none;
-  border-collapse: separate;
-  background: white;
+/* ============================
+   CSS Variables / Design Tokens
+   ============================ */
+:root {
+  --cvpr-blue:       #1565c0;
+  --cvpr-blue-dark:  #0d47a1;
+  --cvpr-blue-light: #1976d2;
+  --cvpr-accent:     #e53935;   /* CVF red accent */
+  --text-primary:    #212121;
+  --text-secondary:  #555555;
+  --text-muted:      #757575;
+  --bg-white:        #ffffff;
+  --bg-light:        #f5f7fa;
+  --bg-nav:          #0d47a1;
+  --border-light:    #e0e0e0;
+  --border-blue:     #bbdefb;
+  --font-sans:       'Helvetica Neue', Arial, 'Liberation Sans', sans-serif;
+  --max-width:       960px;
+  --nav-height:      56px;
+}
+
+/* ============================
+   Reset & Base
+   ============================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-background: white;
-font-family: Georgia, serif;
-padding-bottom: 8px;
-margin: 0;
-max-width: 960px;
-margin-left: auto;
-margin-right: auto;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-primary);
+  background: var(--bg-white);
 }
 
-#layout-menu {
-background: #f6f6f6;
-border: 1px solid #dddddd;
-padding-top: 0.5em;
-padding-left: 8px;
-padding-right: 8px;
-font-size: 1.0em;
-width: auto;
-white-space: nowrap;
-  text-align: left;
-  vertical-align: top;
-}
-
-#layout-menu td {
-background: #f4f4f4;
-  vertical-align: top;
-}
-
-#layout-content {
-padding-top: 0.0em;
-padding-left: 1.0em;
-padding-right: 1.0em;
-  border: none;
-  background: white;
-  text-align: left;
-  vertical-align: top;
-}
-
-#layout-menu a {
-line-height: 1.5em;
-margin-left: 0.5em;
-}
-
-tt {
-  background: #ffffdd;
-}
-
-pre, tt {
-font-size: 90%;
-font-family: monaco, monospace;
-}
-
-a, a > tt {
-color: #DC143C;
-text-decoration: none;
+a {
+  color: var(--cvpr-blue);
+  text-decoration: none;
 }
 
 a:hover {
-border-bottom: 1px gray dotted;
+  color: var(--cvpr-blue-dark);
+  text-decoration: underline;
 }
 
-#layout-menu a.current:link, #layout-menu a.current:visited {
-color: #B22222; /* FireBrick - a darker shade for active state */
-border-bottom: 1px gray solid;
-}
-#layout-menu a:link, #layout-menu a:visited, #layout-menu a:hover {
-color: #DC143C; /* Crimson */
-text-decoration: none;
-}
-#layout-menu a:hover {
-text-decoration: none;
-}
-
-div.menu-category {
-border-bottom: 1px solid gray;
-margin-top: 0.8em;
-padding-top: 0.2em;
-padding-bottom: 0.1em;
-font-weight: bold;
+/* ============================
+   Top Navigation Bar
+   ============================ */
+#site-header {
+  background: var(--bg-nav);
+  color: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
 }
 
-div.menu-item {
-padding-left: 16px;
-text-indent: -16px;
+#site-header .header-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--nav-height);
+  padding: 0 20px;
 }
 
-div#toptitle {
-padding-bottom: 0.2em;
-margin-bottom: 1.5em;
-border-bottom: 3px double gray;
+#site-header .site-name {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
 }
 
-/* Reduce space if we begin the page with a title. */
-div#toptitle + h2, div#toptitle + h3 {
-margin-top: -0.7em;
+#site-header nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
 }
 
-div#subtitle {
-margin-top: 0.0em;
-margin-bottom: 0.0em;
-padding-top: 0em;
-padding-bottom: 0.1em;
+#site-header nav a {
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 3px;
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
 }
 
-em {
-font-style: italic;
+#site-header nav a:hover,
+#site-header nav a.current {
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  text-decoration: none;
 }
 
-strong {
-font-weight: bold;
+#site-header nav .nav-divider {
+  width: 1px;
+  height: 18px;
+  background: rgba(255,255,255,0.3);
+  margin: 0 4px;
 }
 
-
-h1, h2, h3 {
-color: #DC143C;
-margin-top: 0.7em;
-margin-bottom: 0.3em;
-padding-bottom: 0.2em;
-line-height: 1.0;
-padding-top: 0.5em;
-border-bottom: 1px solid #aaaaaa;
+/* ============================
+   Page Layout
+   ============================ */
+#page-wrapper {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 32px 24px 60px;
 }
 
-h1 {
-font-size: 165%;
-color: black;
+/* ============================
+   Profile / Header Card
+   ============================ */
+.profile-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 28px;
+  margin-bottom: 40px;
+  padding-bottom: 32px;
+  border-bottom: 2px solid var(--border-blue);
 }
 
+.profile-card img {
+  width: 130px;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 2px solid var(--border-light);
+  flex-shrink: 0;
+}
+
+.profile-info h1 {
+  margin: 0 0 4px;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--cvpr-blue-dark);
+  border: none;
+  padding: 0;
+}
+
+.profile-info .affiliation {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin: 0 0 8px;
+}
+
+.profile-info .contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.profile-info .contact-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: var(--cvpr-blue);
+  padding: 3px 10px;
+  border: 1px solid var(--cvpr-blue);
+  border-radius: 3px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.profile-info .contact-links a:hover {
+  background: var(--cvpr-blue);
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* ============================
+   Section Headings
+   ============================ */
 h2 {
-padding-top: 0.8em;
-font-size: 125%;
-}
-
-h2 + h3 {
-  padding-top: 0.2em;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--cvpr-blue-dark);
+  margin: 36px 0 12px;
+  padding: 0 0 6px;
+  border-bottom: 2px solid var(--cvpr-blue);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
 h3 {
-font-size: 110%;
-border-bottom: none;
+  font-size: 1.0rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 18px 0 6px;
 }
 
+/* ============================
+   Content Paragraphs & Text
+   ============================ */
 p {
-margin-top: 0.0em;
-margin-bottom: 0.8em;
-padding: 0;
-line-height: 1.6;
+  margin: 0 0 12px;
+  color: var(--text-primary);
 }
 
-pre {
-padding: 0;
-margin: 0;
+strong {
+  font-weight: 600;
+  color: var(--text-primary);
 }
 
-div#footer {
-font-size: small;
-border-top: 1px solid #c0c0c0;
-padding-top: 0.1em;
-margin-top: 4.0em;
-color: #c0c0c0;
+em {
+  font-style: italic;
 }
 
-div#footer a {
-color: #DC143C;
-}
-
-div#footer-text {
-float: left;
-padding-bottom: 8px;
-}
-
-ul, ol, dl {
-margin-top: 0.2em;
-padding-top: 0;
-margin-bottom: 0.8em;
-}
-
-dt {
-margin-top: 0.5em;
-margin-bottom: 0;
-}
-
-dl {
-margin-left: 20px;
-}
-
-dd {
-color: #222222;
-}
-
-dd > *:first-child {
-margin-top: 0;
+/* ============================
+   Lists
+   ============================ */
+ul, ol {
+  margin: 0 0 12px;
+  padding-left: 22px;
 }
 
 ul {
-list-style-position: outside;
-list-style-type: square;
-}
-
-p + ul, p + ol {
-margin-top: -0.5em;
-}
-
-li ul, li ol {
-margin-top: 0.3em;
-margin-bottom: 0.3em;
-}
-
-li {
-margin-top: 0.4em;
-margin-bottom: 0.4em;
+  list-style-type: disc;
 }
 
 ol {
-list-style-position: outside;
-list-style-type: decimal;
+  list-style-type: decimal;
 }
 
-li p, dd p {
-margin-bottom: 0.3em;
+li {
+  margin: 6px 0;
+  line-height: 1.65;
 }
 
-
-ol ol {
-list-style-type: lower-alpha;
+/* ============================
+   Publications List
+   ============================ */
+ol.pub-list {
+  list-style: none;
+  padding: 0;
+  counter-reset: pub-counter;
 }
 
-ol ol ol {
-list-style-type: lower-roman;
+ol.pub-list li {
+  counter-increment: pub-counter;
+  padding: 14px 16px 14px 44px;
+  margin: 0 0 10px;
+  background: var(--bg-light);
+  border-left: 3px solid var(--cvpr-blue);
+  border-radius: 0 4px 4px 0;
+  position: relative;
+  font-size: 0.9rem;
+  line-height: 1.65;
 }
 
-p + div.codeblock {
-margin-top: -0.6em;
+ol.pub-list li::before {
+  content: counter(pub-counter);
+  position: absolute;
+  left: 12px;
+  top: 16px;
+  font-weight: 700;
+  color: var(--cvpr-blue);
+  font-size: 0.85rem;
 }
 
-div.codeblock, div.infoblock {
-margin-right: 0%;
-margin-top: 1.2em;
-margin-bottom: 1.3em;
+ol.pub-list li a {
+  font-size: 0.82rem;
+  padding: 1px 6px;
+  border: 1px solid var(--cvpr-blue);
+  border-radius: 2px;
+  color: var(--cvpr-blue);
+  white-space: nowrap;
 }
 
-div.blocktitle {
-font-weight: bold;
-color: #DC143C;
-margin-top: 1.2em;
-margin-bottom: 0.1em;
+ol.pub-list li a:hover {
+  background: var(--cvpr-blue);
+  color: #fff;
+  text-decoration: none;
 }
 
-div.blockcontent {
-border: 1px solid silver;
-padding: 0.3em 0.5em;
+/* ============================
+   Experience / Education Items
+   ============================ */
+.exp-item, .edu-item {
+  margin-bottom: 18px;
+  padding: 14px 16px;
+  background: var(--bg-light);
+  border-radius: 4px;
+  border-left: 3px solid var(--border-blue);
 }
 
-div.infoblock > div.blockcontent {
-background: #ffffee;
+.exp-item:hover, .edu-item:hover {
+  border-left-color: var(--cvpr-blue);
 }
 
-div.blockcontent p + ul, div.blockcontent p + ol {
-margin-top: 0.4em;
+.exp-item ul, .edu-item ul {
+  margin: 6px 0 0;
+  padding-left: 18px;
 }
 
-div.infoblock p {
-margin-bottom: 0em;
+.exp-item li, .edu-item li {
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  margin: 4px 0;
 }
 
-div.infoblock li p, div.infoblock dd p {
-margin-bottom: 0.5em;
+/* ============================
+   Awards List
+   ============================ */
+ul.award-list {
+  list-style: none;
+  padding: 0;
 }
 
-div.infoblock p + p {
-margin-top: 0.8em;
+ul.award-list li {
+  padding: 8px 12px 8px 32px;
+  margin: 0 0 6px;
+  background: var(--bg-light);
+  border-radius: 4px;
+  position: relative;
+  font-size: 0.9rem;
 }
 
-div.codeblock > div.blockcontent {
-background: #f6f6f6;
+ul.award-list li::before {
+  content: '★';
+  position: absolute;
+  left: 10px;
+  color: #f9a825;
+  font-size: 0.85rem;
 }
 
-span.pycommand {
-color: #000070;
+/* ============================
+   Table (profile img table fallback)
+   ============================ */
+table.imgtable {
+  border: none;
+  border-collapse: collapse;
+  background: transparent;
+  width: 100%;
 }
 
-span.statement {
-color: #008800;
+table.imgtable td {
+  border: none;
+  padding: 0;
+  text-align: left;
+  vertical-align: top;
 }
-span.builtin {
-color: #000088;
+
+table.imgtable img {
+  border-radius: 6px;
+  border: 2px solid var(--border-light);
+  margin-right: 24px;
 }
-span.special {
-color: #990000;
+
+/* ============================
+   Footer
+   ============================ */
+#site-footer {
+  margin-top: 48px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border-light);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  text-align: center;
 }
-span.operator {
-color: #880000;
+
+#site-footer a {
+  color: var(--cvpr-blue);
 }
-span.error {
-color: #aa0000;
+
+/* ============================
+   Inline code
+   ============================ */
+code, tt {
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+  font-size: 0.88em;
+  background: #e8f0fe;
+  color: var(--cvpr-blue-dark);
+  padding: 1px 5px;
+  border-radius: 3px;
 }
-span.comment, span.comment > *, span.string, span.string > * {
-color: #606060;
+
+/* ============================
+   Responsive
+   ============================ */
+@media (max-width: 640px) {
+  #site-header .site-name {
+    font-size: 1rem;
+  }
+
+  #site-header nav a {
+    font-size: 0.75rem;
+    padding: 5px 7px;
+  }
+
+  #page-wrapper {
+    padding: 20px 14px 40px;
+  }
+
+  .profile-card {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .profile-card img {
+    width: 100px;
+    height: 100px;
+  }
 }
 
 @media print {
+  #site-header { display: none; }
+}
+
+/* ============================
+   Legacy jemdoc compatibility
+   (kept for any inline content that
+    still uses jemdoc class names)
+   ============================ */
+div.menu-category { display: none; }
+div.menu-item { display: none; }
 #layout-menu { display: none; }
-}
 
-#fwtitle {
-margin: 2px;
-}
-
-#fwtitle #toptitle {
-padding-left: 0.5em;
-margin-bottom: 0.5em;
-}
-
-#layout-content h1:first-child, #layout-content h2:first-child, #layout-content h3:first-child {
-margin-top: -0.7em;
-}
-
-div#toptitle h1, #layout-content div#toptitle h1 {
-margin-bottom: 0.0em;
-padding-bottom: 0.1em;
-padding-top: 0;
-margin-top: 0.5em;
-border-bottom: none;
-}
-
-img.eq {
-padding: 0;
-padding-left: 0.1em;
-padding-right: 0.1em;
-margin: 0;
-}
-
-img.eqwl {
-padding-left: 2em;
-padding-top: 0.6em;
-padding-bottom: 0.2em;
-margin: 0;
-}
-
-table {
-  border: 2px solid black;
-  border-collapse: collapse;
-}
-
-td {
-  padding: 2px;
-  padding-left: 0.5em;
-  padding-right: 0.5em;
-  text-align: center;
-  border: 1px solid gray;
-}
-
-table + table {
-  margin-top: 1em;
-}
-
-tr.heading {
-  font-weight: bold;
-  border-bottom: 2px solid black;
-}
-
-img {
+table#tlayout {
+  display: block;
   border: none;
 }
 
-table.imgtable, table.imgtable td {
+#layout-content {
+  display: block;
+  padding: 0;
   border: none;
-  text-align: left;
 }
+
+div#toptitle { display: none; }

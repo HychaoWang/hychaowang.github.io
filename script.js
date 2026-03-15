@@ -70,10 +70,123 @@ async function loadContent(){
         h.id = h.textContent.trim().toLowerCase().replace(/\s+/g, "-").replace(/[^\w-]/g, "");
       }
     });
+
+    // Apply CVPR-style classes after rendering
+    applyCvprStyles(container);
+    setupScrollSpy();
   } catch (err) {
     console.error(err);
     container.innerHTML = `<p class="muted">Failed to load <code>content.md</code>. Please check the file.</p>`;
   }
+}
+
+/* -------------------- CVPR Style Enhancements -------------------- */
+function applyCvprStyles(container) {
+  // Wrap the profile imgtable into a styled profile-card div
+  const imgTable = container.querySelector("table.imgtable");
+  if (imgTable) {
+    const wrapper = document.createElement("div");
+    wrapper.className = "profile-card";
+
+    const img = imgTable.querySelector("img");
+    const infoCell = imgTable.querySelector("td:last-child");
+
+    if (img) {
+      const imgClone = img.cloneNode(true);
+      wrapper.appendChild(imgClone);
+    }
+
+    if (infoCell) {
+      const infoDiv = document.createElement("div");
+      infoDiv.className = "profile-info";
+
+      // Name heading
+      const h1 = document.createElement("h1");
+      h1.textContent = "Haichao Wang";
+      infoDiv.appendChild(h1);
+
+      // Affiliation paragraph
+      const affP = document.createElement("p");
+      affP.className = "affiliation";
+      affP.innerHTML = infoCell.innerHTML;
+      infoDiv.appendChild(affP);
+
+      // Contact link buttons
+      const links = document.createElement("div");
+      links.className = "contact-links";
+      const emailA = document.createElement("a");
+      emailA.href = "mailto:wanghc23@mails.tsinghua.edu.cn";
+      emailA.textContent = "✉ Email";
+      const githubA = document.createElement("a");
+      githubA.href = "https://github.com/hychaowang";
+      githubA.target = "_blank";
+      githubA.rel = "noopener";
+      githubA.textContent = "GitHub";
+      const scholarA = document.createElement("a");
+      scholarA.href = "https://scholar.google.com/citations?user=-exqY3gAAAAJ&hl=en";
+      scholarA.target = "_blank";
+      scholarA.rel = "noopener";
+      scholarA.textContent = "Google Scholar";
+      links.appendChild(emailA);
+      links.appendChild(githubA);
+      links.appendChild(scholarA);
+      infoDiv.appendChild(links);
+
+      wrapper.appendChild(infoDiv);
+    }
+
+    imgTable.replaceWith(wrapper);
+  }
+
+  // Style Publications ordered list
+  const pubsHeading = Array.from(container.querySelectorAll("h2")).find(
+    h => h.textContent.trim().toLowerCase().includes("publication")
+  );
+  if (pubsHeading) {
+    const nextOl = pubsHeading.nextElementSibling;
+    if (nextOl && nextOl.tagName === "OL") {
+      nextOl.classList.add("pub-list");
+    }
+  }
+
+  // Style Awards unordered list
+  const awardsHeading = Array.from(container.querySelectorAll("h2")).find(
+    h => h.textContent.trim().toLowerCase().includes("honor") ||
+         h.textContent.trim().toLowerCase().includes("award")
+  );
+  if (awardsHeading) {
+    const nextUl = awardsHeading.nextElementSibling;
+    if (nextUl && nextUl.tagName === "UL") {
+      nextUl.classList.add("award-list");
+    }
+  }
+
+  // Open all external links in new tab
+  container.querySelectorAll("a[href^='http']").forEach(a => {
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+  });
+}
+
+/* -------------------- Scroll Spy for nav highlighting -------------------- */
+function setupScrollSpy() {
+  const navLinks = document.querySelectorAll("#site-header nav a[href^='#']");
+  if (!navLinks.length) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navLinks.forEach(a => {
+          a.classList.toggle("current", a.getAttribute("href") === `#${id}`);
+        });
+      }
+    });
+  }, { rootMargin: "-20% 0px -70% 0px" });
+
+  document.querySelectorAll("#main-content h2[id]").forEach(h => {
+    observer.observe(h);
+  });
 }
 
 // Extremely small markdown fallback (headings, paragraphs, links, lists)
