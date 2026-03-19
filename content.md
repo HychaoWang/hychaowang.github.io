@@ -19,7 +19,7 @@ My research interest focuses on **Machine Learning** and **Computer Vision**, es
 
 Currently, I am starting to explore World Models as my new research interest.
 
-Feel free to contact me by email if you are interest in discussion or collarboration with me. I an now seeking oppotunities of full-time research assistant in 26 fall and Ph.D in 27 fall.
+Feel free to contact me by email if you are interest in discussion or collarboration with me. I am now seeking oppotunities of full-time research assistant in 26 fall and Ph.D in 27 fall.
 
 ## Research Experience
 
