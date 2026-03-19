@@ -60,7 +60,7 @@ Feel free to contact me by email if you are interest in discussion or collarbora
 
 3. Jia Ziyu, Heng Liang, Yucheng Liu, **Haichao Wang**, and Tianzi Jiang. "DistillSleepNet: Heterogeneous Multi-Level Knowledge Distillation via Teacher Assistant for Sleep Staging." *IEEE Transactions on Big Data*, 2024. [[Paper]](https://ieeexplore.ieee.org/abstract/document/10663937)
 
-4. Jia Ziyu, **Haichao Wang***, Yucheng Liu, and Tianzi Jiang. "Mutual Distillation Extracting Spatial-Temporal Knowledge for Lightweight Multi-Channel Sleep Stage Classification." In *ACM SIGKDD Conference on Knowledge Discovery and Data Mining*. 2024. (*first student author)[[Paper]](https://dl.acm.org/doi/abs/10.1145/3637528.3671981)
+4. Jia Ziyu, **Haichao Wang***, Yucheng Liu, and Tianzi Jiang. "Mutual Distillation Extracting Spatial-Temporal Knowledge for Lightweight Multi-Channel Sleep Stage Classification." In *ACM SIGKDD Conference on Knowledge Discovery and Data Mining*. 2024. (*first student author) [[Paper]](https://dl.acm.org/doi/abs/10.1145/3637528.3671981)
 
 5. Jia Ziyu, Heng Liang, **Haichao Wang**, Yucheng Liu, and Tianzi Jiang. "Cross-Modal Knowledge Distillation for Enhanced Unimodal Emotion Recognition." *IEEE Transactions on Affective Computing*, 2025. [[Paper]](https://ieeexplore.ieee.org/abstract/document/11052680)
 
