@@ -1,0 +1,358 @@
+/* =========================================
+   Pi-style Minimal Academic Template
+   Inspired by pi.website
+   ========================================= */
+
+/* --- Reset & Base --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #ffffff;
+  --fg: #111111;
+  --fg-muted: #666666;
+  --border: #d4d3cb;
+  --border-dark: #000000;
+  --card-shadow: 3px 3px 0px #000000;
+  --card-shadow-hover: 5px 5px 0px #000000;
+  --tag-bg: #f5f4ef;
+  --featured-bg: #ffffff;
+  --timeline-line: #d4d3cb;
+  --font-mono: ui-monospace, "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", monospace;
+  --font-serif: Georgia, "Times New Roman", serif;
+  --max-width: 560px;
+}
+
+html {
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+
+@media (min-width: 768px) {
+  body {
+    padding: 3rem;
+  }
+}
+
+a {
+  color: var(--fg);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* --- Navigation --- */
+nav {
+  width: 100%;
+  max-width: var(--max-width);
+  display: flex;
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+nav a {
+  text-decoration: none;
+  color: var(--fg-muted);
+  font-size: 0.85rem;
+  transition: color 0.15s;
+}
+
+nav a:hover,
+nav a.active {
+  color: var(--fg);
+}
+
+/* --- Main Container --- */
+main {
+  width: 100%;
+  max-width: var(--max-width);
+  flex: 1;
+}
+
+/* --- Section Headings --- */
+h2 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--fg-muted);
+  margin-bottom: 1rem;
+}
+
+/* --- Intro Section --- */
+.intro {
+  margin-bottom: 2.5rem;
+}
+
+.intro h1 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+}
+
+.intro .affil {
+  font-size: 0.82rem;
+  color: var(--fg-muted);
+  margin-bottom: 0.6rem;
+}
+
+.intro .subtitle {
+  color: var(--fg-muted);
+  font-size: 0.88rem;
+  margin-bottom: 0.5rem;
+}
+
+.intro .contact {
+  font-size: 0.82rem;
+  margin-bottom: 0.4rem;
+}
+
+.intro .seeking {
+  font-size: 0.78rem;
+  color: var(--fg-muted);
+  border-left: 2px solid var(--border);
+  padding-left: 0.6rem;
+  margin-top: 0.6rem;
+}
+
+/* --- Timeline Section --- */
+.timeline-section {
+  margin-bottom: 2.5rem;
+}
+
+.timeline {
+  position: relative;
+  padding-left: 2.5rem;
+  border-left: 1px solid var(--timeline-line);
+
+  /* Fade top and bottom of the timeline line */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0px,
+    black 24px,
+    black calc(100% - 24px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0px,
+    black 24px,
+    black calc(100% - 24px),
+    transparent 100%
+  );
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 1.25rem;
+}
+
+.timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Small square dot on the timeline */
+.dot {
+  position: absolute;
+  left: -2.69rem;
+  top: 0.55rem;
+  width: 7px;
+  height: 7px;
+  background-color: var(--fg);
+  flex-shrink: 0;
+}
+
+/* --- Cards --- */
+.card {
+  padding: 0.6rem 0.75rem;
+  border-radius: 0;
+  transition: background-color 0.15s;
+}
+
+.card:hover {
+  background-color: #f9f8f5;
+}
+
+/* Featured / highlighted card */
+.featured-card {
+  background-color: var(--featured-bg);
+  border: 1px solid var(--border-dark);
+  box-shadow: var(--card-shadow);
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+
+.featured-card:hover {
+  box-shadow: var(--card-shadow-hover);
+  transform: translate(-1px, -1px);
+  background-color: var(--featured-bg);
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.tag {
+  font-size: 0.72rem;
+  background-color: var(--tag-bg);
+  border: 1px solid var(--border);
+  padding: 0.1rem 0.4rem;
+  color: var(--fg-muted);
+  white-space: nowrap;
+}
+
+.date {
+  font-size: 0.75rem;
+  color: var(--fg-muted);
+}
+
+.card h3 {
+  font-size: 0.88rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  line-height: 1.4;
+}
+
+.card h3 a {
+  text-decoration: none;
+}
+
+.card h3 a:hover {
+  text-decoration: underline;
+}
+
+.card p {
+  font-size: 0.82rem;
+  color: var(--fg-muted);
+  line-height: 1.5;
+}
+
+/* --- Team Section --- */
+.team-section {
+  margin-bottom: 2.5rem;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.2rem 1rem;
+}
+
+@media (min-width: 480px) {
+  .team-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.member {
+  display: flex;
+  flex-direction: column;
+  padding: 0.15rem 0;
+}
+
+.member a {
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+.member a:hover {
+  text-decoration: underline;
+}
+
+.member .role {
+  font-size: 0.72rem;
+  color: var(--fg-muted);
+}
+
+/* --- Education Section --- */
+.edu-section {
+  margin-bottom: 2.5rem;
+}
+
+.edu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.edu-degree {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.edu-info {
+  font-size: 0.82rem;
+  color: var(--fg-muted);
+}
+
+/* --- Footer --- */
+footer {
+  width: 100%;
+  max-width: var(--max-width);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+  font-size: 0.8rem;
+}
+
+.footer-name {
+  color: var(--fg-muted);
+}
+
+.footer-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.footer-links a {
+  color: var(--fg-muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.footer-links a:hover {
+  color: var(--fg);
+}
+
+/* --- Dark Mode --- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f0f0f;
+    --fg: #e8e6e1;
+    --fg-muted: #888880;
+    --border: #2e2e2a;
+    --border-dark: #e8e6e1;
+    --card-shadow: 3px 3px 0px #e8e6e1;
+    --card-shadow-hover: 5px 5px 0px #e8e6e1;
+    --tag-bg: #1a1a17;
+    --featured-bg: #151512;
+    --timeline-line: #2e2e2a;
+  }
+}
