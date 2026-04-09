@@ -1,41 +1,139 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Haichao Wang</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-  <!-- CVPR-style Top Navigation Bar -->
-  <header id="site-header">
-    <div class="header-inner">
-      <span class="site-name">Haichao Wang</span>
-      <nav>
-        <a href="#about" class="current">About</a>
-        <a href="#education">Education</a>
-        <a href="#research-experience">Experience</a>
-        <a href="#publications">Publications</a>
-        <a href="#honors-and-awards">Awards</a>
-        <span class="nav-divider"></span>
-        <a href="mailto:wanghc23@mails.tsinghua.edu.cn">Email</a>
-        <a href="https://github.com/hychaowang" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://scholar.google.com/citations?user=-exqY3gAAAAJ&hl=en" target="_blank" rel="noopener">Scholar</a>
-      </nav>
-    </div>
-  </header>
+  <!-- Navigation -->
+  <nav>
+    <a href="#" class="active">Home</a>
+    <a href="#research">Research</a>
+    <a href="#publications">Publications</a>
+  </nav>
 
-  <!-- Main Content -->
-  <main id="page-wrapper">
-    <div id="main-content"></div>
-    <noscript><p>Enable JavaScript to load content.</p></noscript>
+  <!-- Main Container -->
+  <main>
 
-    <footer id="site-footer">
-      <p>© <span id="year"></span> Haichao Wang &nbsp;·&nbsp; Tsinghua University</p>
-    </footer>
+    <!-- Intro -->
+    <section class="intro">
+      <h1>Haichao Wang</h1>
+      <p class="affil">Master Student · <a href="https://www.tsinghua.edu.cn/en/" target="_blank">Tsinghua University</a></p>
+      <p class="contact">
+        <a href="mailto:wanghc23@mails.tsinghua.edu.cn">wanghc23@mails.tsinghua.edu.cn</a>
+        &nbsp;·&nbsp;
+        <a href="https://scholar.google.com/" target="_blank">Google Scholar</a>
+        &nbsp;·&nbsp;
+        <a href="https://github.com/" target="_blank">GitHub</a>
+      </p>
+      <p class="subtitle">
+        I work on <strong>Video Computer Vision</strong> and <strong>Machine Learning</strong>.
+      </p>
+      
+      <p class="seeking">
+        Seeking full-time research assistant positions and 27 fall Ph.D. opportunities.
+      </p>
+    </section>
+
+
+    <!-- Publications -->
+    <section id="publications" class="timeline-section">
+      <h2>Publications</h2>
+
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <span class="dot"></span>
+          <div class="card">
+            <div class="card-meta">
+              <span class="tag">IEEE TAC</span>
+              <span class="date">2025</span>
+            </div>
+            <h3><a href="https://ieeexplore.ieee.org/abstract/document/11052680" target="_blank">Cross-Modal Knowledge Distillation for Enhanced Unimodal Emotion Recognition</a></h3>
+            <p>Ziyu Jia, Heng Liang, <strong>Haichao Wang</strong>, Yucheng Liu, Tianzi Jiang. <em>IEEE Transactions on Affective Computing</em>, 2025.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <span class="dot"></span>
+          <div class="card">
+            <div class="card-meta">
+              <span class="tag">KDD 2024</span>
+              <span class="date">2024</span>
+            </div>
+            <h3><a href="https://dl.acm.org/doi/abs/10.1145/3637528.3671981" target="_blank">Mutual Distillation Extracting Spatial-Temporal Knowledge for Lightweight Multi-Channel Sleep Stage Classification</a></h3>
+            <p>Ziyu Jia, <strong>Haichao Wang*</strong>, Yucheng Liu, Tianzi Jiang. <em>ACM SIGKDD</em>, 2024. (* first student author)</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <span class="dot"></span>
+          <div class="card">
+            <div class="card-meta">
+              <span class="tag">IEEE TBD</span>
+              <span class="date">2024</span>
+            </div>
+            <h3><a href="https://ieeexplore.ieee.org/abstract/document/10663937" target="_blank">DistillSleepNet: Heterogeneous Multi-Level Knowledge Distillation via Teacher Assistant for Sleep Staging</a></h3>
+            <p>Ziyu Jia, Heng Liang, Yucheng Liu, <strong>Haichao Wang</strong>, Tianzi Jiang. <em>IEEE Transactions on Big Data</em>, 2024.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <span class="dot"></span>
+          <div class="card">
+            <div class="card-meta">
+              <span class="tag">ACM MM 2023</span>
+              <span class="date">2023</span>
+            </div>
+            <h3><a href="https://dl.acm.org/doi/abs/10.1145/3581783.3612277" target="_blank">EmotionKD: A Cross-Modal Knowledge Distillation Framework for Emotion Recognition Based on Physiological Signals</a></h3>
+            <p>Yucheng Liu, Ziyu Jia, <strong>Haichao Wang</strong>. <em>ACM International Conference on Multimedia</em>, 2023.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <span class="dot"></span>
+          <div class="card">
+            <div class="card-meta">
+              <span class="tag">IJCAI 2023</span>
+              <span class="date">2023</span>
+            </div>
+            <h3><a href="http://ijcai.org/proceedings/2023/0439.pdf" target="_blank">Teacher Assistant-Based Knowledge Distillation Extracting Multi-Level Features on Single Channel Sleep EEG</a></h3>
+            <p>Heng Liang, Yucheng Liu, <strong>Haichao Wang*</strong>, Ziyu Jia. <em>IJCAI</em>, 2023. (* equal contribution)</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Education -->
+    <section class="edu-section">
+      <h2>Education</h2>
+      <div class="edu-list">
+        <div class="edu-item">
+          <div class="edu-degree">M.S. in Data Science and Information Technology</div>
+          <div class="edu-info"><a href="https://www.tsinghua.edu.cn/en/" target="_blank">Tsinghua University</a> · 2023 – Present · Advisor: Prof. Yuxing Han</div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-degree">B.E. in Computer Science and Technology</div>
+          <div class="edu-info"><a href="https://www.bjtu.edu.cn" target="_blank">Beijing Jiaotong University</a> · 2019 – 2023</div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
-  <script defer src="script.js"></script>
+  <!-- Footer -->
+  <footer>
+    <span class="footer-name">Haichao Wang</span>
+    <div class="footer-links">
+      <a href="mailto:wanghc23@mails.tsinghua.edu.cn">Email</a>
+      <a href="https://scholar.google.com/" target="_blank">Scholar</a>
+      <a href="https://github.com/" target="_blank">GitHub</a>
+    </div>
+  </footer>
+
 </body>
 </html>

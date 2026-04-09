@@ -1,447 +1,358 @@
-/* CVPR-inspired Academic Personal Website Style */
+/* =========================================
+   Pi-style Minimal Academic Template
+   Inspired by pi.website
+   ========================================= */
 
-/* ============================
-   CSS Variables / Design Tokens
-   ============================ */
-:root {
-  --cvpr-blue:       #1565c0;
-  --cvpr-blue-dark:  #0d47a1;
-  --cvpr-blue-light: #1976d2;
-  --cvpr-accent:     #e53935;   /* CVF red accent */
-  --text-primary:    #212121;
-  --text-secondary:  #555555;
-  --text-muted:      #757575;
-  --bg-white:        #ffffff;
-  --bg-light:        #f5f7fa;
-  --bg-nav:          #0d47a1;
-  --border-light:    #e0e0e0;
-  --border-blue:     #bbdefb;
-  --font-sans:       'Helvetica Neue', Arial, 'Liberation Sans', sans-serif;
-  --max-width:       960px;
-  --nav-height:      56px;
-}
-
-/* ============================
-   Reset & Base
-   ============================ */
+/* --- Reset & Base --- */
 *, *::before, *::after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #ffffff;
+  --fg: #111111;
+  --fg-muted: #666666;
+  --border: #d4d3cb;
+  --border-dark: #000000;
+  --card-shadow: 3px 3px 0px #000000;
+  --card-shadow-hover: 5px 5px 0px #000000;
+  --tag-bg: #f5f4ef;
+  --featured-bg: #ffffff;
+  --timeline-line: #d4d3cb;
+  --font-mono: ui-monospace, "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", monospace;
+  --font-serif: Georgia, "Times New Roman", serif;
+  --max-width: 560px;
 }
 
 html {
-  scroll-behavior: smooth;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  font-family: var(--font-sans);
-  font-size: 15px;
-  line-height: 1.7;
-  color: var(--text-primary);
-  background: var(--bg-white);
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+
+@media (min-width: 768px) {
+  body {
+    padding: 3rem;
+  }
 }
 
 a {
-  color: var(--cvpr-blue);
-  text-decoration: none;
+  color: var(--fg);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 a:hover {
-  color: var(--cvpr-blue-dark);
-  text-decoration: underline;
+  text-decoration-thickness: 2px;
 }
 
-/* ============================
-   Top Navigation Bar
-   ============================ */
-#site-header {
-  background: var(--bg-nav);
-  color: #ffffff;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-}
-
-#site-header .header-inner {
+/* --- Navigation --- */
+nav {
+  width: 100%;
   max-width: var(--max-width);
-  margin: 0 auto;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: var(--nav-height);
-  padding: 0 20px;
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
 }
 
-#site-header .site-name {
-  font-size: 1.15rem;
+nav a {
+  text-decoration: none;
+  color: var(--fg-muted);
+  font-size: 0.85rem;
+  transition: color 0.15s;
+}
+
+nav a:hover,
+nav a.active {
+  color: var(--fg);
+}
+
+/* --- Main Container --- */
+main {
+  width: 100%;
+  max-width: var(--max-width);
+  flex: 1;
+}
+
+/* --- Section Headings --- */
+h2 {
+  font-size: 0.85rem;
   font-weight: 700;
-  color: #ffffff;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--fg-muted);
+  margin-bottom: 1rem;
 }
 
-#site-header nav {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  flex-wrap: wrap;
+/* --- Intro Section --- */
+.intro {
+  margin-bottom: 2.5rem;
 }
 
-#site-header nav a {
-  color: rgba(255, 255, 255, 0.88);
+.intro h1 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+}
+
+.intro .affil {
   font-size: 0.82rem;
-  font-weight: 500;
-  padding: 6px 10px;
-  border-radius: 3px;
-  text-decoration: none;
-  letter-spacing: 0.01em;
-  transition: background 0.15s, color 0.15s;
-  white-space: nowrap;
+  color: var(--fg-muted);
+  margin-bottom: 0.6rem;
 }
 
-#site-header nav a:hover,
-#site-header nav a.current {
-  background: rgba(255, 255, 255, 0.18);
-  color: #ffffff;
-  text-decoration: none;
+.intro .subtitle {
+  color: var(--fg-muted);
+  font-size: 0.88rem;
+  margin-bottom: 0.5rem;
 }
 
-#site-header nav .nav-divider {
-  width: 1px;
-  height: 18px;
-  background: rgba(255,255,255,0.3);
-  margin: 0 4px;
+.intro .contact {
+  font-size: 0.82rem;
+  margin-bottom: 0.4rem;
 }
 
-/* ============================
-   Page Layout
-   ============================ */
-#page-wrapper {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 32px 24px 60px;
+.intro .seeking {
+  font-size: 0.78rem;
+  color: var(--fg-muted);
+  border-left: 2px solid var(--border);
+  padding-left: 0.6rem;
+  margin-top: 0.6rem;
 }
 
-/* ============================
-   Profile / Header Card
-   ============================ */
-.profile-card {
-  display: flex;
-  align-items: flex-start;
-  gap: 28px;
-  margin-bottom: 40px;
-  padding-bottom: 32px;
-  border-bottom: 2px solid var(--border-blue);
+/* --- Timeline Section --- */
+.timeline-section {
+  margin-bottom: 2.5rem;
 }
 
-.profile-card img {
-  width: 130px;
-  height: 130px;
-  object-fit: cover;
-  border-radius: 6px;
-  border: 2px solid var(--border-light);
+.timeline {
+  position: relative;
+  padding-left: 2.5rem;
+  border-left: 1px solid var(--timeline-line);
+
+  /* Fade top and bottom of the timeline line */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0px,
+    black 24px,
+    black calc(100% - 24px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0px,
+    black 24px,
+    black calc(100% - 24px),
+    transparent 100%
+  );
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 1.25rem;
+}
+
+.timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Small square dot on the timeline */
+.dot {
+  position: absolute;
+  left: -2.69rem;
+  top: 0.55rem;
+  width: 7px;
+  height: 7px;
+  background-color: var(--fg);
   flex-shrink: 0;
 }
 
-.profile-info h1 {
-  margin: 0 0 4px;
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: var(--cvpr-blue-dark);
-  border: none;
-  padding: 0;
+/* --- Cards --- */
+.card {
+  padding: 0.6rem 0.75rem;
+  border-radius: 0;
+  transition: background-color 0.15s;
 }
 
-.profile-info .affiliation {
-  color: var(--text-secondary);
-  font-size: 0.95rem;
-  margin: 0 0 8px;
+.card:hover {
+  background-color: #f9f8f5;
 }
 
-.profile-info .contact-links {
+/* Featured / highlighted card */
+.featured-card {
+  background-color: var(--featured-bg);
+  border: 1px solid var(--border-dark);
+  box-shadow: var(--card-shadow);
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+
+.featured-card:hover {
+  box-shadow: var(--card-shadow-hover);
+  transform: translate(-1px, -1px);
+  background-color: var(--featured-bg);
+}
+
+.card-meta {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.profile-info .contact-links a {
-  display: inline-flex;
   align-items: center;
-  gap: 4px;
-  font-size: 0.85rem;
-  color: var(--cvpr-blue);
-  padding: 3px 10px;
-  border: 1px solid var(--cvpr-blue);
-  border-radius: 3px;
-  transition: background 0.15s, color 0.15s;
+  gap: 0.5rem;
+  margin-bottom: 0.3rem;
 }
 
-.profile-info .contact-links a:hover {
-  background: var(--cvpr-blue);
-  color: #ffffff;
-  text-decoration: none;
-}
-
-/* ============================
-   Section Headings
-   ============================ */
-h2 {
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: var(--cvpr-blue-dark);
-  margin: 36px 0 12px;
-  padding: 0 0 6px;
-  border-bottom: 2px solid var(--cvpr-blue);
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-}
-
-h3 {
-  font-size: 1.0rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin: 18px 0 6px;
-}
-
-/* ============================
-   Content Paragraphs & Text
-   ============================ */
-p {
-  margin: 0 0 12px;
-  color: var(--text-primary);
-}
-
-strong {
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-em {
-  font-style: italic;
-}
-
-/* ============================
-   Lists
-   ============================ */
-ul, ol {
-  margin: 0 0 12px;
-  padding-left: 22px;
-}
-
-ul {
-  list-style-type: disc;
-}
-
-ol {
-  list-style-type: decimal;
-}
-
-li {
-  margin: 6px 0;
-  line-height: 1.65;
-}
-
-/* ============================
-   Publications List
-   ============================ */
-ol.pub-list {
-  list-style: none;
-  padding: 0;
-  counter-reset: pub-counter;
-}
-
-ol.pub-list li {
-  counter-increment: pub-counter;
-  padding: 14px 16px 14px 44px;
-  margin: 0 0 10px;
-  background: var(--bg-light);
-  border-left: 3px solid var(--cvpr-blue);
-  border-radius: 0 4px 4px 0;
-  position: relative;
-  font-size: 0.9rem;
-  line-height: 1.65;
-}
-
-ol.pub-list li::before {
-  content: counter(pub-counter);
-  position: absolute;
-  left: 12px;
-  top: 16px;
-  font-weight: 700;
-  color: var(--cvpr-blue);
-  font-size: 0.85rem;
-}
-
-ol.pub-list li a {
-  font-size: 0.82rem;
-  padding: 1px 6px;
-  border: 1px solid var(--cvpr-blue);
-  border-radius: 2px;
-  color: var(--cvpr-blue);
+.tag {
+  font-size: 0.72rem;
+  background-color: var(--tag-bg);
+  border: 1px solid var(--border);
+  padding: 0.1rem 0.4rem;
+  color: var(--fg-muted);
   white-space: nowrap;
 }
 
-ol.pub-list li a:hover {
-  background: var(--cvpr-blue);
-  color: #fff;
+.date {
+  font-size: 0.75rem;
+  color: var(--fg-muted);
+}
+
+.card h3 {
+  font-size: 0.88rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  line-height: 1.4;
+}
+
+.card h3 a {
   text-decoration: none;
 }
 
-/* ============================
-   Experience / Education Items
-   ============================ */
-.exp-item, .edu-item {
-  margin-bottom: 18px;
-  padding: 14px 16px;
-  background: var(--bg-light);
-  border-radius: 4px;
-  border-left: 3px solid var(--border-blue);
+.card h3 a:hover {
+  text-decoration: underline;
 }
 
-.exp-item:hover, .edu-item:hover {
-  border-left-color: var(--cvpr-blue);
-}
-
-.exp-item ul, .edu-item ul {
-  margin: 6px 0 0;
-  padding-left: 18px;
-}
-
-.exp-item li, .edu-item li {
-  color: var(--text-secondary);
-  font-size: 0.88rem;
-  margin: 4px 0;
-}
-
-/* ============================
-   Awards List
-   ============================ */
-ul.award-list {
-  list-style: none;
-  padding: 0;
-}
-
-ul.award-list li {
-  padding: 8px 12px 8px 32px;
-  margin: 0 0 6px;
-  background: var(--bg-light);
-  border-radius: 4px;
-  position: relative;
-  font-size: 0.9rem;
-}
-
-ul.award-list li::before {
-  content: '★';
-  position: absolute;
-  left: 10px;
-  color: #f9a825;
-  font-size: 0.85rem;
-}
-
-/* ============================
-   Table (profile img table fallback)
-   ============================ */
-table.imgtable {
-  border: none;
-  border-collapse: collapse;
-  background: transparent;
-  width: 100%;
-}
-
-table.imgtable td {
-  border: none;
-  padding: 0;
-  text-align: left;
-  vertical-align: top;
-}
-
-table.imgtable img {
-  border-radius: 6px;
-  border: 2px solid var(--border-light);
-  margin-right: 24px;
-}
-
-/* ============================
-   Footer
-   ============================ */
-#site-footer {
-  margin-top: 48px;
-  padding-top: 18px;
-  border-top: 1px solid var(--border-light);
+.card p {
   font-size: 0.82rem;
-  color: var(--text-muted);
-  text-align: center;
+  color: var(--fg-muted);
+  line-height: 1.5;
 }
 
-#site-footer a {
-  color: var(--cvpr-blue);
+/* --- Team Section --- */
+.team-section {
+  margin-bottom: 2.5rem;
 }
 
-/* ============================
-   Inline code
-   ============================ */
-code, tt {
-  font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
-  font-size: 0.88em;
-  background: #e8f0fe;
-  color: var(--cvpr-blue-dark);
-  padding: 1px 5px;
-  border-radius: 3px;
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.2rem 1rem;
 }
 
-/* ============================
-   Responsive
-   ============================ */
-@media (max-width: 640px) {
-  #site-header .site-name {
-    font-size: 1rem;
-  }
-
-  #site-header nav a {
-    font-size: 0.75rem;
-    padding: 5px 7px;
-  }
-
-  #page-wrapper {
-    padding: 20px 14px 40px;
-  }
-
-  .profile-card {
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .profile-card img {
-    width: 100px;
-    height: 100px;
+@media (min-width: 480px) {
+  .team-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
-@media print {
-  #site-header { display: none; }
+.member {
+  display: flex;
+  flex-direction: column;
+  padding: 0.15rem 0;
 }
 
-/* ============================
-   Legacy jemdoc compatibility
-   (kept for any inline content that
-    still uses jemdoc class names)
-   ============================ */
-div.menu-category { display: none; }
-div.menu-item { display: none; }
-#layout-menu { display: none; }
-
-table#tlayout {
-  display: block;
-  border: none;
+.member a {
+  font-size: 0.85rem;
+  text-decoration: none;
 }
 
-#layout-content {
-  display: block;
-  padding: 0;
-  border: none;
+.member a:hover {
+  text-decoration: underline;
 }
 
-div#toptitle { display: none; }
+.member .role {
+  font-size: 0.72rem;
+  color: var(--fg-muted);
+}
+
+/* --- Education Section --- */
+.edu-section {
+  margin-bottom: 2.5rem;
+}
+
+.edu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.edu-degree {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.edu-info {
+  font-size: 0.82rem;
+  color: var(--fg-muted);
+}
+
+/* --- Footer --- */
+footer {
+  width: 100%;
+  max-width: var(--max-width);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+  font-size: 0.8rem;
+}
+
+.footer-name {
+  color: var(--fg-muted);
+}
+
+.footer-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.footer-links a {
+  color: var(--fg-muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.footer-links a:hover {
+  color: var(--fg);
+}
+
+/* --- Dark Mode --- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f0f0f;
+    --fg: #e8e6e1;
+    --fg-muted: #888880;
+    --border: #2e2e2a;
+    --border-dark: #e8e6e1;
+    --card-shadow: 3px 3px 0px #e8e6e1;
+    --card-shadow-hover: 5px 5px 0px #e8e6e1;
+    --tag-bg: #1a1a17;
+    --featured-bg: #151512;
+    --timeline-line: #2e2e2a;
+  }
+}
