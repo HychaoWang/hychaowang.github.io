@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Research | Haichao Wang</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header" id="top">
+    <nav class="main-nav" aria-label="Main navigation">
+      <div class="nav-inner">
+        <a href="index.html">Main</a>
+        <a href="research.html">Publication</a>
+        <a href="article.html">Article</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="research-page">
+    <header class="page-title">
+      <div class="section-label">Research</div>
+      <h1>Research</h1>
+      <p class="page-lead"></p>
+    </header>
+
+    <section class="research-list" aria-label="Publication cards">
+      <article class="research-card research-card--paper">
+        <div class="research-year" aria-hidden="true">2026</div>
+        <div class="research-body">
+          <p class="research-venue">IEEE International Conference on Image Processing (ICIP)</p>
+          <h2>
+            <a href="https://2026.ieeeicip.org/" target="_blank" rel="noopener noreferrer">Leveraging Motion Estimation for Efficient Bayer-Domain Computer Vision</a>
+          </h2>
+          <p class="research-authors"><strong>Haichao Wang</strong>, Jiangtao Wen, Yuxing Han</p>
+          <p class="research-desc">Existing computer vision pipelines suffer from two efficiency bottlenecks: image signal processors (ISPs) first convert Bayer pixel data to RGB pixel by pixel, and video models repeatedly process temporally redundant frames, leading to high power consumption and latency. In this paper, we propose a novel framework that eliminates the ISP and leverages motion estimation to accelerate video vision tasks directly in the Bayer domain. We introduce Motion Estimation-based Video Convolution (MEVC), which integrates sliding-window motion estimation into each convolutional layer, enabling prediction and residual-based refinement that reduces redundant computations across frames. This design bridges the structural gap between block-based motion estimation and spatial convolution, enabling accurate, low-cost processing. Our end-to-end pipeline supports raw Bayer input and achieves over 70\% reduction in FLOPs with minimal accuracy degradation across video semantic segmentation, depth estimation, and object detection benchmarks, using both synthetic Bayer-converted and real Bayer video datasets.</p>
+          <div class="tag-row">
+            <span>Motion Estimation</span>
+            <span>Bayer Domain</span>
+            <span>Efficient Vision</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="research-card research-card--paper">
+        <div class="research-year" aria-hidden="true">2025</div>
+        <div class="research-body">
+          <p class="research-venue">IEEE Transactions on Affective Computing</p>
+          <h2>
+            <a href="https://ieeexplore.ieee.org/abstract/document/11052680" target="_blank" rel="noopener noreferrer">Cross-Modal Knowledge Distillation for Enhanced Unimodal Emotion Recognition</a>
+          </h2>
+          <p class="research-authors">Ziyu Jia, Heng Liang, <strong>Haichao Wang</strong>, Yucheng Liu, Tianzi Jiang</p>
+          <p class="research-desc">Multimodal physiological signal-based emotion recognition technology represents an emerging branch in the field of affective computing. By combining various physiological signals, its performance significantly surpasses traditional unimodal methods. Notably, the joint application of electroencephalography (EEG) and galvanic skin response (GSR) show high effectiveness in emotion recognition tasks. However, the difficulty and high cost of EEG signal acquisition limit its widespread use in practical applications. To address this challenge, we propose a Cross-Modal Emotion Knowledge Distillation (CMEKD) framework. This framework not only extracts the heterogeneity and interactivity between GSR and EEG signals but also conveys a comprehensive fusion of multimodal features into an unimodal GSR model through knowledge distillation techniques, thereby enhancing unimodal model performance. We employ cosine similarity-based knowledge representation to reduce the gap between the multimodal model and the unimodal model. Additionally, an adaptive feedback mechanism is introduced to dynamically adjust the distillation process based on the performance of the unimodal model, further improving the classification performance of emotion recognition. Experiment results demonstrate that this framework achieves state-of-the-art performance on two public datasets. By reducing reliance on multimodal data in the application of the emotion recognition technique, we significantly improve the practicality and feasibility of emotion recognition technology. The code for this paper will be made publicly available on GitHub: https://anonymous.4open.science/r/CMEKD-2440/.</p>
+          <div class="tag-row">
+            <span>Knowledge Distillation</span>
+            <span>Emotion Recognition</span>
+            <span>Cross-Modal</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="research-card research-card--paper">
+        <div class="research-year" aria-hidden="true">2024</div>
+        <div class="research-body">
+          <p class="research-venue">ACM SIGKDD</p>
+          <h2>
+            <a href="https://dl.acm.org/doi/abs/10.1145/3637528.3671981" target="_blank" rel="noopener noreferrer">Mutual Distillation Extracting Spatial-Temporal Knowledge for Lightweight Multi-Channel Sleep Stage Classification</a>
+          </h2>
+          <p class="research-authors">Ziyu Jia, <strong>Haichao Wang*</strong>, Yucheng Liu, Tianzi Jiang <span class="author-note">(* first student author)</span></p>
+          <p class="research-desc">Sleep stage classification has important clinical significance for the diagnosis of sleep-related diseases. To pursue more accurate sleep stage classification, multi-channel sleep signals are widely used due to the rich spatial-temporal information contained. However, it leads to a great increment in the size and computational costs, which constrain the application of multi-channel sleep models on hardware devices. Knowledge distillation is an effective way to compress models, yet existing knowledge distillation methods cannot fully extract and transfer the spatial-temporal knowledge in the multi-channel sleep signals. To solve the problem, we propose a general knowledge distillation framework for multi-channel sleep stage classification called spatial-temporal mutual distillation. Based on the spatial relationship of human body and the temporal transition rules of sleep signals, the spatial and temporal modules are designed to extract the spatial-temporal knowledge, thus help the lightweight student model learn the rich spatial-temporal knowledge from large-scale teacher model. The mutual distillation framework transfers the spatial-temporal knowledge mutually. Teacher model and student model can learn from each other, further improving the student model. The results on the ISRUC-III and MASS-SS3 datasets show that our proposed framework compresses the sleep models effectively with minimal performance loss and achieves the state-of-the-art performance compared to the baseline methods.</p>
+          <div class="tag-row">
+            <span>Knowledge Distillation</span>
+            <span>Sleep Staging</span>
+            <span>Spatial-Temporal</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="research-card research-card--paper">
+        <div class="research-year" aria-hidden="true">2024</div>
+        <div class="research-body">
+          <p class="research-venue">IEEE Transactions on Big Data</p>
+          <h2>
+            <a href="https://ieeexplore.ieee.org/abstract/document/10663937" target="_blank" rel="noopener noreferrer">DistillSleepNet: Heterogeneous Multi-Level Knowledge Distillation via Teacher Assistant for Sleep Staging</a>
+          </h2>
+          <p class="research-authors">Ziyu Jia, Heng Liang, Yucheng Liu, <strong>Haichao Wang</strong>, Tianzi Jiang</p>
+          <p class="research-desc">Accurate sleep staging is crucial for the diagnosis of diseases such as sleep disorders. Existing sleep staging models with excellent performance are usually large and require a lot of computational resources, limiting their application on wearable devices. Therefore, it is a key issue to distil the knowledge embedded in large models into small heterogeneous models for better deployment. In the process of knowledge distillation of heterogeneous models for sleep electroencephalography (EEG) signals, we mainly deal with three major challenges: 1) There are large structural differences between heterogeneous sleep staging models; 2) What kind of knowledge should be conveyed in sleep EEG signals in the knowledge distillation of heterogeneous models; 3) Significant scale differences exist between heterogeneous models. To address these challenges, we design a generic heterogeneous model knowledge distillation framework for sleep staging. Specifically, we first propose a knowledge distillation strategy for heterogeneous models that addresses the large structural differences between heterogeneous models. Then, a multi-level knowledge distillation module is designed to effectively transfer important multi-level feature knowledge. In addition, the teacher assistant module is introduced to ease the scale difference between the heterogeneous models which further enhances the knowledge distillation performance. Experimental results on both Sleep-EDF and ISRUC datasets show that our distillation framework achieves state-of-the-art performance.</p>
+          <div class="tag-row">
+            <span>Knowledge Distillation</span>
+            <span>Sleep Staging</span>
+            <span>Teacher Assistant</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="research-card research-card--paper">
+        <div class="research-year" aria-hidden="true">2023</div>
+        <div class="research-body">
+          <p class="research-venue">ACM International Conference on Multimedia</p>
+          <h2>
+            <a href="https://dl.acm.org/doi/abs/10.1145/3581783.3612277" target="_blank" rel="noopener noreferrer">EmotionKD: A Cross-Modal Knowledge Distillation Framework for Emotion Recognition Based on Physiological Signals</a>
+          </h2>
+          <p class="research-authors">Yucheng Liu, Ziyu Jia, <strong>Haichao Wang</strong></p>
+          <p class="research-desc">Emotion recognition using multi-modal physiological signals is an emerging field in affective computing that significantly improves performance compared to unimodal approaches. The combination of Electroencephalogram(EEG) and Galvanic Skin Response(GSR) signals are particularly effective for objective and complementary emotion recognition. However, the high cost and inconvenience of EEG signal acquisition severely hinder the popularity of multi-modal emotion recognition in real-world scenarios, while GSR signals are easier to obtain. To address this challenge, we propose EmotionKD, a framework for cross-modal knowledge distillation that simultaneously models the heterogeneity and interactivity of GSR and EEG signals under a unified framework. By using knowledge distillation, fully fused multi-modal features can be transferred to an unimodal GSR model to improve performance. Additionally, an adaptive feedback mechanism is proposed to enable the multi-modal model to dynamically adjust according to the performance of the unimodal model during knowledge distillation, which guides the unimodal model to enhance its performance in emotion recognition. Our experiment results demonstrate that the proposed model achieves state-of-the-art performance on two public datasets. Furthermore, our approach has the potential to reduce reliance on multi-modal data with lower sacrificed performance, making emotion recognition more applicable and feasible. The source code is available at https://github.com/YuchengLiu-Alex/EmotionKD.</p>
+          <div class="tag-row">
+            <span>Knowledge Distillation</span>
+            <span>Emotion Recognition</span>
+            <span>Physiological Signals</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="research-card research-card--paper">
+        <div class="research-year" aria-hidden="true">2023</div>
+        <div class="research-body">
+          <p class="research-venue">IJCAI</p>
+          <h2>
+            <a href="https://www.ijcai.org/proceedings/2023/0439.pdf" target="_blank" rel="noopener noreferrer">Teacher Assistant-Based Knowledge Distillation Extracting Multi-Level Features on Single Channel Sleep EEG</a>
+          </h2>
+          <p class="research-authors">Heng Liang, Yucheng Liu, <strong>Haichao Wang*</strong>, Ziyu Jia <span class="author-note">(* equal contribution)</span></p>
+          <p class="research-desc">
+            Sleep stage classification is of great significance to the diagnosis of sleep disorders. However, existing sleep stage classification models based on deep learning are usually relatively large in size (wider and deeper), which makes them hard to be deployed on wearable devices. Therefore, it is a challenge to lighten the existing sleep stage classification models. In this paper, we propose a novel general knowledge distillation framework for sleep stage classification tasks called SleepKD. Our SleepKD, composed of the multi-level module, teacher assistant module, and other knowledge distillation modules, aims to lighten largescale sleep stage classification models. Specifically, the multi-level module is able to transfer the multi-level knowledge extracted from sleep signals by the teacher model (large-scale model) to the student model (lightweight model). Moreover, the teacher assistant module bridges the large gap between the teacher and student network, and further improves the distillation. We evaluate our method on two public sleep datasets (Sleep-EDF and ISRUC-III). Compared to the baseline methods, the results show that our knowledge distillation framework achieves state-of-the-art performance. SleepKD can significantly lighten the sleep model while maintaining its classification performance. The source code is available at https://github.com/HychaoWang/SleepKD.</p>
+          <div class="tag-row">
+            <span>Knowledge Distillation</span>
+            <span>Sleep EEG</span>
+            <span>Multi-Level Features</span>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
