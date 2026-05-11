@@ -1,0 +1,65 @@
+{
+  "name": "Haichao Wang",
+  "affiliation": "Tsinghua University",
+  "affiliationUrl": "https://www.tsinghua.edu.cn/en/",
+  "department": "Data Science and Information Technology",
+  "title": "Master Student",
+  "focus": "Efficient AI, Computational Video, and Machine Learning",
+  "status": "Seeking full-time RA positions in Fall 2026 and Ph.D. opportunities in Fall 2027.",
+  "email": "wanghc23@mails.tsinghua.edu.cn",
+  "scholar": "https://scholar.google.com/citations?user=-exqY3gAAAAJ&hl=en",
+  "github": "https://github.com/HychaoWang",
+  "photo": "assets/photo.jpg",
+  "about": [
+    "I am a third-year master student at <a href=\"https://www.tsinghua.edu.cn\" target=\"_blank\" rel=\"noopener noreferrer\">Tsinghua University</a>, under the supervision of Prof. Yuxing Han. I earned my bachelor's degree from <a href=\"https://www.bjtu.edu.cn\" target=\"_blank\" rel=\"noopener noreferrer\">Beijing Jiaotong University</a> in 2023.",
+    "My research focuses on <strong>Efficient AI</strong>, <strong>Computational Video</strong>, and <strong>Machine Learning</strong>. From 2021, I worked on efficient physiological time series analysis based on knowledge distillation. From 2023 to 2025, I focused on efficient video computer vision systems with video motion estimation. In early 2026, I worked on controllable long-range motion generation.",
+    "I am currently focusing on efficient video understanding and generation systems. Feel free to contact me if you are interested in discussion or collaboration."
+  ],
+  "experience": [
+    {
+      "period": "Oct. 2025 - Present",
+      "title": "Generative Human Motion Mimicking",
+      "org": "Tsinghua University & University of Cambridge",
+      "orgUrl": "https://www.tsinghua.edu.cn",
+      "org2Url": "https://www.cam.ac.uk/",
+      "desc": "Developed an algorithm using diffusion trajectory matching for controlled long-range motion generation."
+    },
+    {
+      "period": "Oct. 2023 - Dec. 2025",
+      "title": "Efficient Video Computer Vision with Motion Estimation",
+      "org": "Tsinghua University",
+      "orgUrl": "https://www.tsinghua.edu.cn",
+      "desc": "Applied video motion estimation to accelerate video computer vision systems and proposed an efficient Bayer-data pipeline that removes ISP latency."
+    },
+    {
+      "period": "May 2021 - Aug. 2023",
+      "title": "Physiological Signal Classification and System Design",
+      "org": "Institute of Network Science and Intelligent System, BJTU",
+      "orgUrl": "http://insis.bjtu.edu.cn/",
+      "desc": "Proposed multi-level and spatial-temporal knowledge distillation frameworks for lightweight EEG and physiological signal classification."
+    }
+  ],
+  "education": [
+    {
+      "period": "2023 - Present",
+      "degree": "Master of Science",
+      "field": "Data Science and Information Technology",
+      "school": "Tsinghua University",
+      "schoolUrl": "https://www.tsinghua.edu.cn/en/",
+      "advisor": "Prof. Yuxing Han"
+    },
+    {
+      "period": "2019 - 2023",
+      "degree": "Bachelor of Engineering",
+      "field": "Computer Science and Technology",
+      "school": "Beijing Jiaotong University",
+      "schoolUrl": "https://www.bjtu.edu.cn",
+      "advisor": "Dr. Ziyu Jia & Prof. Jing Wang"
+    }
+  ],
+  "awards": [
+    "<strong>National Prize</strong>, National College Students' Innovation and Entrepreneurship Training Program",
+    "<strong>Second Prize</strong>, Beijing Undergraduate Mathematical Contest in Modeling",
+    "<strong>Second Prize</strong>, 11th Challenge Cup National Undergraduate Curricular Academic Science and Technology Works"
+  ]
+}

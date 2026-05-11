@@ -1,32 +1,54 @@
-# Academic Site
+# hychaowang.github.io
 
-Static site with a blog-first homepage and a dedicated publications page.
+Personal academic website for Haichao Wang.
 
-How to use
-- Open `index.html` for the blog list (banner navigation on top).
-- Each post links to `post.html?slug=...` for full content.
-- Open `pubs.html` for publications search/listing.
-- Blog posts are Markdown files in `/posts` (one file per `slug`) rendered via `marked` with images and KaTeX math (`$...$` or `$$...$$`).
+## Architecture
 
-Optimizations in this version
-- Removed Font Awesome and inlined tiny SVG icons (smaller, faster, no blocking CSS).
-- Deferred all scripts; load `marked` and `js-yaml` only when needed.
-- Added a minimal Markdown fallback if the CDN is blocked.
-- Added optional `pubs.json` support to avoid `js-yaml` entirely.
-- Improved accessibility: explicit image `alt`, `width`/`height`, `loading="lazy"`.
-- Mobile tweaks for readability on small screens.
+Content and design are fully decoupled. All content lives in data files; HTML files are pure templates.
 
-Data format
-- `pubs.json`
-  - `{ "publications": [ { "title": "...", "authors": "...", "venue": "...", "year": 2024, "tags": "tag1, tag2", "links": [{"label":"PDF","href":"..."}] } ] }`
-- `pubs.yaml` (existing) still supported.
-- `blog.json`
-  - `{ "posts": [ { "title": "...", "date": "2024-05-01", "summary": "...", "content": "Full text...", "tags": "tag1, tag2", "slug": "custom-slug" } ] }`
-  - `tags` can be a string (comma-separated) or array.
-  - `slug` should match the `post.html?slug=...` link; auto-generated from title if absent.
-  - If `blog.json` is missing, a `blog.yaml` with `posts:` is used instead.
+```
+/
+├── index.html          # Homepage template
+├── research.html       # Publications template
+├── article.html        # Article list template
+├── articles/
+│   ├── view.html       # Single article template (reads ?slug=)
+│   └── *.md            # Article content in Markdown
+├── data/
+│   ├── profile.json    # Homepage content (bio, experience, education, awards)
+│   ├── pubs.json       # Publications
+│   └── articles.json   # Article index
+├── js/
+│   ├── nav.js          # Shared navigation (injected into all pages)
+│   ├── home.js         # Renders index.html from profile.json
+│   ├── research.js     # Renders research.html from pubs.json
+│   ├── article-list.js # Renders article.html from articles.json
+│   └── article-view.js # Renders articles/view.html from ?slug= + .md
+├── assets/             # Images
+└── styles.css
+```
 
-Notes
-- If both JSON and YAML exist, the page prefers `pubs.json`.
-- Blog prefers `blog.json`; falls back to `blog.yaml` when missing.
-- If the `marked` CDN is unreachable, a small built-in parser renders basic Markdown.
+## Adding content
+
+**New publication** — add one entry to `data/pubs.json`.
+
+**New article** — create `articles/<slug>.md` with frontmatter, then add one entry to `data/articles.json`.
+
+**Update personal info** — edit `data/profile.json`.
+
+## Article Markdown format
+
+```markdown
+---
+title: "Article Title"
+date: "2026-01-01"
+author: "Haichao Wang"
+abstract: "One paragraph abstract."
+---
+
+## Section {#sec-id}
+
+Body content...
+```
+
+Heading anchors use `{#id}` syntax. Raw HTML is supported inline (for tables and figures).
