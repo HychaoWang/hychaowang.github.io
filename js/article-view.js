@@ -25,24 +25,32 @@ function parseFrontmatter(src) {
 }
 
 function buildToc(container) {
-  const headings = container.querySelectorAll("h2[id], h3[id], h4[id]");
-  if (!headings.length) return "";
+  const nodes = [...container.querySelectorAll("h2[id], h3[id], h4[id]")].map(h => ({
+    id: h.id,
+    text: h.textContent,
+    level: parseInt(h.tagName[1])
+  }));
+  if (!nodes.length) return "";
 
-  function level(el) {
-    return parseInt(el.tagName[1]);
+  function renderLevel(items, depth) {
+    if (!items.length) return "";
+    const cls = depth === 1 ? "" : ` class="toc-depth-${depth}"`;
+    let html = `<ul${cls}>`;
+    let i = 0;
+    while (i < items.length) {
+      const cur = items[i];
+      let j = i + 1;
+      while (j < items.length && items[j].level > cur.level) j++;
+      const children = items.slice(i + 1, j);
+      html += `<li><a href="#${cur.id}">${cur.text}</a>`;
+      if (children.length) html += renderLevel(children, depth + 1);
+      html += "</li>";
+      i = j;
+    }
+    return html + "</ul>";
   }
 
-  let html = "<ul>";
-  let prevLevel = 2;
-  headings.forEach(h => {
-    const lv = level(h);
-    if (lv > prevLevel) html += "<ul class=\"toc-depth-" + lv + "\">";
-    else if (lv < prevLevel) html += "</ul>".repeat(prevLevel - lv);
-    html += `<li><a href="#${h.id}">${h.textContent}</a></li>`;
-    prevLevel = lv;
-  });
-  html += "</ul>".repeat(prevLevel - 1);
-  return html;
+  return renderLevel(nodes, 1);
 }
 
 function stripFrontmatterIds(body) {
