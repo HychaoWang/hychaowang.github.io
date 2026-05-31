@@ -162,7 +162,7 @@ const papers = [
     latency: 780,
     latencyLabel: "≈780s",
     speedup: 2.30,
-    setup: "33 frames · 720p · 1× H100 · 30% warmup",
+    setup: "T2V · 33 frames · 720p · 1× H100 · CUDA 12.8 · 30% warmup · Cq=100, Ck=500",
     year: 2026,
   },
   {
@@ -178,7 +178,7 @@ const papers = [
     latency: 706,
     latencyLabel: "≈706s",
     speedup: 2.55,
-    setup: "33 frames · 720p · 1× H100 · FP8",
+    setup: "T2V · 33 frames · 720p · 1× H100 · CUDA 12.8 · 30% warmup · Cq=100, Ck=500 · FP8",
     year: 2026,
   },
   {
@@ -193,7 +193,7 @@ const papers = [
     latency: 960,
     latencyLabel: "≈960s",
     speedup: 1.60,
-    setup: "T2V · 720p · 1× H100 · 30% warmup",
+    setup: "T2V · 21 frames · 720p · 1× H100 · CUDA 12.8 · 30% warmup · Cq=100, Ck=500",
     year: 2026,
   },
   {
@@ -209,7 +209,7 @@ const papers = [
     latency: 952,
     latencyLabel: "≈952s",
     speedup: 1.89,
-    setup: "T2V · 720p · 1× H100 · Turbo",
+    setup: "T2V · 21 frames · 720p · 1× H100 · CUDA 12.8 · 30% warmup · Cq=100, Ck=500 · Turbo",
     year: 2026,
   },
   {
@@ -225,7 +225,7 @@ const papers = [
     latency: 1140,
     latencyLabel: "≈1140s",
     speedup: 1.58,
-    setup: "I2V · 720p · 1× H100",
+    setup: "I2V · 21 frames · 720p · 1× H100 · CUDA 12.8 · 30% warmup · Cq=100, Ck=500",
     year: 2026,
   },
   {
@@ -241,7 +241,7 @@ const papers = [
     latency: 978,
     latencyLabel: "≈978s",
     speedup: 1.84,
-    setup: "I2V · 720p · 1× H100 · Turbo",
+    setup: "I2V · 21 frames · 720p · 1× H100 · CUDA 12.8 · 30% warmup · Cq=100, Ck=500 · Turbo",
     year: 2026,
   },
   {
