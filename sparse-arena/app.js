@@ -162,7 +162,7 @@ const papers = [
     latency: 780,
     latencyLabel: "≈780s",
     speedup: 2.30,
-    setup: "T2V · 33 frames · 720p · 1× H100 · CUDA 12.8 · 30% warmup · Cq=100, Ck=500",
+    setup: "T2V · 33 frames · 720p · 1× H100 · 30% warmup",
     year: 2026,
   },
   {
@@ -178,7 +178,7 @@ const papers = [
     latency: 706,
     latencyLabel: "≈706s",
     speedup: 2.55,
-    setup: "T2V · 33 frames · 720p · 1× H100 · CUDA 12.8 · 30% warmup · Cq=100, Ck=500 · FP8",
+    setup: "T2V · 33 frames · 720p · 1× H100 · 30% warmup · FP8",
     year: 2026,
   },
   {
@@ -193,7 +193,7 @@ const papers = [
     latency: 960,
     latencyLabel: "≈960s",
     speedup: 1.60,
-    setup: "T2V · 21 frames · 720p · 1× H100 · CUDA 12.8 · 30% warmup · Cq=100, Ck=500",
+    setup: "T2V · 21 frames · 720p · 1× H100 · 30% warmup",
     year: 2026,
   },
   {
@@ -209,7 +209,7 @@ const papers = [
     latency: 952,
     latencyLabel: "≈952s",
     speedup: 1.89,
-    setup: "T2V · 21 frames · 720p · 1× H100 · CUDA 12.8 · 30% warmup · Cq=100, Ck=500 · Turbo",
+    setup: "T2V · 21 frames · 720p · 1× H100 · 30% warmup · Turbo",
     year: 2026,
   },
   {
@@ -225,7 +225,7 @@ const papers = [
     latency: 1140,
     latencyLabel: "≈1140s",
     speedup: 1.58,
-    setup: "I2V · 21 frames · 720p · 1× H100 · CUDA 12.8 · 30% warmup · Cq=100, Ck=500",
+    setup: "I2V · 21 frames · 720p · 1× H100 · 30% warmup",
     year: 2026,
   },
   {
@@ -241,7 +241,7 @@ const papers = [
     latency: 978,
     latencyLabel: "≈978s",
     speedup: 1.84,
-    setup: "I2V · 21 frames · 720p · 1× H100 · CUDA 12.8 · 30% warmup · Cq=100, Ck=500 · Turbo",
+    setup: "I2V · 21 frames · 720p · 1× H100 · 30% warmup · Turbo",
     year: 2026,
   },
   {
@@ -255,7 +255,7 @@ const papers = [
     lpips: null,
     latency: 501,
     speedup: 1.89,
-    setup: "117 frames · 768p · 50 steps · H100",
+    setup: "117 frames · 768p · 1× H100 · 50 steps",
     year: 2025,
   },
   {
@@ -269,7 +269,7 @@ const papers = [
     lpips: null,
     latency: 730,
     speedup: 1.60,
-    setup: "69 frames · 50 steps · H100",
+    setup: "69 frames · 1× H100 · 50 steps",
     year: 2025,
   },
   {
@@ -288,7 +288,7 @@ const papers = [
     visionReward: 0.1149,
     sparsity: "95%",
     trainingCost: "N/R",
-    setup: "Wan2.1-14B · 720p · RTX 5090 · E2E",
+    setup: "720p · 1× RTX 5090 · E2E",
     year: 2026,
   },
   {
@@ -307,7 +307,7 @@ const papers = [
     visionReward: 0.1010,
     sparsity: "95%",
     trainingCost: "N/R",
-    setup: "Wan2.1-1.3B · 480p · RTX 5090 · E2E",
+    setup: "480p · 1× RTX 5090 · E2E",
     year: 2026,
   },
 ];
