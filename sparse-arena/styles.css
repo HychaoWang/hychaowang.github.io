@@ -106,6 +106,7 @@ tbody tr:hover { background: #f8fbff; }
 .setup { color: var(--muted); font-size: 11px; white-space: nowrap; }
 .tag { display: inline-flex; align-items: center; width: fit-content; padding: 4px 7px; border-radius: 20px; color: var(--green-dark); background: var(--green-soft); font-size: 10px; font-weight: 700; white-space: nowrap; }
 .benchmark { color: var(--green-dark); font-size: 11px; font-weight: 700; white-space: nowrap; }
+.task-type { display: inline-flex; padding: 3px 6px; border: 1px solid var(--line); border-radius: 2px; color: var(--muted); font-size: 10px; font-weight: 700; white-space: nowrap; }
 .metric { font-weight: 700; }
 .metric.strong { color: var(--orange); }
 .metric-label { display: block; margin-top: 3px; color: var(--muted); font-size: 9px; white-space: nowrap; }

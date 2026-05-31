@@ -5,6 +5,7 @@ const papers = [
     category: "training-free",
     pattern: "Static radial",
     benchmark: "HunyuanVideo",
+    task: "T2V",
     psnr: 27.3,
     ssim: 0.886,
     lpips: 0.114,
@@ -19,6 +20,7 @@ const papers = [
     category: "training-free",
     pattern: "Static radial",
     benchmark: "Wan2.1-14B",
+    task: "T2V",
     psnr: 23.9,
     ssim: 0.842,
     lpips: 0.163,
@@ -33,6 +35,7 @@ const papers = [
     category: "training-based",
     pattern: "Static radial",
     benchmark: "Mochi 1",
+    task: "T2V",
     psnr: null,
     ssim: null,
     lpips: null,
@@ -52,6 +55,7 @@ const papers = [
     category: "training-based",
     pattern: "Static radial",
     benchmark: "HunyuanVideo",
+    task: "T2V",
     psnr: null,
     ssim: null,
     lpips: null,
@@ -71,6 +75,7 @@ const papers = [
     category: "training-based",
     pattern: "Static radial",
     benchmark: "HunyuanVideo",
+    task: "T2V",
     psnr: null,
     ssim: null,
     lpips: null,
@@ -90,6 +95,7 @@ const papers = [
     category: "training-based",
     pattern: "Static radial",
     benchmark: "Mochi 1",
+    task: "T2V",
     psnr: null,
     ssim: null,
     lpips: null,
@@ -109,6 +115,7 @@ const papers = [
     category: "training-based",
     pattern: "Static radial",
     benchmark: "Wan2.1-14B",
+    task: "T2V",
     psnr: null,
     ssim: null,
     lpips: null,
@@ -128,6 +135,7 @@ const papers = [
     category: "training-free",
     pattern: "Adaptive block sparse",
     benchmark: "HunyuanVideo",
+    task: "T2V",
     psnr: 29.07,
     ssim: 0.8905,
     lpips: 0.1478,
@@ -142,6 +150,7 @@ const papers = [
     category: "training-free",
     pattern: "Adaptive block sparse",
     benchmark: "CogVideoX1.5-5B",
+    task: "T2V",
     psnr: 23.25,
     ssim: 0.8267,
     lpips: 0.2067,
@@ -156,13 +165,14 @@ const papers = [
     category: "training-free",
     pattern: "Semantic permutation",
     benchmark: "HunyuanVideo",
+    task: "T2V",
     psnr: 30.452,
     ssim: 0.910,
     lpips: 0.117,
     latency: 780,
     latencyLabel: "≈780s",
     speedup: 2.30,
-    setup: "T2V · 33 frames · 720p · 1× H100 · 30% warmup",
+    setup: "33 frames · 720p · 1× H100 · 30% warmup",
     year: 2026,
   },
   {
@@ -172,13 +182,14 @@ const papers = [
     category: "training-free",
     pattern: "Semantic permutation",
     benchmark: "HunyuanVideo",
+    task: "T2V",
     psnr: 30.389,
     ssim: 0.908,
     lpips: 0.118,
     latency: 706,
     latencyLabel: "≈706s",
     speedup: 2.55,
-    setup: "T2V · 33 frames · 720p · 1× H100 · 30% warmup · FP8",
+    setup: "33 frames · 720p · 1× H100 · 30% warmup · FP8",
     year: 2026,
   },
   {
@@ -187,13 +198,14 @@ const papers = [
     category: "training-free",
     pattern: "Semantic permutation",
     benchmark: "Wan2.1-14B",
+    task: "T2V",
     psnr: 25.808,
     ssim: 0.854,
     lpips: 0.138,
     latency: 960,
     latencyLabel: "≈960s",
     speedup: 1.60,
-    setup: "T2V · 21 frames · 720p · 1× H100 · 30% warmup",
+    setup: "21 frames · 720p · 1× H100 · 30% warmup",
     year: 2026,
   },
   {
@@ -203,13 +215,14 @@ const papers = [
     category: "training-free",
     pattern: "Semantic permutation",
     benchmark: "Wan2.1-14B",
+    task: "T2V",
     psnr: 23.682,
     ssim: 0.789,
     lpips: 0.196,
     latency: 952,
     latencyLabel: "≈952s",
     speedup: 1.89,
-    setup: "T2V · 21 frames · 720p · 1× H100 · 30% warmup · Turbo",
+    setup: "21 frames · 720p · 1× H100 · 30% warmup · Turbo",
     year: 2026,
   },
   {
@@ -219,13 +232,14 @@ const papers = [
     category: "training-free",
     pattern: "Semantic permutation",
     benchmark: "Wan2.1-14B",
+    task: "I2V",
     psnr: 26.562,
     ssim: 0.861,
     lpips: 0.138,
     latency: 1140,
     latencyLabel: "≈1140s",
     speedup: 1.58,
-    setup: "I2V · 21 frames · 720p · 1× H100 · 30% warmup",
+    setup: "21 frames · 720p · 1× H100 · 30% warmup",
     year: 2026,
   },
   {
@@ -235,13 +249,14 @@ const papers = [
     category: "training-free",
     pattern: "Semantic permutation",
     benchmark: "Wan2.1-14B",
+    task: "I2V",
     psnr: 24.510,
     ssim: 0.812,
     lpips: 0.179,
     latency: 978,
     latencyLabel: "≈978s",
     speedup: 1.84,
-    setup: "I2V · 21 frames · 720p · 1× H100 · 30% warmup · Turbo",
+    setup: "21 frames · 720p · 1× H100 · 30% warmup · Turbo",
     year: 2026,
   },
   {
@@ -250,6 +265,7 @@ const papers = [
     category: "training-free",
     pattern: "Sliding tile",
     benchmark: "HunyuanVideo",
+    task: "T2V",
     psnr: 28.76,
     ssim: 0.8767,
     lpips: null,
@@ -264,6 +280,7 @@ const papers = [
     category: "training-free",
     pattern: "Sliding tile",
     benchmark: "Wan2.1-14B",
+    task: "T2V",
     psnr: 24.42,
     ssim: 0.8581,
     lpips: null,
@@ -278,6 +295,7 @@ const papers = [
     category: "training-based",
     pattern: "Hybrid Top-k + Top-p",
     benchmark: "Wan2.1-14B",
+    task: "T2V",
     psnr: null,
     ssim: null,
     lpips: null,
@@ -297,6 +315,7 @@ const papers = [
     category: "training-based",
     pattern: "Hybrid Top-k + Top-p",
     benchmark: "Wan2.1-1.3B",
+    task: "T2V",
     psnr: null,
     ssim: null,
     lpips: null,
@@ -360,6 +379,7 @@ const trainingFreeHead = `
   <thead><tr>
     <th class="rank-cell">#</th><th data-sort="paper">Method <span>↕</span></th>
     <th data-sort="pattern">Pattern <span>↕</span></th><th data-sort="benchmark">Model <span>↕</span></th>
+    <th data-sort="task">Task <span>↕</span></th>
     <th data-sort="psnr">PSNR ↑ <span>↕</span></th>
     <th data-sort="ssim">SSIM ↑ <span>↕</span></th><th data-sort="lpips">LPIPS ↓ <span>↕</span></th>
     <th data-sort="latency">Latency ↓ <span>↕</span></th><th data-sort="speedup">Speedup ↑ <span>↕</span></th>
@@ -369,6 +389,7 @@ const trainingBasedHead = `
   <thead><tr>
     <th class="rank-cell">#</th><th data-sort="paper">Method <span>↕</span></th>
     <th data-sort="pattern">Pattern <span>↕</span></th><th data-sort="benchmark">Model <span>↕</span></th>
+    <th data-sort="task">Task <span>↕</span></th>
     <th data-sort="quality">Quality ↑ <span>↕</span></th><th data-sort="visionReward">Vision Reward ↑ <span>↕</span></th>
     <th data-sort="sparsity">Sparsity ↑ <span>↕</span></th><th data-sort="trainingCost">Training Cost ↓ <span>↕</span></th>
     <th data-sort="latency">Latency ↓ <span>↕</span></th><th data-sort="speedup">Speedup ↑ <span>↕</span></th>
@@ -384,6 +405,7 @@ function renderBoard(items, category) {
         <td><div class="paper-title"><strong class="method-name" title="${paperTitles[item.paper]}">${item.paper}</strong><small>${item.authors} · ${item.year}${item.variant ? ` · ${item.variant}` : ""}</small></div></td>
         <td><span class="tag">${item.pattern}</span></td>
         <td><span class="benchmark">${item.benchmark}</span></td>
+        <td><span class="task-type">${item.task}</span></td>
         ${category === "training-based" ? `
         <td><span class="metric">${formatMetric(item.quality)}</span><small class="metric-label">${item.qualityLabel || ""}</small></td>
         <td>${formatMetric(item.visionReward)}</td>
@@ -396,7 +418,7 @@ function renderBoard(items, category) {
         <td><span class="metric strong">${item.speedup}×</span></td>
         <td><span class="setup">${item.setup}</span></td>
       </tr>`).join("")
-    : `<tr><td class="empty" colspan="${category === "training-based" ? 11 : 10}">No methods match these filters.</td></tr>`;
+    : `<tr><td class="empty" colspan="${category === "training-based" ? 12 : 11}">No methods match these filters.</td></tr>`;
   return `<section class="board-block">
     <div class="board-title"><div><h3>${title}</h3><p>${description}</p></div><span class="board-count">${items.length} results</span></div>
     <div class="table-scroll"><table>${category === "training-based" ? trainingBasedHead : trainingFreeHead}<tbody>${body}</tbody></table></div>
@@ -446,7 +468,7 @@ document.getElementById("resetFilters").addEventListener("click", () => {
 function bindSortHeaders() {
   document.querySelectorAll("th[data-sort]").forEach(th => th.addEventListener("click", () => {
     const nextKey = th.dataset.sort;
-    sortDirection = sortKey === nextKey ? -sortDirection : nextKey === "paper" || nextKey === "pattern" ? 1 : -1;
+    sortDirection = sortKey === nextKey ? -sortDirection : nextKey === "paper" || nextKey === "pattern" || nextKey === "task" ? 1 : -1;
     sortKey = nextKey;
     render();
   }));
