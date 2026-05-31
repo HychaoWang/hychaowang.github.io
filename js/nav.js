@@ -3,6 +3,7 @@
     { href: "index.html", label: "Main" },
     { href: "research.html", label: "Publication" },
     { href: "article.html", label: "Article" },
+    { href: "sparse-arena/index.html", label: "SparseArena" },
   ];
 
   function currentPage() {
@@ -11,13 +12,14 @@
     if (file === "" || file === "index.html") return "index.html";
     if (file === "research.html") return "research.html";
     if (file === "article.html") return "article.html";
+    if (path.includes("/sparse-arena/")) return "sparse-arena/index.html";
     // articles sub-pages count as Article
     if (path.includes("/articles/")) return "article.html";
     return file;
   }
 
   function rootPrefix() {
-    return location.pathname.includes("/articles/") ? "../" : "";
+    return location.pathname.includes("/articles/") || location.pathname.includes("/sparse-arena/") ? "../" : "";
   }
 
   function render() {

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="SparseArena - compare sparse attention research across quality, efficiency, and context benchmarks."
+    />
+    <title>SparseArena - Sparse Attention Leaderboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell" id="top">
+      <header class="topbar">
+        <a class="brand" href="#top">
+          <span class="brand-mark"><span></span><span></span><span></span></span>
+          <span>Sparse<span>Arena</span></span>
+        </a>
+        <nav class="main-nav" aria-label="主导航">
+          <a class="active" href="#leaderboard">Leaderboard</a>
+          <a href="#methodology">Methodology</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="hero">
+          <div class="hero-copy">
+            <div class="eyebrow"><i></i> OPEN RESEARCH BENCHMARK</div>
+            <h1>Find the signal<br /><span>in sparse attention.</span></h1>
+            <p>
+              A transparent leaderboard for comparing sparse attention methods
+              for efficient long-video generation.
+            </p>
+            <div class="hero-actions">
+              <a class="primary-btn" href="#leaderboard">Explore leaderboard <span>↓</span></a>
+              <a class="text-btn" href="#methodology">How it works <span>↗</span></a>
+            </div>
+          </div>
+          <div class="hero-art" aria-hidden="true">
+            <div class="mesh-frame">
+              <div class="mesh-label label-top">SPARSITY MAP <span>VIDEO DIT</span></div>
+              <div class="mesh-grid" id="meshGrid"></div>
+              <div class="mesh-label label-bottom"><span>LOCAL</span><span>GLOBAL</span><span>ROUTED</span></div>
+            </div>
+            <div class="score-pill"><strong>5</strong><span>PAPERS TRACKED</span></div>
+          </div>
+        </section>
+
+        <section class="stats-strip">
+          <div><strong>5</strong><span>Papers tracked</span></div>
+          <div><strong>5</strong><span>Models covered</span></div>
+          <div><strong>5</strong><span>Reported metrics</span></div>
+          <div><strong>2026.05</strong><span>Last updated</span></div>
+        </section>
+
+        <section class="leaderboard-section" id="leaderboard">
+          <div class="section-heading">
+            <div>
+              <div class="eyebrow"><i></i> LIVE LEADERBOARD</div>
+              <h2>Compare methods</h2>
+              <p>Video-generation benchmark results reported by each paper. Click any column to sort.</p>
+            </div>
+            <div class="view-toggle" role="group" aria-label="视图切换">
+              <button class="active" data-view="table">
+                <svg viewBox="0 0 20 20"><path d="M3 4h14M3 10h14M3 16h14"/></svg> Table
+              </button>
+              <button data-view="chart">
+                <svg viewBox="0 0 20 20"><path d="M4 17V9h3v8M9 17V4h3v13M14 17v-6h3v6"/></svg> Chart
+              </button>
+            </div>
+          </div>
+
+          <div class="filter-bar">
+            <label class="search-box">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></svg>
+              <input id="searchInput" type="search" placeholder="Search papers or authors..." />
+            </label>
+            <select id="patternFilter" aria-label="Attention Pattern">
+              <option value="all">All patterns</option>
+              <option value="Static radial">Static radial</option>
+              <option value="Adaptive block sparse">Adaptive block sparse</option>
+              <option value="Semantic permutation">Semantic permutation</option>
+              <option value="Sliding tile">Sliding tile</option>
+              <option value="Hybrid Top-k + Top-p">Hybrid Top-k + Top-p</option>
+            </select>
+            <select id="benchmarkFilter" aria-label="Model">
+              <option value="all">All models</option>
+              <option value="HunyuanVideo">HunyuanVideo</option>
+              <option value="Wan2.1-14B">Wan2.1-14B</option>
+              <option value="Wan2.1-1.3B">Wan2.1-1.3B</option>
+              <option value="CogVideoX1.5-5B">CogVideoX1.5-5B</option>
+              <option value="Mochi 1">Mochi 1</option>
+            </select>
+            <select id="yearFilter" aria-label="Publication Year">
+              <option value="all">All years</option>
+              <option value="2026">2026</option>
+              <option value="2025">2025</option>
+            </select>
+            <button class="filter-btn" id="resetFilters">
+              <svg viewBox="0 0 20 20"><path d="M3 5h14M6 10h8M8 15h4"/></svg>
+              Reset
+            </button>
+          </div>
+
+          <div class="table-card" id="tableView">
+            <div id="leaderboardTables"></div>
+            <div class="table-footer">
+              <span id="resultCount">Showing 0 methods</span>
+              <span>Reported results <b>·</b> Paper × model rows</span>
+            </div>
+            <p class="comparison-note">Note: values are reported by the original papers. N/R means not reported for the selected setup. Compare absolute latency with care because hardware, resolution, frame count, and measurement scope differ.</p>
+          </div>
+
+          <div class="chart-card hidden" id="chartView">
+            <div class="chart-header">
+              <div>
+                <h3>Efficiency frontier</h3>
+                <p>Reported end-to-end speedup vs. each paper's dense baseline</p>
+              </div>
+              <div class="chart-legend"><i></i> Speedup vs. dense baseline</div>
+            </div>
+            <div id="chartArea"></div>
+          </div>
+        </section>
+
+        <section class="note-grid" id="methodology">
+          <article>
+            <span>01</span>
+            <h3>Reported setups</h3>
+            <p>Results retain their reported benchmark and setup. Use filters to compare methods evaluated on the same base model.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Beyond one score</h3>
+            <p>Training-free and training-based methods use separate metric columns to preserve each paper's evaluation protocol.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Open by default</h3>
+            <p>Every value is taken from the original paper. Results are clearly marked as reported rather than reproduced.</p>
+          </article>
+        </section>
+      </main>
+
+      <footer>
+        <a class="brand" href="#top"><span class="brand-mark"><span></span><span></span><span></span></span><span>Sparse<span>Arena</span></span></a>
+        <p>Built for open, reproducible sparse attention research.</p>
+        <span>© 2026 SparseArena</span>
+      </footer>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
