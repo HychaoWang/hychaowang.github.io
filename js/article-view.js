@@ -70,7 +70,7 @@ async function renderArticle() {
   const tags = article?.tags || [];
   const readingTime = article?.readingTime;
 
-  document.title = `${title} | Haichao Wang`;
+  document.title = `${title} | Hychao's Blog`;
 
   await loadMarked();
 

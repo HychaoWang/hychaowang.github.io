@@ -13,7 +13,7 @@ async function renderAbout() {
   const res = await fetch("data/profile.json");
   const p = await res.json();
 
-  document.title = `About | ${p.name}`;
+  document.title = `About | Hychao's Blog`;
   const desc = document.querySelector('meta[name="description"]');
   if (desc) desc.content = `${p.name}, ${p.title} at ${p.affiliation} working on ${p.focus}.`;
 

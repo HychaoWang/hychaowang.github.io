@@ -11,7 +11,8 @@
   --line-soft: #e7e2d5;
   --max-width: 720px;
   --wide: 900px;
-  --serif: Georgia, "Times New Roman", Times, serif;
+  --serif: "Times New Roman", Times, serif;
+  --heading: Helvetica, "Helvetica Neue", Arial, sans-serif;
 }
 
 *,
@@ -46,7 +47,7 @@ a:hover {
 }
 
 h1, h2, h3, h4 {
-  font-family: var(--serif);
+  font-family: var(--heading);
   line-height: 1.25;
   color: var(--ink);
 }
@@ -88,9 +89,14 @@ img {
 
 .site-brand {
   color: var(--ink);
+  font-family: var(--heading);
   font-weight: 700;
   font-size: 1.25rem;
   letter-spacing: 0.01em;
+}
+
+.nav-inner a {
+  font-family: var(--heading);
 }
 
 .site-brand:hover {
@@ -465,6 +471,7 @@ img {
 }
 
 .pub-title {
+  font-family: var(--heading);
   font-weight: 700;
   font-size: 1.06rem;
   color: var(--ink);

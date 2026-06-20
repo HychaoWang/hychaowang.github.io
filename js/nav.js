@@ -32,7 +32,7 @@
 
     root.outerHTML = `<header class="site-header" id="top">
   <div class="header-inner">
-    <a class="site-brand" href="${prefix}index.html">Haichao Wang</a>
+    <a class="site-brand" href="${prefix}index.html">Hychao's Blog</a>
     <nav class="main-nav" aria-label="Main navigation">
       <div class="nav-inner">
         ${navLinks}
