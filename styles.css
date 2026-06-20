@@ -485,17 +485,6 @@ img {
   font-size: 0.9em;
 }
 
-/* Awards */
-.award-list {
-  margin: 0;
-  padding-left: 1.4em;
-  color: var(--ink);
-}
-
-.award-list li + li {
-  margin-top: 10px;
-}
-
 /* ---------- Article reading ---------- */
 .article-reading {
   padding-top: 14px;
@@ -621,6 +610,11 @@ img {
 
 .prose-article p {
   margin: 1.1em 0;
+}
+
+.prose-article strong {
+  font-weight: 700;
+  color: var(--ink);
 }
 
 .prose-article ul,

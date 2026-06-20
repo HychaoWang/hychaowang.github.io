@@ -84,14 +84,6 @@ async function renderAbout() {
     </div>`
   );
 
-  // Awards
-  document.getElementById("awards").innerHTML = section(
-    "Honors & Awards",
-    `<ul class="award-list">
-      ${p.awards.map(a => `<li>${a}</li>`).join("\n")}
-    </ul>`
-  );
-
   const yr = document.getElementById("footer-year");
   if (yr) yr.textContent = new Date().getFullYear();
 }
