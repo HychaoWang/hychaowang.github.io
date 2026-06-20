@@ -1,15 +1,17 @@
 :root {
-  --cvpr-blue: #173b78;
-  --cvpr-blue-dark: #0e2854;
-  --cvpr-blue-light: #2d62ad;
-  --cvpr-gold: #f1b434;
-  --ink: #242933;
-  --muted: #5f6876;
-  --line: #d7dee8;
-  --panel: #f5f8fc;
-  --paper: #ffffff;
+  /* Anthropic-inspired warm palette: pale-yellow cream + clay accent */
+  --bg: #f0eee6;
+  --cvpr-blue: #be5b3c;       /* clay accent (links, headings, nav) */
+  --cvpr-blue-dark: #964127;  /* clay, darker (hover) */
+  --cvpr-blue-light: #b0512f; /* clay, link text */
+  --cvpr-gold: #dda94a;       /* warm mustard accent (borders, underlines) */
+  --ink: #2b2a26;
+  --muted: #6f6759;
+  --line: #e1dbcb;
+  --panel: #eae4d5;
+  --paper: #fbfaf6;
   --max-width: 1160px;
-  --sans: Arial, Helvetica, sans-serif;
+  --sans: Georgia, "Times New Roman", serif;
   --serif: Georgia, "Times New Roman", serif;
 }
 
@@ -28,8 +30,8 @@ html {
 body {
   margin: 0;
   color: var(--ink);
-  background: #eef3f8;
-  font-family: var(--sans);
+  background: var(--bg);
+  font-family: var(--serif);
   font-size: 16px;
   line-height: 1.55;
 }
@@ -203,19 +205,19 @@ a:hover {
 .button.primary {
   border-color: var(--cvpr-gold);
   background: var(--cvpr-gold);
-  color: #1f2a3d;
+  color: #2b2a26;
 }
 
 .button.primary:hover {
-  background: #ffd064;
-  color: #1f2a3d;
+  background: #e9bc63;
+  color: #2b2a26;
 }
 
 .profile-photo {
   margin: 0;
   border: 1px solid var(--line);
   background: #ffffff;
-  box-shadow: 0 8px 18px rgba(23, 59, 120, 0.12);
+  box-shadow: 0 8px 18px rgba(60, 42, 24, 0.12);
 }
 
 .profile-photo img {
@@ -960,7 +962,7 @@ a.article-card--link:hover h2 {
   border-radius: 50%;
   overflow: hidden;
   background: #fff;
-  box-shadow: 0 8px 18px rgba(23, 59, 120, 0.12);
+  box-shadow: 0 8px 18px rgba(60, 42, 24, 0.12);
 }
 
 .profile-avatar img {
