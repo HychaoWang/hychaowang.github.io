@@ -524,68 +524,6 @@ img {
   color: var(--ink);
 }
 
-.article-reading-columns {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 0;
-}
-
-/* Table of contents */
-.article-toc-card {
-  margin: 20px 0 8px;
-  padding: 16px 20px;
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.35);
-}
-
-.article-toc-title {
-  margin: 0 0 8px;
-  color: var(--soft);
-  font-size: 0.78rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.article-toc-nav ul {
-  margin: 0;
-  padding-left: 18px;
-}
-
-.article-toc-nav > ul {
-  padding-left: 0;
-  list-style: none;
-}
-
-.article-toc-nav > ul > li {
-  margin-top: 4px;
-}
-
-.article-toc-nav a {
-  color: var(--accent);
-  font-size: 0.95rem;
-}
-
-.article-toc-nav .toc-depth-2 {
-  list-style: none;
-  padding-left: 14px;
-}
-
-.article-toc-nav .toc-depth-3 {
-  list-style: none;
-  padding-left: 14px;
-}
-
-.article-toc-nav .toc-depth-2 a,
-.article-toc-nav .toc-depth-3 a {
-  color: var(--muted);
-}
-
-.article-toc-nav .toc-depth-2 a:hover,
-.article-toc-nav .toc-depth-3 a:hover {
-  color: var(--accent);
-}
-
 /* Prose body */
 .prose-article {
   margin-top: 8px;

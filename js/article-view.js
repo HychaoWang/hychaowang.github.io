@@ -24,35 +24,6 @@ function parseFrontmatter(src) {
   return { meta, body: m[2] };
 }
 
-function buildToc(container) {
-  const nodes = [...container.querySelectorAll("h2[id], h3[id], h4[id]")].map(h => ({
-    id: h.id,
-    text: h.textContent,
-    level: parseInt(h.tagName[1])
-  }));
-  if (!nodes.length) return "";
-
-  function renderLevel(items, depth) {
-    if (!items.length) return "";
-    const cls = depth === 1 ? "" : ` class="toc-depth-${depth}"`;
-    let html = `<ul${cls}>`;
-    let i = 0;
-    while (i < items.length) {
-      const cur = items[i];
-      let j = i + 1;
-      while (j < items.length && items[j].level > cur.level) j++;
-      const children = items.slice(i + 1, j);
-      html += `<li><a href="#${cur.id}">${cur.text}</a>`;
-      if (children.length) html += renderLevel(children, depth + 1);
-      html += "</li>";
-      i = j;
-    }
-    return html + "</ul>";
-  }
-
-  return renderLevel(nodes, 1);
-}
-
 function stripFrontmatterIds(body) {
   // Convert ## Heading {#id} syntax to <h2 id="id">Heading</h2>
   return body.replace(/^(#{1,6})\s+(.+?)\s+\{#([\w-]+)\}\s*$/gm, (_, hashes, text, id) => {
@@ -124,19 +95,11 @@ async function renderArticle() {
         <strong>Abstract.</strong> ${abstract}
       </div>
     </header>
-    <div class="article-reading-columns">
-      <aside class="article-toc-card" aria-label="Contents">
-        <p class="article-toc-title">Contents</p>
-        <nav class="article-toc-nav" id="toc-nav"></nav>
-      </aside>
-      <article class="article-body prose-article" id="article-body">
-        ${html}
-      </article>
-    </div>`;
+    <article class="article-body prose-article" id="article-body">
+      ${html}
+    </article>`;
 
-  // Build TOC from rendered headings
   const body_el = document.getElementById("article-body");
-  document.getElementById("toc-nav").innerHTML = buildToc(body_el);
 
   // Open external links in new tab
   body_el.querySelectorAll("a[href^='http']").forEach(a => {
