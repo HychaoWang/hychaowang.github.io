@@ -1,18 +1,18 @@
 :root {
-  /* Warm pale-yellow cream + clay accent, minimalist (lilianweng-style) */
-  --bg: #f0eee6;
-  --paper: #f0eee6;
-  --ink: #2b2a26;
-  --muted: #79735f;
-  --soft: #a39b86;
-  --accent: #b0512f;
-  --accent-dark: #8f3f23;
-  --line: #ddd7c7;
-  --line-soft: #e7e2d5;
+  /* Apple HIG light palette + San Francisco system font */
+  --bg: #ffffff;
+  --paper: #f5f5f7;
+  --ink: #1d1d1f;
+  --muted: #6e6e73;
+  --soft: #86868b;
+  --accent: #0066cc;
+  --accent-dark: #0040a0;
+  --line: #d2d2d7;
+  --line-soft: #e8e8ed;
   --max-width: 720px;
   --wide: 900px;
-  --serif: "Times New Roman", Times, serif;
-  --heading: Helvetica, "Helvetica Neue", Arial, sans-serif;
+  --serif: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --heading: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 *,
@@ -31,9 +31,11 @@ body {
   color: var(--ink);
   background: var(--bg);
   font-family: var(--serif);
-  font-size: 18px;
-  line-height: 1.7;
+  font-size: 17px;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 a {
@@ -177,14 +179,14 @@ img {
 .post-card {
   position: relative;
   padding: 22px 24px;
-  background: #faf8f1;
+  background: var(--paper);
   border: 1px solid var(--line);
   border-radius: 8px;
   transition: box-shadow 0.2s ease;
 }
 
 .post-card:hover {
-  box-shadow: 0 6px 18px rgba(60, 42, 24, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
 .post-card-link {
@@ -590,8 +592,8 @@ img {
   overflow: auto;
   padding: 14px 16px;
   border-radius: 6px;
-  background: #2b2a26;
-  color: #f0eee6;
+  background: #1d1d1f;
+  color: #f5f5f7;
 }
 
 .prose-article pre code {
