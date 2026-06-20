@@ -97,6 +97,7 @@ async function renderArticle() {
   const author = meta.author || article?.author || "";
   const abstract = meta.abstract || article?.excerpt || "";
   const tags = article?.tags || [];
+  const readingTime = article?.readingTime;
 
   document.title = `${title} | Haichao Wang`;
 
@@ -113,6 +114,7 @@ async function renderArticle() {
       <div class="article-meta">
         <time datetime="${date}">${fmtDate(date)}</time>
         <span>${author}</span>
+        ${readingTime ? `<span>${readingTime} min read</span>` : ""}
       </div>
       <h1 class="article-reading-title">${title}</h1>
       <div class="tag-row">

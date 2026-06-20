@@ -143,65 +143,13 @@ img {
   color: var(--ink);
 }
 
-/* ---------- Home: profile + post list ---------- */
+/* ---------- Home: post-card list (PaperMod-style) ---------- */
 .blog-shell {
-  padding: 8px 0 0;
-}
-
-.blog-profile {
-  text-align: center;
-  padding: 22px 0 34px;
-  border-bottom: 1px solid var(--line);
-  margin-bottom: 14px;
-}
-
-.profile-avatar {
-  margin: 0 auto 16px;
-  width: 132px;
-  height: 132px;
-  border-radius: 50%;
-  overflow: hidden;
-  background: #fff;
-}
-
-.profile-avatar img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.profile-name {
-  margin: 0;
-  font-size: 1.7rem;
-}
-
-.profile-role {
-  margin: 6px 0 0;
-  color: var(--accent);
-  font-size: 0.95rem;
-}
-
-.profile-bio {
-  margin: 10px auto 0;
-  max-width: 460px;
-  color: var(--muted);
-  font-size: 1rem;
-}
-
-.profile-links {
-  list-style: none;
-  margin: 18px 0 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px 22px;
-  font-size: 0.98rem;
+  padding: 14px 0 0;
 }
 
 .blog-head {
-  padding: 18px 0 6px;
+  padding: 6px 0 10px;
 }
 
 .blog-head h1 {
@@ -217,46 +165,53 @@ img {
 
 .post-list {
   display: grid;
+  gap: 22px;
+  padding-top: 8px;
 }
 
 .post-card {
-  padding: 26px 0;
-  border-bottom: 1px solid var(--line-soft);
+  position: relative;
+  padding: 22px 24px;
+  background: #faf8f1;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  transition: box-shadow 0.2s ease;
 }
 
-.post-card:last-child {
-  border-bottom: none;
+.post-card:hover {
+  box-shadow: 0 6px 18px rgba(60, 42, 24, 0.1);
 }
 
-.post-meta {
-  color: var(--muted);
-  font-size: 0.88rem;
-}
-
-.post-meta time {
-  color: var(--muted);
+.post-card-link {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
 }
 
 .post-title {
-  margin: 4px 0 0;
-  font-size: 1.55rem;
+  position: relative;
+  margin: 0;
+  font-size: 1.4rem;
   font-weight: 700;
-}
-
-.post-title a {
   color: var(--ink);
 }
 
-.post-title a:hover {
+.post-card:hover .post-title {
   color: var(--accent);
-  text-decoration: none;
 }
 
 .post-excerpt {
-  margin: 10px 0 0;
-  color: var(--ink);
-  opacity: 0.85;
-  font-size: 1rem;
+  position: relative;
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.98rem;
+}
+
+.post-meta {
+  position: relative;
+  margin: 14px 0 0;
+  color: var(--soft);
+  font-size: 0.82rem;
 }
 
 /* ---------- Tags ---------- */
