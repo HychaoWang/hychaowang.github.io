@@ -3,7 +3,6 @@
     { href: "index.html", label: "Posts" },
     { href: "archive.html", label: "Archive" },
     { href: "tags.html", label: "Tags" },
-    { href: "research.html", label: "Publications" },
     { href: "about.html", label: "About" },
   ];
 

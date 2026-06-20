@@ -64,7 +64,6 @@ img {
 .blog-shell,
 .research-page,
 .article-page,
-.page-shell,
 .site-footer {
   width: min(100% - 40px, var(--max-width));
   margin: 0 auto;
@@ -335,251 +334,166 @@ img {
 }
 
 /* ---------- About page ---------- */
-.hero {
-  background: var(--bg);
+.about-page {
+  width: min(100% - 40px, var(--max-width));
+  margin: 0 auto;
+  padding: 18px 0 0;
 }
 
-.hero-inner {
+.about-intro {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 128px;
-  gap: 30px;
+  grid-template-columns: minmax(0, 1fr) 132px;
+  gap: 32px;
   align-items: center;
-  padding: 28px 0 10px;
+  padding-bottom: 26px;
+  border-bottom: 1px solid var(--line);
 }
 
-.eyebrow {
-  margin: 0 0 6px;
-  color: var(--accent);
-  font-size: 0.82rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.hero h1 {
+.about-intro h1 {
   margin: 0;
-  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-size: clamp(1.9rem, 4vw, 2.5rem);
 }
 
-.conference-title {
-  max-width: 620px;
-  margin: 10px 0 0;
-  color: var(--muted);
-  font-size: clamp(1.05rem, 2vw, 1.2rem);
-}
-
-.hero-meta {
+.about-role {
   margin: 8px 0 0;
   color: var(--muted);
-  font-size: 0.95rem;
+  font-size: 1.02rem;
 }
 
-.hero-actions {
+.about-affil {
+  margin: 3px 0 0;
+  font-size: 1.02rem;
+}
+
+.about-links {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 14px 22px;
-  margin-top: 18px;
+  gap: 8px 20px;
+  font-size: 0.98rem;
 }
 
-.button {
-  color: var(--accent);
-  font-weight: 700;
-}
-
-.button.primary {
-  color: var(--accent);
-}
-
-.button:hover {
-  color: var(--accent-dark);
-}
-
-.profile-photo {
+.about-avatar {
   margin: 0;
-  border-radius: 6px;
+  width: 132px;
+  height: 132px;
+  border-radius: 50%;
   overflow: hidden;
   background: #fff;
 }
 
-.profile-photo img {
+.about-avatar img {
   display: block;
   width: 100%;
-  aspect-ratio: 1;
+  height: 100%;
   object-fit: cover;
 }
 
-.page-shell {
-  display: grid;
-  grid-template-columns: 230px minmax(0, 1fr);
-  gap: 44px;
-  align-items: start;
-  padding: 18px 0 0;
+.about-section {
+  padding-top: 36px;
 }
 
-.side-panel {
-  position: sticky;
-  top: 84px;
+.about-h2 {
+  margin: 0 0 18px;
+  font-size: 1.5rem;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.about-section p {
+  margin: 12px 0 0;
+}
+
+#about p:first-of-type {
+  margin-top: 0;
+}
+
+/* CV rows: experience, education */
+.cv-list {
   display: grid;
   gap: 26px;
 }
 
-.info-box h2 {
-  margin: 0 0 10px;
-  font-size: 1.1rem;
-  padding-bottom: 6px;
-  border-bottom: 1px solid var(--line);
-}
-
-dl {
-  margin: 0;
-}
-
-dl div + div {
-  margin-top: 12px;
-}
-
-dt {
-  color: var(--soft);
-  font-size: 0.78rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-dd {
-  margin: 2px 0 0;
-}
-
-.quick-links,
-.award-list {
-  margin: 0;
-  padding-left: 18px;
-}
-
-.quick-links {
-  list-style: none;
-  padding-left: 0;
-}
-
-.quick-links li + li {
-  margin-top: 6px;
-}
-
-.award-list li + li {
-  margin-top: 8px;
-}
-
-.content-column {
+.cv-item {
   display: grid;
-  gap: 40px;
-}
-
-.content-section h2 {
-  margin: 0 0 6px;
-  font-size: 1.6rem;
-}
-
-.content-section p {
-  margin: 14px 0 0;
-}
-
-.schedule-list,
-.announcement-list,
-.date-grid {
-  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
   gap: 22px;
-  margin-top: 18px;
 }
 
-.date-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 22px 32px;
+.cv-period {
+  color: var(--muted);
+  font-size: 0.9rem;
+  padding-top: 3px;
 }
 
-.schedule-item,
-.announcement {
+.cv-body h3 {
+  margin: 0;
+  font-size: 1.12rem;
+}
+
+.cv-org {
+  margin: 3px 0 0 !important;
+  color: var(--accent);
+  font-size: 0.95rem;
+}
+
+.cv-body p {
+  margin: 5px 0 0;
+}
+
+.cv-body > p:not(.cv-org) {
+  color: var(--muted);
+  font-size: 0.97rem;
+}
+
+/* Publications */
+.pub-list {
+  margin: 0;
+  padding-left: 1.4em;
   display: grid;
-  grid-template-columns: 150px minmax(0, 1fr);
   gap: 18px;
 }
 
-.schedule-item time,
-.announcement-date,
-.date-grid time {
-  color: var(--muted);
-  font-size: 0.9rem;
+.pub-item {
+  padding-left: 4px;
 }
 
-.schedule-item h3,
-.announcement h3,
-.date-grid h3 {
-  margin: 0;
-  font-size: 1.1rem;
+.pub-item::marker {
+  color: var(--soft);
 }
 
-.schedule-item p,
-.announcement p,
-.date-grid p {
+.pub-title {
+  font-weight: 700;
+  font-size: 1.06rem;
+  color: var(--ink);
+}
+
+.pub-title:hover {
+  color: var(--accent);
+}
+
+.pub-meta {
   margin: 4px 0 0;
   color: var(--muted);
   font-size: 0.95rem;
 }
 
-.award-list {
-  color: var(--ink);
-}
-
-/* ---------- Research / publications ---------- */
-.research-list {
-  display: grid;
-  gap: 30px;
-  margin-top: 26px;
-}
-
-.research-card {
-  display: grid;
-  grid-template-columns: 64px minmax(0, 1fr);
-  gap: 22px;
-}
-
-.research-year {
-  color: var(--soft);
-  font-size: 1.1rem;
-  font-weight: 700;
-  padding-top: 2px;
-}
-
-.research-venue {
-  margin: 0 0 4px;
-  color: var(--accent);
-  font-size: 0.8rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-.research-card h2 {
-  margin: 0;
-  font-size: 1.3rem;
-}
-
-.research-card h2 a {
-  color: var(--ink);
-}
-
-.research-card h2 a:hover {
-  color: var(--accent);
-}
-
-.research-authors {
-  margin: 8px 0 0;
-}
-
 .author-note {
-  color: var(--muted);
+  color: var(--soft);
   font-size: 0.9em;
 }
 
-.research-desc {
-  margin: 8px 0 0;
-  color: var(--muted);
+/* Awards */
+.award-list {
+  margin: 0;
+  padding-left: 1.4em;
+  color: var(--ink);
+}
+
+.award-list li + li {
+  margin-top: 10px;
 }
 
 /* ---------- Article reading ---------- */
@@ -805,31 +719,19 @@ dd {
 
 /* ---------- Responsive ---------- */
 @media (max-width: 820px) {
-  .hero-inner,
-  .page-shell {
+  .about-intro {
     grid-template-columns: 1fr;
+    gap: 18px;
+    justify-items: start;
   }
 
-  .hero-inner {
-    gap: 24px;
+  .about-avatar {
+    order: -1;
   }
 
-  .profile-photo {
-    width: min(180px, 60vw);
-  }
-
-  .side-panel {
-    position: static;
-  }
-
-  .schedule-item,
-  .announcement {
-    grid-template-columns: 1fr;
-    gap: 4px;
-  }
-
-  .date-grid {
-    grid-template-columns: 1fr;
+  .cv-item {
+    grid-template-columns: 130px minmax(0, 1fr);
+    gap: 16px;
   }
 }
 
@@ -849,7 +751,7 @@ dd {
     gap: 12px;
   }
 
-  .research-card {
+  .cv-item {
     grid-template-columns: 1fr;
     gap: 4px;
   }
