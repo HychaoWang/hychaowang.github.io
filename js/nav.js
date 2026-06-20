@@ -1,25 +1,22 @@
 (function () {
   const links = [
-    { href: "index.html", label: "Main" },
-    { href: "research.html", label: "Publication" },
-    { href: "article.html", label: "Article" },
-    { href: "sparse-arena/index.html", label: "SparseArena" },
+    { href: "index.html", label: "Posts" },
+    { href: "archive.html", label: "Archive" },
+    { href: "tags.html", label: "Tags" },
+    { href: "research.html", label: "Publications" },
+    { href: "about.html", label: "About" },
   ];
 
   function currentPage() {
     const path = location.pathname;
     const file = path.split("/").pop() || "index.html";
-    if (file === "" || file === "index.html") return "index.html";
-    if (file === "research.html") return "research.html";
-    if (file === "article.html") return "article.html";
-    if (path.includes("/sparse-arena/")) return "sparse-arena/index.html";
-    // articles sub-pages count as Article
-    if (path.includes("/articles/")) return "article.html";
+    if (path.includes("/articles/")) return "index.html";
+    if (file === "" ) return "index.html";
     return file;
   }
 
   function rootPrefix() {
-    return location.pathname.includes("/articles/") || location.pathname.includes("/sparse-arena/") ? "../" : "";
+    return location.pathname.includes("/articles/") ? "../" : "";
   }
 
   function render() {

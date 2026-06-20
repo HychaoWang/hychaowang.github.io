@@ -1,4 +1,4 @@
-async function renderHome() {
+async function renderAbout() {
   const res = await fetch("data/profile.json");
   const p = await res.json();
 
@@ -120,4 +120,4 @@ function renderAuthors(authors) {
   }).join(", ");
 }
 
-renderHome().catch(err => console.error("home.js:", err));
+renderAbout().catch(err => console.error("about.js:", err));

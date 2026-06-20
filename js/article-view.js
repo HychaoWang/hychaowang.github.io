@@ -96,6 +96,7 @@ async function renderArticle() {
   const date = meta.date || article?.date || "";
   const author = meta.author || article?.author || "";
   const abstract = meta.abstract || article?.excerpt || "";
+  const tags = article?.tags || [];
 
   document.title = `${title} | Haichao Wang`;
 
@@ -107,13 +108,16 @@ async function renderArticle() {
 
   const articleRoot = document.getElementById("article-root");
   articleRoot.innerHTML = `
-    <p class="article-back"><a href="../article.html">← Back to Articles</a></p>
+    <p class="article-back"><a href="../index.html">← Back to Posts</a></p>
     <header class="article-reading-header">
       <div class="article-meta">
         <time datetime="${date}">${fmtDate(date)}</time>
         <span>${author}</span>
       </div>
       <h1 class="article-reading-title">${title}</h1>
+      <div class="tag-row">
+        ${tags.map(t => `<a class="tag-pill" href="../index.html?tag=${encodeURIComponent(t)}">#${t}</a>`).join("")}
+      </div>
       <div class="article-abstract-box">
         <strong>Abstract.</strong> ${abstract}
       </div>
