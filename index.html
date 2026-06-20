@@ -3,36 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Haichao Wang</title>
-  <meta name="description" content="" />
+  <title>Hychao's Blog</title>
+  <meta name="description" content="Blog of Haichao Wang — notes on efficient AI, computational video, and machine learning." />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div id="nav-root"></div>
 
-  <div id="hero"></div>
-
-  <main class="page-shell">
-    <aside class="side-panel" aria-label="Profile summary" id="sidebar"></aside>
-
-    <div class="content-column">
-      <section class="content-section" id="about"></section>
-      <section class="content-section" id="experience"></section>
-      <section class="content-section" id="publications"></section>
-      <section class="content-section" id="education"></section>
-      <section class="content-section" id="awards"></section>
-    </div>
+  <main class="blog-shell">
+    <header class="blog-head" id="blog-head" hidden>
+      <h1 id="blog-list-title"></h1>
+      <p class="blog-lead" id="blog-list-lead"></p>
+    </header>
+    <section class="post-list" id="post-list" aria-label="Blog posts"></section>
   </main>
 
   <footer class="site-footer">
     <div>
-      <strong>Haichao Wang</strong>
       <span id="footer-year"></span>
     </div>
     <a href="#top">Back to top</a>
   </footer>
 
   <script src="js/nav.js"></script>
-  <script src="js/home.js"></script>
+  <script src="js/blog.js"></script>
 </body>
 </html>

@@ -52,3 +52,8 @@ Body content...
 ```
 
 Heading anchors use `{#id}` syntax. Raw HTML is supported inline (for tables and figures).
+
+The article renderer supports CommonMark/GFM content, including tables, task lists,
+strikethrough, autolinks, fenced code with syntax highlighting and copy controls,
+heading permalinks, footnotes, KaTeX math (`$...$`, `$$...$$`, `\\(...\\)`, and
+`\\[...\\]`), responsive media, and sanitized raw HTML.
