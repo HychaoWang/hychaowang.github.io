@@ -356,21 +356,3 @@ def grpo_loss(
 ```
 
 这个函数展示了 GRPO 的关键结构：组内 reward 标准化、importance ratio、clip、KL penalty、token mask。真实实现还会处理生成、分布式训练、混合精度、reference model 推理、日志统计、reward 聚合、长度归一化等问题。
-
-## 9. 常见坑
-
-第一，group size 太小会导致 advantage 噪声很大。比如 $G=2$ 时，只要一个对一个错，信号很强；但如果两个都对或两个都错，组内方差可能很小，训练信号会变弱。
-
-第二，二值 reward 容易稀疏。如果所有回答都是 0，标准化后可能没有有效梯度；如果所有回答都是 1，也无法区分谁更好。因此实际训练中常常需要格式奖励、过程奖励、长度奖励或更细粒度的 verifier。
-
-第三，KL 系数需要调。KL 太大，模型学不动；KL 太小，模型可能快速偏离原模型，出现格式崩坏、重复输出或 reward hacking。
-
-第四，reward design 比算法本身更重要。GRPO 只是优化器，reward 才定义了模型最终会成为什么样。奖励函数写得粗糙，模型就会钻空子。
-
-## 10. 总结
-
-GRPO 可以理解为“没有 critic 的 PPO”。它保留了 PPO 的稳定更新思想，但把 advantage 的估计方式从 value model 改成了 group-relative reward normalization。对同一个 prompt 采样多个回答，计算每个回答的 reward，再根据组内均值和标准差得到相对 advantage。这样既节省了训练 critic 的成本，也特别适合数学、代码、格式约束等可验证任务。
-
-如果你是新手，建议学习路径如下：先理解 PPO 的 ratio 和 clip，再理解 advantage 的作用，然后把 critic-based advantage 替换成 group-relative advantage，最后用 TRL 的 `GRPOTrainer` 跑一个小模型实验。真正上手之后你会发现，GRPO 的难点不在公式，而在 reward function、数据分布、采样策略和训练稳定性。
-
-一句话总结：GRPO 不是让模型知道“绝对正确答案是什么”，而是让模型在同一道题的多个候选答案中学会“哪个更值得模仿”。这正是它在推理型大模型后训练中如此有用的原因。
