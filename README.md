@@ -32,7 +32,15 @@ Content and design are fully decoupled. All content lives in data files; HTML fi
 
 **New publication** — add one entry to `data/pubs.json`.
 
-**New article** — create `articles/<slug>.md` with frontmatter, then add one entry to `data/articles.json`.
+**New article** — create `articles/<name>.md` with frontmatter. The article index is generated automatically from Markdown files.
+
+To update the index locally, run:
+
+```sh
+node scripts/generate-articles-index.mjs
+```
+
+On GitHub, `.github/workflows/articles-index.yml` regenerates and commits `data/articles.json` whenever article Markdown files change.
 
 **Update personal info** — edit `data/profile.json`.
 
@@ -43,6 +51,7 @@ Content and design are fully decoupled. All content lives in data files; HTML fi
 title: "Article Title"
 date: "2026-01-01"
 author: "Haichao Wang"
+tags: ["tag-one", "tag-two"]
 abstract: "One paragraph abstract."
 ---
 

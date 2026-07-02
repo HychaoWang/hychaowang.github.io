@@ -1,3 +1,12 @@
+---
+slug: "grpo"
+title: "GRPO：研究背景、数学原理与代码实现"
+date: "2026-07-02"
+author: "Haichao Wang"
+tags: ["llm", "reinforcement-learning", "grpo"]
+abstract: "介绍 GRPO 的研究背景、核心数学原理与代码实现。"
+---
+
 # GRPO：研究背景、数学原理与代码实现
 
 近年来，大语言模型的训练路线逐渐从“预训练 + 指令微调”走向“后训练 + 强化学习”。预训练让模型获得语言和知识能力，监督微调让模型学会遵循指令，而强化学习则进一步把模型推向某种目标：回答更准确、推理更可靠、格式更稳定、行为更符合偏好。GRPO，全称 Group Relative Policy Optimization，即“组相对策略优化”，正是在这个背景下流行起来的一个强化学习算法。

@@ -287,12 +287,11 @@ async function renderArticle() {
     return;
   }
 
-  const [indexResponse, markdownResponse] = await Promise.all([
-    fetchRequired("../data/articles.json"),
-    fetchRequired(`${articleSlug}.md`),
-  ]);
+  const indexResponse = await fetchRequired("../data/articles.json");
   const { articles } = await indexResponse.json();
   const article = articles.find(item => item.slug === articleSlug);
+  const markdownPath = article?.path || `${articleSlug}.md`;
+  const markdownResponse = await fetchRequired(encodeURI(markdownPath));
   const { meta, body } = parseFrontmatter(await markdownResponse.text());
 
   const title = meta.title || article?.title || "Untitled";

@@ -1,13 +1,33 @@
 {
   "articles": [
     {
+      "slug": "grpo",
+      "path": "GRPO：从研究背景、数学原理到代码实现.md",
+      "title": "GRPO：研究背景、数学原理与代码实现",
+      "date": "2026-07-02",
+      "author": "Haichao Wang",
+      "readingTime": 7,
+      "tags": [
+        "llm",
+        "reinforcement-learning",
+        "grpo"
+      ],
+      "excerpt": "介绍 GRPO 的研究背景、核心数学原理与代码实现。"
+    },
+    {
       "slug": "training-free-survey",
+      "path": "training-free-survey.md",
       "title": "A Brief Survey on Training-Free Long Video Generation",
       "date": "2026-04-21",
       "author": "Haichao Wang",
-      "readingTime": 17,
-      "tags": ["video-generation", "diffusion", "survey", "efficient-ai"],
-      "excerpt": "A research report about training-free long video generation, covering four parts: 1) a general review of current development from different aspects, 2) a summary of base models and benchmarks, 3) discussion, limitations and potential work, and 4) conclusion."
+      "readingTime": 21,
+      "tags": [
+        "video-generation",
+        "diffusion",
+        "survey",
+        "efficient-ai"
+      ],
+      "excerpt": "This is a research report about training-free long video generation, including four main sections: 1) A general review of current development of training-free long video generation from different aspects. 2) A summary of base models and benchmarks. 3) Discussion, limitation and potential works. 4) Conclusion"
     }
   ]
 }
