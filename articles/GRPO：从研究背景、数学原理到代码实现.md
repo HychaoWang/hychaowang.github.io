@@ -1,13 +1,13 @@
 ---
 slug: "grpo"
-title: "GRPO: From Motivation and Math to a Minimal Implementation"
+title: "An Brief Introduction to GRPO"
 date: "2026-07-02"
 author: "Haichao Wang"
 tags: ["llm", "reinforcement-learning", "grpo"]
 abstract: "A practical introduction to Group Relative Policy Optimization (GRPO), covering why it removes the critic from PPO-style LLM training, how group-relative advantages are computed, and how to implement the core idea with TRL and PyTorch."
 ---
 
-# GRPO: From Motivation and Math to a Minimal Implementation
+# An Brief Introduction to GRPO
 
 Large language model training has gradually moved from a simple "pretraining plus supervised fine-tuning" pipeline toward a richer post-training stack. Pretraining gives the model broad linguistic and factual ability. Supervised fine-tuning teaches it to follow instructions. Reinforcement learning then pushes the model toward task-specific objectives: more accurate answers, more reliable reasoning, stricter formatting, or better alignment with preferences.
 
