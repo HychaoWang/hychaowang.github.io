@@ -3,16 +3,16 @@
     {
       "slug": "grpo",
       "path": "GRPO：从研究背景、数学原理到代码实现.md",
-      "title": "GRPO：研究背景、数学原理与代码实现",
+      "title": "GRPO: From Motivation and Math to a Minimal Implementation",
       "date": "2026-07-02",
       "author": "Haichao Wang",
-      "readingTime": 6,
+      "readingTime": 9,
       "tags": [
         "llm",
         "reinforcement-learning",
         "grpo"
       ],
-      "excerpt": "介绍 GRPO 的研究背景、核心数学原理与代码实现。"
+      "excerpt": "A practical introduction to Group Relative Policy Optimization (GRPO), covering why it removes the critic from PPO-style LLM training, how group-relative advantages are computed, and how to implement the core idea with TRL and PyTorch."
     },
     {
       "slug": "training-free-survey",
