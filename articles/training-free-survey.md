@@ -1,4 +1,7 @@
 ---
+slug: "training-free-survey"
+articleId: "article-002"
+language: "en"
 title: "A Brief Survey on Training-Free Long Video Generation"
 date: "2026-04-21"
 author: "Haichao Wang"

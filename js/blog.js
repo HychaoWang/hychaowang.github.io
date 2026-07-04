@@ -7,9 +7,29 @@ function activeTag() {
   return new URLSearchParams(location.search).get("tag");
 }
 
+function defaultLanguagePosts(articles) {
+  const grouped = new Map();
+  const standalone = [];
+
+  articles.forEach(article => {
+    if (!article.articleId) {
+      standalone.push(article);
+      return;
+    }
+    if (!grouped.has(article.articleId)) grouped.set(article.articleId, []);
+    grouped.get(article.articleId).push(article);
+  });
+
+  const preferred = [...grouped.values()].map(group =>
+    group.find(article => article.language === "en") || group[0]
+  );
+
+  return [...preferred, ...standalone];
+}
+
 function renderPosts(articles) {
   const tag = activeTag();
-  const posts = [...articles].sort((a, b) => b.date.localeCompare(a.date));
+  const posts = defaultLanguagePosts(articles).sort((a, b) => b.date.localeCompare(a.date));
   const filtered = tag ? posts.filter(a => (a.tags || []).includes(tag)) : posts;
 
   if (tag) {

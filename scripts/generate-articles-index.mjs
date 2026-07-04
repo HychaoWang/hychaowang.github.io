@@ -59,6 +59,36 @@ function parseList(value) {
     .filter(Boolean);
 }
 
+function normalizeLanguage(value) {
+  const lang = String(value || "").trim().toLowerCase().replace("_", "-");
+  if (["cn", "chs", "zh-hans", "chinese"].includes(lang)) return "zh";
+  if (["eng", "english"].includes(lang)) return "en";
+  return lang;
+}
+
+function inferLanguage(...values) {
+  const text = values.filter(Boolean).join(" ");
+  if (!text) return "";
+  const cjkCount = (text.match(/[\u3400-\u9fff]/g) || []).length;
+  return cjkCount >= 4 ? "zh" : "en";
+}
+
+function parseTranslationMap(value) {
+  if (!value) return {};
+  return Object.fromEntries(
+    String(value)
+      .trim()
+      .replace(/^\{|\}$/g, "")
+      .split(",")
+      .map(pair => pair.trim().split(/[:=]/))
+      .map(([lang, target]) => [
+        normalizeLanguage(lang?.replace(/^['"]|['"]$/g, "")),
+        String(target || "").trim().replace(/^['"]|['"]$/g, ""),
+      ])
+      .filter(([lang, target]) => lang && target)
+  );
+}
+
 function plainText(markdown) {
   return markdown
     .replace(/```[\s\S]*?```/g, " ")
@@ -114,8 +144,13 @@ async function main() {
     const title = meta.title || firstHeading(body) || basename;
     const slug = uniqueSlug(slugify(meta.slug || basename), file, usedSlugs);
     const excerpt = meta.excerpt || meta.abstract || plainText(firstParagraph(body)).slice(0, 240);
+    const language = normalizeLanguage(meta.language || meta.lang) ||
+      inferLanguage(title, excerpt, file);
+    const articleId = meta.articleId || meta.article_id || meta.translationKey || meta.translation_key;
+    const translationKey = meta.translationKey || meta.translation_key;
+    const translations = parseTranslationMap(meta.translations);
 
-    articles.push({
+    const article = {
       slug,
       path: file,
       title,
@@ -124,7 +159,14 @@ async function main() {
       readingTime: Number(meta.readingTime) || estimateReadingTime(body),
       tags: parseList(meta.tags),
       excerpt,
-    });
+    };
+
+    if (language) article.language = language;
+    if (articleId) article.articleId = articleId;
+    if (translationKey) article.translationKey = translationKey;
+    if (Object.keys(translations).length) article.translations = translations;
+
+    articles.push(article);
   }
 
   articles.sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title));

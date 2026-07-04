@@ -25,6 +25,108 @@ function fmtDate(iso) {
     : d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
 }
 
+const LANGUAGE_LABELS = {
+  en: "English",
+  zh: "中文",
+  "zh-cn": "简体中文",
+  "zh-tw": "繁體中文",
+};
+
+function normalizeLanguage(value) {
+  const lang = String(value || "").trim().toLowerCase().replace("_", "-");
+  if (["cn", "chs", "zh-hans", "chinese"].includes(lang)) return "zh";
+  if (["eng", "english"].includes(lang)) return "en";
+  return lang;
+}
+
+function languageLabel(value) {
+  const lang = normalizeLanguage(value);
+  return LANGUAGE_LABELS[lang] || value;
+}
+
+function inferLanguage(...values) {
+  const text = values.filter(Boolean).join(" ");
+  if (!text) return "";
+  const cjkCount = (text.match(/[\u3400-\u9fff]/g) || []).length;
+  return cjkCount >= 4 ? "zh" : "en";
+}
+
+function articleLanguage(article, meta = {}) {
+  return normalizeLanguage(meta.language || article?.language) ||
+    inferLanguage(article?.title, article?.excerpt, article?.path);
+}
+
+function parseTranslationMap(value) {
+  if (!value) return {};
+  if (typeof value === "string") {
+    return Object.fromEntries(
+      value
+        .split(",")
+        .map(pair => pair.trim().split(/[:=]/))
+        .map(([lang, target]) => [normalizeLanguage(lang), String(target || "").trim()])
+        .filter(([lang, target]) => lang && target)
+    );
+  }
+  if (typeof value !== "object") return {};
+  return Object.fromEntries(
+    Object.entries(value)
+      .map(([lang, target]) => [normalizeLanguage(lang), String(target || "").trim()])
+      .filter(([, target]) => target)
+  );
+}
+
+function articleUrl(targetSlug) {
+  return `view.html?slug=${encodeURIComponent(targetSlug)}`;
+}
+
+function translationCandidates(article, articles, meta) {
+  const currentSlug = article?.slug || slug();
+  const currentLanguage = articleLanguage(article, meta);
+  const candidates = new Map();
+
+  const addCandidate = (target, languageHint) => {
+    if (!target || target.slug === currentSlug) return;
+    const lang = normalizeLanguage(languageHint) || articleLanguage(target);
+    if (lang) candidates.set(lang, { ...target, language: target.language || lang });
+  };
+
+  const translations = {
+    ...parseTranslationMap(article?.translations),
+    ...parseTranslationMap(meta.translations),
+  };
+  Object.entries(translations).forEach(([lang, targetSlug]) => {
+    const target = articles.find(item => item.slug === targetSlug);
+    if (target) addCandidate(target, lang);
+  });
+
+  const key = meta.articleId || article?.articleId || meta.translationKey || article?.translationKey;
+  if (key) {
+    articles
+      .filter(item => (item.articleId || item.translationKey) === key)
+      .forEach(addCandidate);
+  }
+
+  if (currentLanguage && translations[currentLanguage] === currentSlug) {
+    candidates.delete(currentLanguage);
+  }
+
+  return [...candidates.values()]
+    .filter(target => ["en", "zh", "zh-cn", "zh-tw"].includes(normalizeLanguage(target.language)))
+    .sort((a, b) => languageLabel(a.language).localeCompare(languageLabel(b.language)));
+}
+
+function renderLanguageSwitch(article, articles, meta) {
+  const targets = translationCandidates(article, articles, meta);
+  if (!targets.length) return "";
+
+  const links = targets.map(target => {
+    const label = languageLabel(target.language);
+    return `<a class="language-switch" href="${articleUrl(target.slug)}" lang="${escapeHtml(normalizeLanguage(target.language))}" hreflang="${escapeHtml(normalizeLanguage(target.language))}" aria-label="Read this article in ${escapeHtml(label)}">${escapeHtml(label)}</a>`;
+  }).join("");
+
+  return `<nav class="language-switcher" aria-label="Article language">${links}</nav>`;
+}
+
 function parseFrontmatter(src) {
   const normalized = src.replace(/^\uFEFF/, "").replace(/\r\n?/g, "\n");
   const match = normalized.match(/^---\n([\s\S]*?)\n---(?:\n|$)([\s\S]*)$/);
@@ -300,6 +402,7 @@ async function renderArticle() {
   const abstract = meta.abstract || article?.excerpt || "";
   const tags = article?.tags || [];
   const readingTime = article?.readingTime;
+  const languageSwitch = renderLanguageSwitch(article, articles, meta);
 
   document.title = `${title} | Hychao's Blog`;
   await loadLibs();
@@ -308,10 +411,13 @@ async function renderArticle() {
   root.innerHTML = `
     <p class="article-back"><a href="../index.html">← Back to Posts</a></p>
     <header class="article-reading-header">
-      <div class="article-meta">
-        ${date ? `<time datetime="${escapeHtml(date)}">${escapeHtml(fmtDate(date))}</time>` : ""}
-        ${author ? `<span>${escapeHtml(author)}</span>` : ""}
-        ${readingTime ? `<span>${escapeHtml(readingTime)} min read</span>` : ""}
+      <div class="article-kicker">
+        <div class="article-meta">
+          ${date ? `<time datetime="${escapeHtml(date)}">${escapeHtml(fmtDate(date))}</time>` : ""}
+          ${author ? `<span>${escapeHtml(author)}</span>` : ""}
+          ${readingTime ? `<span>${escapeHtml(readingTime)} min read</span>` : ""}
+        </div>
+        ${languageSwitch}
       </div>
       <h1 class="article-reading-title">${escapeHtml(title)}</h1>
       <div class="tag-row">

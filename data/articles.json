@@ -1,8 +1,40 @@
 {
   "articles": [
     {
+      "slug": "affectgpt-r1-zh",
+      "path": "AffectGPT-R1 的实现.md",
+      "title": "AffectGPT-R1 的实现",
+      "date": "2026-07-04",
+      "author": "Haichao Wang",
+      "readingTime": 5,
+      "tags": [
+        "affectgpt",
+        "multimodal",
+        "reinforcement-learning"
+      ],
+      "excerpt": "冷启动使用 MERCaption+ 数据集。该数据集提供了额外的 description 字段，可以作为 thinking 部分的监督信号。",
+      "language": "zh",
+      "articleId": "article-003"
+    },
+    {
+      "slug": "affectgpt-r1",
+      "path": "Implementation of AffectGPT-R1.md",
+      "title": "Implementation of AffectGPT-R1",
+      "date": "2026-07-04",
+      "author": "Haichao Wang",
+      "readingTime": 7,
+      "tags": [
+        "affectgpt",
+        "multimodal",
+        "reinforcement-learning"
+      ],
+      "excerpt": "The cold start stage uses large scale, coarse grained descriptive emotion data so that the model first acquires basic multimodal emotion understanding and output format alignment. It also provides a stable initialization for later reinforce",
+      "language": "en",
+      "articleId": "article-003"
+    },
+    {
       "slug": "grpo",
-      "path": "GRPO：从研究背景、数学原理到代码实现.md",
+      "path": "introduction_GRPO.md",
       "title": "An Brief Introduction to GRPO",
       "date": "2026-07-02",
       "author": "Haichao Wang",
@@ -12,7 +44,9 @@
         "reinforcement-learning",
         "grpo"
       ],
-      "excerpt": "A practical introduction to Group Relative Policy Optimization (GRPO), covering why it removes the critic from PPO-style LLM training, how group-relative advantages are computed, and how to implement the core idea with TRL and PyTorch."
+      "excerpt": "A practical introduction to Group Relative Policy Optimization (GRPO), covering why it removes the critic from PPO-style LLM training, how group-relative advantages are computed, and how to implement the core idea with TRL and PyTorch.",
+      "language": "en",
+      "articleId": "article-001"
     },
     {
       "slug": "training-free-survey",
@@ -27,7 +61,9 @@
         "survey",
         "efficient-ai"
       ],
-      "excerpt": "This is a research report about training-free long video generation, including four main sections: 1) A general review of current development of training-free long video generation from different aspects. 2) A summary of base models and benchmarks. 3) Discussion, limitation and potential works. 4) Conclusion"
+      "excerpt": "This is a research report about training-free long video generation, including four main sections: 1) A general review of current development of training-free long video generation from different aspects. 2) A summary of base models and benchmarks. 3) Discussion, limitation and potential works. 4) Conclusion",
+      "language": "en",
+      "articleId": "article-002"
     }
   ]
 }
