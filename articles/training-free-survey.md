@@ -38,8 +38,6 @@ toc:
   - { id: sec-conclusion, text: Conclusion }
 ---
 
-## Training-free Long Video Generation {#sec-long}
-
 Long video generation with video diffusion models is a fundamental problem in artificial intelligence. Due to the constrain of computation and data resources, current video diffusion models are mainly trained on short video clips, posing a key challenge in generating long video with training-free frameworks. In this section, works from four aspects, including **consistency, efficiency, multi-event and editing**, are discussed.
 
 ### Consistency {#sec-consistency}
