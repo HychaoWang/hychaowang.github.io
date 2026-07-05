@@ -4,7 +4,6 @@ const CDN = {
   katexJs: "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js",
   katexCss: "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css",
   hljsJs: "https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/highlight.min.js",
-  hljsCss: "https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/styles/github.min.css",
 };
 
 function slug() {
@@ -251,7 +250,7 @@ async function loadLibs() {
   await Promise.allSettled([
     window.DOMPurify ? Promise.resolve() : loadScript(CDN.domPurify),
     window.katex ? Promise.resolve() : loadScript(CDN.katexJs).then(() => loadCss(CDN.katexCss)),
-    window.hljs ? Promise.resolve() : loadScript(CDN.hljsJs).then(() => loadCss(CDN.hljsCss)),
+    window.hljs ? Promise.resolve() : loadScript(CDN.hljsJs),
   ]);
 }
 

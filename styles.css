@@ -28,6 +28,8 @@
 html {
   scroll-behavior: smooth;
   scrollbar-gutter: stable;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -753,12 +755,45 @@ img {
 
 .prose-article pre code {
   display: block;
-  background: none;
+  background: transparent !important;
   padding: 0;
-  color: inherit;
+  color: #24292f !important;
   font-size: 0.9rem;
   line-height: 1.62;
   min-width: max-content;
+}
+
+.prose-article pre code.hljs {
+  background: transparent !important;
+  color: #24292f !important;
+}
+
+.prose-article pre code :is(.hljs-comment, .hljs-quote) {
+  color: #6a737d !important;
+}
+
+.prose-article pre code :is(.hljs-keyword, .hljs-selector-tag, .hljs-subst) {
+  color: #d73a49 !important;
+}
+
+.prose-article pre code :is(.hljs-number, .hljs-literal, .hljs-variable, .hljs-template-variable, .hljs-tag .hljs-attr) {
+  color: #005cc5 !important;
+}
+
+.prose-article pre code :is(.hljs-string, .hljs-doctag) {
+  color: #032f62 !important;
+}
+
+.prose-article pre code :is(.hljs-title, .hljs-section, .hljs-selector-id) {
+  color: #6f42c1 !important;
+}
+
+.prose-article pre code :is(.hljs-type, .hljs-class .hljs-title) {
+  color: #22863a !important;
+}
+
+.prose-article pre code :is(.hljs-tag, .hljs-name, .hljs-attribute) {
+  color: #22863a !important;
 }
 
 .prose-article pre::before {
@@ -1019,6 +1054,10 @@ img {
     width: min(100% - 24px, var(--max-width));
   }
 
+  .site-header {
+    position: static;
+  }
+
   .header-inner {
     gap: 10px;
     padding: 16px 0 14px;
@@ -1125,13 +1164,26 @@ img {
     max-height: 62vh;
     margin-right: -12px;
     margin-left: -12px;
-    padding: 42px 14px 16px;
+    padding: 40px 12px 14px;
     border-radius: 8px;
   }
 
   .prose-article pre code {
-    font-size: 0.82rem;
-    line-height: 1.58;
+    font-size: 0.76rem;
+    line-height: 1.5;
+    min-width: 0;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .prose-article pre::before {
+    left: 12px;
+    font-size: 0.68rem;
+  }
+
+  .code-copy {
+    right: 8px;
+    font-size: 0.68rem;
   }
 
   .article-table-wrap {
