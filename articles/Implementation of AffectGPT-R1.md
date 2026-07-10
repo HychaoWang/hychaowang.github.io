@@ -5,6 +5,7 @@ language: "en"
 title: "Implementation of AffectGPT-R1"
 author: "Haichao Wang"
 tags: ["affectgpt", "multimodal", "reinforcement-learning"]
+visibility: "public"
 ---
 
 ## Cold Start

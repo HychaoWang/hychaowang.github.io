@@ -5,6 +5,7 @@ language: "zh"
 title: "AffectGPT-R1 的实现"
 author: "Haichao Wang"
 tags: ["affectgpt", "multimodal", "reinforcement-learning"]
+visibility: "public"
 ---
 
 ## Cold Start

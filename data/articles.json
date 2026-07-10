@@ -1,6 +1,24 @@
 {
   "articles": [
     {
+      "slug": "video-long-memory-zh",
+      "path": "视频长程记忆：现状、架构与未来.md",
+      "title": "视频长程记忆：现状、架构与未来",
+      "date": "2026-07-10",
+      "author": "Haichao Wang",
+      "readingTime": 26,
+      "tags": [
+        "video-understanding",
+        "multimodal",
+        "long-memory",
+        "survey"
+      ],
+      "excerpt": "视频长程记忆并不是单一模型能力，而是表示、压缩、检索、时间定位与推理之间的系统协同问题。本文梳理长视频理解、流式视频理解以及长时域视频建模中的主要方法、基准、产业形态和未来方向。",
+      "visibility": "private",
+      "language": "zh",
+      "articleId": "article-004"
+    },
+    {
       "slug": "affectgpt-r1-zh",
       "path": "AffectGPT-R1 的实现.md",
       "title": "AffectGPT-R1 的实现",
@@ -13,6 +31,7 @@
         "reinforcement-learning"
       ],
       "excerpt": "冷启动使用 MERCaption+ 数据集。该数据集提供了额外的 description 字段，可以作为 thinking 部分的监督信号。",
+      "visibility": "public",
       "language": "zh",
       "articleId": "article-003"
     },
@@ -29,6 +48,7 @@
         "reinforcement-learning"
       ],
       "excerpt": "The cold start stage uses large scale, coarse grained descriptive emotion data so that the model first acquires basic multimodal emotion understanding and output format alignment. It also provides a stable initialization for later reinforce",
+      "visibility": "public",
       "language": "en",
       "articleId": "article-003"
     },
@@ -45,6 +65,7 @@
         "grpo"
       ],
       "excerpt": "A practical introduction to Group Relative Policy Optimization (GRPO), covering why it removes the critic from PPO-style LLM training, how group-relative advantages are computed, and how to implement the core idea with TRL and PyTorch.",
+      "visibility": "public",
       "language": "en",
       "articleId": "article-001"
     },
@@ -62,6 +83,7 @@
         "efficient-ai"
       ],
       "excerpt": "This is a research report about training-free long video generation, including four main sections: 1) A general review of current development of training-free long video generation from different aspects. 2) A summary of base models and benchmarks. 3) Discussion, limitation and potential works. 4) Conclusion",
+      "visibility": "public",
       "language": "en",
       "articleId": "article-002"
     }

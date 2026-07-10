@@ -52,6 +52,7 @@ title: "Article Title"
 date: "2026-01-01"
 author: "Haichao Wang"
 tags: ["tag-one", "tag-two"]
+visibility: "public"
 abstract: "One paragraph abstract."
 ---
 
@@ -59,6 +60,10 @@ abstract: "One paragraph abstract."
 
 Body content...
 ```
+
+Use `visibility: "private"` to hide an article from the homepage, archive, tags,
+language switcher, and article view. This is display control for the static site,
+not access control for the raw Markdown file.
 
 Heading anchors use `{#id}` syntax. Raw HTML is supported inline (for tables and figures).
 

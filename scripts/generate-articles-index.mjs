@@ -125,6 +125,19 @@ function normalizeDate(value, fallback) {
   return fallback.toISOString().slice(0, 10);
 }
 
+function normalizeVisibility(meta) {
+  const raw = meta.visibility || meta.status || meta.access;
+  if (raw) {
+    const visibility = String(raw).trim().toLowerCase();
+    if (["private", "draft", "hidden"].includes(visibility)) return "private";
+    if (["public", "published", "visible"].includes(visibility)) return "public";
+  }
+
+  if (String(meta.private || "").trim().toLowerCase() === "true") return "private";
+  if (String(meta.public || "").trim().toLowerCase() === "false") return "private";
+  return "public";
+}
+
 async function main() {
   const files = (await readdir(articlesDir))
     .filter(file => file.endsWith(".md"))
@@ -159,6 +172,7 @@ async function main() {
       readingTime: Number(meta.readingTime) || estimateReadingTime(body),
       tags: parseList(meta.tags),
       excerpt,
+      visibility: normalizeVisibility(meta),
     };
 
     if (language) article.language = language;

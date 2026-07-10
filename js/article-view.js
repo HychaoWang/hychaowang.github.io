@@ -78,13 +78,17 @@ function articleUrl(targetSlug) {
   return `view.html?slug=${encodeURIComponent(targetSlug)}`;
 }
 
+function isPublicArticle(article) {
+  return (article?.visibility || "public") === "public";
+}
+
 function translationCandidates(article, articles, meta) {
   const currentSlug = article?.slug || slug();
   const currentLanguage = articleLanguage(article, meta);
   const candidates = new Map();
 
   const addCandidate = (target, languageHint) => {
-    if (!target || target.slug === currentSlug) return;
+    if (!target || target.slug === currentSlug || !isPublicArticle(target)) return;
     const lang = normalizeLanguage(languageHint) || articleLanguage(target);
     if (lang) candidates.set(lang, { ...target, language: target.language || lang });
   };
@@ -391,6 +395,10 @@ async function renderArticle() {
   const indexResponse = await fetchRequired("../data/articles.json");
   const { articles } = await indexResponse.json();
   const article = articles.find(item => item.slug === articleSlug);
+  if (!article || !isPublicArticle(article)) {
+    root.innerHTML = '<p class="muted">Article unavailable.</p>';
+    return;
+  }
   const markdownPath = article?.path || `${articleSlug}.md`;
   const markdownResponse = await fetchRequired(encodeURI(markdownPath));
   const { meta, body } = parseFrontmatter(await markdownResponse.text());
@@ -403,12 +411,12 @@ async function renderArticle() {
   const readingTime = article?.readingTime;
   const languageSwitch = renderLanguageSwitch(article, articles, meta);
 
-  document.title = `${title} | Hychao's Blog`;
+  document.title = `${title} | Haichao Wang`;
   await loadLibs();
   const { html, math } = renderMarkdown(body);
 
   root.innerHTML = `
-    <p class="article-back"><a href="../index.html">← Back to Posts</a></p>
+    <p class="article-back"><a href="../blogs.html">Back to Blogs</a></p>
     <header class="article-reading-header">
       <div class="article-kicker">
         <div class="article-meta">
@@ -420,7 +428,7 @@ async function renderArticle() {
       </div>
       <h1 class="article-reading-title">${escapeHtml(title)}</h1>
       <div class="tag-row">
-        ${tags.map(tag => `<a class="tag-pill" href="../index.html?tag=${encodeURIComponent(tag)}">#${escapeHtml(tag)}</a>`).join("")}
+        ${tags.map(tag => `<a class="tag-pill" href="../blogs.html?tag=${encodeURIComponent(tag)}">#${escapeHtml(tag)}</a>`).join("")}
       </div>
       ${abstract ? `<div class="article-abstract-box"><strong>Abstract.</strong> ${escapeHtml(abstract)}</div>` : ""}
     </header>

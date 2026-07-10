@@ -6,6 +6,7 @@ title: "An Brief Introduction to GRPO"
 date: "2026-07-02"
 author: "Haichao Wang"
 tags: ["llm", "reinforcement-learning", "grpo"]
+visibility: "public"
 abstract: "A practical introduction to Group Relative Policy Optimization (GRPO), covering why it removes the critic from PPO-style LLM training, how group-relative advantages are computed, and how to implement the core idea with TRL and PyTorch."
 ---
 

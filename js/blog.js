@@ -27,9 +27,13 @@ function defaultLanguagePosts(articles) {
   return [...preferred, ...standalone];
 }
 
+function publicArticles(articles) {
+  return articles.filter(article => (article.visibility || "public") === "public");
+}
+
 function renderPosts(articles) {
   const tag = activeTag();
-  const posts = defaultLanguagePosts(articles).sort((a, b) => b.date.localeCompare(a.date));
+  const posts = defaultLanguagePosts(publicArticles(articles)).sort((a, b) => b.date.localeCompare(a.date));
   const filtered = tag ? posts.filter(a => (a.tags || []).includes(tag)) : posts;
 
   if (tag) {
@@ -38,7 +42,7 @@ function renderPosts(articles) {
     const lead = document.getElementById("blog-list-lead");
     if (head) head.hidden = false;
     if (title) title.innerHTML = `Posts tagged <span class="tag-chip">#${tag}</span>`;
-    if (lead) lead.innerHTML = `${filtered.length} post${filtered.length === 1 ? "" : "s"} · <a href="index.html">all posts</a>`;
+    if (lead) lead.innerHTML = `${filtered.length} post${filtered.length === 1 ? "" : "s"} · <a href="blogs.html">all blogs</a>`;
   }
 
   const list = document.getElementById("post-list");
@@ -51,17 +55,16 @@ function renderPosts(articles) {
     const meta = [fmtDate(a.date)];
     if (a.readingTime) meta.push(`${a.readingTime} min`);
     return `
-    <article class="post-card">
-      <a class="post-card-link" href="articles/view.html?slug=${a.slug}" aria-label="${a.title}"></a>
-      <h2 class="post-title">${a.title}</h2>
+    <li class="post-card">
+      <h2 class="post-title"><a href="articles/view.html?slug=${a.slug}">${a.title}</a></h2>
+      <div class="post-meta">${meta.join(" · ")}</div>
       <p class="post-excerpt">${a.excerpt}</p>
-      <footer class="post-meta">${meta.join(" · ")}</footer>
-    </article>`;
+    </li>`;
   }).join("\n");
 }
 
 async function renderBlog() {
-  const res = await fetch("data/articles.json");
+  const res = await fetch(`data/articles.json?v=${Date.now()}`, { cache: "no-store" });
   const { articles } = await res.json();
 
   renderPosts(articles);

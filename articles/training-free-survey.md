@@ -6,6 +6,7 @@ title: "A Brief Survey on Training-Free Long Video Generation"
 date: "2026-04-21"
 author: "Haichao Wang"
 tags: ["video-generation", "diffusion", "survey", "efficient-ai"]
+visibility: "public"
 abstract: "This is a research report about training-free long video generation, including four main sections: 1) A general review of current development of training-free long video generation from different aspects. 2) A summary of base models and benchmarks. 3) Discussion, limitation and potential works. 4) Conclusion"
 toc:
   - id: sec-long
