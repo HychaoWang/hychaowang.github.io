@@ -44,7 +44,7 @@ function renderResearch(experience) {
 }
 
 async function renderAbout() {
-  const profileRes = await fetch("data/profile.json");
+  const profileRes = await fetch(`data/profile.json?v=${Date.now()}`, { cache: "no-store" });
   const p = await profileRes.json();
   const focus = p.focus || "Efficient AI, Computational Video, and Machine Learning";
 
