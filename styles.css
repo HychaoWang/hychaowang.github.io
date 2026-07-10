@@ -637,7 +637,7 @@ h4:hover .heading-anchor {
   .blog-shell,
   .article-page {
     width: 678px;
-    margin-right: calc((100vw - var(--layout-max)) / 2 + 154px);
+    margin-right: 0;
   }
 }
 
@@ -653,7 +653,7 @@ h4:hover .heading-anchor {
   .blog-shell,
   .article-page {
     width: 730px;
-    margin-right: calc((100vw - var(--layout-max)) / 2 + 154px);
+    margin-right: 0;
   }
 }
 
