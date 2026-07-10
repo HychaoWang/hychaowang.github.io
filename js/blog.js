@@ -31,6 +31,30 @@ function publicArticles(articles) {
   return articles.filter(article => (article.visibility || "public") === "public");
 }
 
+function renderTags(articles) {
+  const root = document.getElementById("blog-tags-root");
+  if (!root) return;
+
+  const counts = new Map();
+  publicArticles(articles).forEach(article => (article.tags || []).forEach(tag => {
+    counts.set(tag, (counts.get(tag) || 0) + 1);
+  }));
+
+  if (!counts.size) {
+    root.hidden = true;
+    return;
+  }
+
+  const active = activeTag();
+  root.innerHTML = [...counts.entries()]
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .map(([tag, count]) => {
+      const href = tag === active ? "blogs.html" : `blogs.html?tag=${encodeURIComponent(tag)}`;
+      const current = tag === active ? ' aria-current="page"' : "";
+      return `<a class="tag-cloud-item" href="${href}"${current}>#${tag}<span class="tag-cloud-count">${count}</span></a>`;
+    }).join("\n");
+}
+
 function renderPosts(articles) {
   const tag = activeTag();
   const posts = defaultLanguagePosts(publicArticles(articles)).sort((a, b) => b.date.localeCompare(a.date));
@@ -67,6 +91,7 @@ async function renderBlog() {
   const res = await fetch(`data/articles.json?v=${Date.now()}`, { cache: "no-store" });
   const { articles } = await res.json();
 
+  renderTags(articles);
   renderPosts(articles);
 
   const yr = document.getElementById("footer-year");

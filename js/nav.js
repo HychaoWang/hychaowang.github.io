@@ -3,7 +3,6 @@
     { href: "index.html", label: "About" },
     { href: "publications.html", label: "Publications" },
     { href: "blogs.html", label: "Blogs" },
-    { href: "tags.html", label: "Tags" },
   ];
 
   function currentPage() {

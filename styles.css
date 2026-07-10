@@ -413,6 +413,10 @@ pre {
   gap: 0.45em 0.75em;
 }
 
+.blog-tag-cloud {
+  margin: 0 0 1.25em;
+}
+
 .tag-pill,
 .tag-chip,
 .language-switch,
@@ -420,6 +424,16 @@ pre {
   font-family: var(--sans);
   font-weight: 700;
   text-transform: uppercase;
+}
+
+.tag-cloud-count {
+  margin-left: 0.2em;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.tag-cloud a[aria-current="page"] {
+  text-decoration: overline;
 }
 
 .article-reading-header {
