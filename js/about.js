@@ -46,10 +46,11 @@ function renderResearch(experience) {
 async function renderAbout() {
   const profileRes = await fetch("data/profile.json");
   const p = await profileRes.json();
+  const focus = p.focus || "Efficient AI, Computational Video, and Machine Learning";
 
   document.title = p.name;
   const desc = document.querySelector('meta[name="description"]');
-  if (desc) desc.content = `${p.name}, ${p.title} at ${p.affiliation} working on ${p.focus}.`;
+  if (desc) desc.content = `${p.name}, ${p.title} at ${p.affiliation} working on ${focus}.`;
 
   document.getElementById("about").innerHTML = `
     <h2>About Me</h2>
@@ -58,7 +59,7 @@ async function renderAbout() {
     <hr>
     <h2>Research Interests</h2>
     <ul>
-      ${p.focus.split(",").map(item => `<li>${item.trim()}</li>`).join("\n")}
+      ${focus.split(",").map(item => `<li>${item.trim()}</li>`).join("\n")}
     </ul>`;
 
   document.getElementById("education").innerHTML = renderEducation(p.education);
