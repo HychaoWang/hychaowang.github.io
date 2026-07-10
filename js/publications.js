@@ -7,7 +7,6 @@ function renderAuthors(authors) {
 
 function renderPublications(publications) {
   return `
-    <p class="note-line">(†: equal contribution / first student author where noted)</p>
     <ul class="plain-list publication-list">
       ${publications.map(pub => `
       <li>
