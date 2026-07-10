@@ -439,8 +439,21 @@ async function renderArticle() {
   if (year) year.textContent = new Date().getFullYear();
 }
 
-renderArticle().catch(error => {
-  console.error("article-view.js:", error);
-  document.getElementById("article-root").innerHTML =
-    '<div class="article-error"><h1>Article unavailable</h1><p>The Markdown file or renderer could not be loaded. Please try again later.</p></div>';
-});
+async function initArticle() {
+  try {
+    await renderArticle();
+  } catch (error) {
+    console.error("article-view.js:", error);
+    const root = document.getElementById("article-root");
+    if (root) {
+      root.innerHTML =
+        '<div class="article-error"><h1>Article unavailable</h1><p>The Markdown file or renderer could not be loaded. Please try again later.</p></div>';
+    }
+  }
+}
+
+window.__pages = window.__pages || {};
+window.__pages.article = initArticle;
+if (!window.__softNavLoading) {
+  initArticle();
+}

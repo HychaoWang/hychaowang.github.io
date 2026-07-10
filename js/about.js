@@ -69,4 +69,8 @@ async function renderAbout() {
   if (yr) yr.textContent = new Date().getFullYear();
 }
 
-renderAbout().catch(err => console.error("about.js:", err));
+window.__pages = window.__pages || {};
+window.__pages.about = renderAbout;
+if (!window.__softNavLoading) {
+  renderAbout().catch(err => console.error("about.js:", err));
+}

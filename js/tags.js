@@ -25,4 +25,8 @@ async function renderTags() {
   if (yr) yr.textContent = new Date().getFullYear();
 }
 
-renderTags().catch(err => console.error("tags.js:", err));
+window.__pages = window.__pages || {};
+window.__pages.tags = renderTags;
+if (!window.__softNavLoading) {
+  renderTags().catch(err => console.error("tags.js:", err));
+}

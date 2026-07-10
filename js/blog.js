@@ -98,4 +98,8 @@ async function renderBlog() {
   if (yr) yr.textContent = new Date().getFullYear();
 }
 
-renderBlog().catch(err => console.error("blog.js:", err));
+window.__pages = window.__pages || {};
+window.__pages.blogs = renderBlog;
+if (!window.__softNavLoading) {
+  renderBlog().catch(err => console.error("blog.js:", err));
+}

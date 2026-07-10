@@ -27,4 +27,8 @@ async function renderPublicationPage() {
   if (yr) yr.textContent = new Date().getFullYear();
 }
 
-renderPublicationPage().catch(err => console.error("publications.js:", err));
+window.__pages = window.__pages || {};
+window.__pages.publications = renderPublicationPage;
+if (!window.__softNavLoading) {
+  renderPublicationPage().catch(err => console.error("publications.js:", err));
+}
