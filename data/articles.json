@@ -1,28 +1,10 @@
 {
   "articles": [
     {
-      "slug": "video-long-memory-zh",
-      "path": "视频长程记忆：现状、架构与未来.md",
-      "title": "视频长程记忆：现状、架构与未来",
-      "date": "2026-07-10",
-      "author": "Haichao Wang",
-      "readingTime": 26,
-      "tags": [
-        "video-understanding",
-        "multimodal",
-        "long-memory",
-        "survey"
-      ],
-      "excerpt": "视频长程记忆并不是单一模型能力，而是表示、压缩、检索、时间定位与推理之间的系统协同问题。本文梳理长视频理解、流式视频理解以及长时域视频建模中的主要方法、基准、产业形态和未来方向。",
-      "visibility": "private",
-      "language": "zh",
-      "articleId": "article-004"
-    },
-    {
       "slug": "affectgpt-r1-zh",
       "path": "AffectGPT-R1 的实现.md",
       "title": "AffectGPT-R1 的实现",
-      "date": "2026-07-04",
+      "date": "2026-07-10",
       "author": "Haichao Wang",
       "readingTime": 5,
       "tags": [
@@ -39,7 +21,7 @@
       "slug": "affectgpt-r1",
       "path": "Implementation of AffectGPT-R1.md",
       "title": "Implementation of AffectGPT-R1",
-      "date": "2026-07-04",
+      "date": "2026-07-10",
       "author": "Haichao Wang",
       "readingTime": 7,
       "tags": [
@@ -51,6 +33,60 @@
       "visibility": "public",
       "language": "en",
       "articleId": "article-003"
+    },
+    {
+      "slug": "lvlm",
+      "path": "LVLM.md",
+      "title": "Notes about Video Long Memory",
+      "date": "2026-07-10",
+      "author": "Haichao Wang",
+      "readingTime": 12,
+      "tags": [],
+      "excerpt": "给定一个长视频流和一个后续查询，模型不能把所有视觉内容一次性放进上下文，而必须在有限计算、有限显存、有限 token budget 下，持续地选择、压缩、保存、更新、检索视频历史信息，并利用这些记忆回答跨时间问题。",
+      "visibility": "public",
+      "language": "zh"
+    },
+    {
+      "slug": "notes-of-video-long-memory",
+      "path": "Notes of Video Long Memory.md",
+      "title": "Notes of Video Long Memory",
+      "date": "2026-07-10",
+      "author": "Haichao Wang",
+      "readingTime": 2,
+      "tags": [],
+      "excerpt": "",
+      "visibility": "public",
+      "language": "en"
+    },
+    {
+      "slug": "deep-research-report",
+      "path": "deep-research-report.md",
+      "title": "Video Long Memory",
+      "date": "2026-07-10",
+      "author": "Haichao Wang",
+      "readingTime": 30,
+      "tags": [],
+      "excerpt": "This report treats video long memory as the ability of a model or system to retain, retrieve, and reason over information that is temporally distant, sparsely distributed, or no longer present in the current visual window . Under that defin",
+      "visibility": "public",
+      "language": "en"
+    },
+    {
+      "slug": "video-long-memory-zh",
+      "path": "视频长程记忆：现状、架构与未来.md",
+      "title": "视频长程记忆：现状、架构与未来",
+      "date": "2026-07-10",
+      "author": "Haichao Wang",
+      "readingTime": 26,
+      "tags": [
+        "video-understanding",
+        "multimodal",
+        "long-memory",
+        "survey"
+      ],
+      "excerpt": "视频长程记忆并不是单一模型能力，而是表示、压缩、检索、时间定位与推理之间的系统协同问题。本文梳理长视频理解、流式视频理解以及长时域视频建模中的主要方法、基准、产业形态和未来方向。",
+      "visibility": "private",
+      "language": "zh",
+      "articleId": "article-004"
     },
     {
       "slug": "grpo",
