@@ -1,0 +1,112 @@
+---
+import { getCollection } from "astro:content";
+import Container from "@components/Container.astro";
+import PageLayout from "@layouts/PageLayout.astro";
+import ArrowCard from "@components/ArrowCard.astro";
+import Link from "@components/Link.astro";
+import { SITE, HOME, SOCIALS } from "@consts";
+import profile from "../data/profile.json";
+
+const blog = (await getCollection("blog"))
+  .filter(post => !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0,SITE.NUM_POSTS_ON_HOMEPAGE);
+
+---
+
+<PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION}>
+  <Container>
+    <div class="space-y-16">
+      <section>
+        <div class="animate flex flex-col-reverse gap-8 sm:flex-row sm:items-start sm:justify-between">
+          <div class="space-y-3">
+            <h1 class="text-2xl font-semibold text-black dark:text-white">
+              {profile.name}
+            </h1>
+            <div class="space-y-1 text-sm">
+              <p>{profile.title}, {profile.department}</p>
+              <p>
+                <Link href={profile.affiliationUrl} external>
+                  {profile.affiliation}
+                </Link>
+              </p>
+              <p>{profile.focus}</p>
+            </div>
+          </div>
+          <img
+            src="/assets/photo.jpg"
+            alt={profile.name}
+            class="size-28 rounded-full object-cover ring-1 ring-black/10 dark:ring-white/20"
+          />
+        </div>
+        <article class="mt-8 space-y-4">
+          {profile.about.map((paragraph) => (
+            <p class="animate" set:html={paragraph} />
+          ))}
+        </article>
+        <nav class="animate mt-6 space-y-2 text-sm">
+          <div class="flex flex-wrap gap-2">
+            <Link href="/work">
+              Research experience
+            </Link>
+            <span>/</span>
+            <Link href="/projects">
+              Publications
+            </Link>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            {SOCIALS.map((SOCIAL, index) => (
+              <Fragment>
+                <Link href={SOCIAL.HREF} external aria-label={`${SITE.NAME} on ${SOCIAL.NAME}`}>
+                  {SOCIAL.NAME}
+                </Link>
+                {index < SOCIALS.length - 1 && <span>/</span>}
+              </Fragment>
+            ))}
+          </div>
+        </nav>
+      </section>
+
+      <section class="animate space-y-6">
+        <h5 class="font-semibold text-black dark:text-white">
+          Education
+        </h5>
+        <ul class="flex flex-col gap-5">
+          {profile.education.map((item) => (
+            <li>
+              <div class="text-sm opacity-75">{item.period}</div>
+              <div class="font-semibold text-black dark:text-white">
+                {item.degree}, {item.field}
+              </div>
+              <div class="text-sm">
+                <Link href={item.schoolUrl} external>
+                  {item.school}
+                </Link>
+                {item.advisor && ` · Advisor: ${item.advisor}`}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section class="animate space-y-6">
+        <div class="flex flex-wrap gap-y-2 items-center justify-between">
+          <h5 class="font-semibold text-black dark:text-white">
+            Latest posts
+          </h5>
+          <Link href="/blog">
+            See all posts
+          </Link>
+        </div>
+        <ul class="flex flex-col gap-4">
+          {blog.map(post => (
+            <li>
+              <ArrowCard entry={post} />
+            </li>
+          ))}
+        </ul>
+      </section>
+
+    </div>
+  </Container>
+</PageLayout>
