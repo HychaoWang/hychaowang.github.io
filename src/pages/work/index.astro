@@ -22,10 +22,10 @@ const work = await Promise.all(
       <div class="animate font-semibold text-black dark:text-white">
         Research
       </div>
-      <ul class="flex flex-col space-y-4">
+      <ul class="flex flex-col divide-y divide-black/10 dark:divide-white/15">
         { 
           work.map(entry => (
-            <li class="animate">
+            <li class="animate py-6 first:pt-0 last:pb-0">
               <div class="text-sm opacity-75">
                 {dateRange(entry.data.dateStart, entry.data.dateEnd)}
               </div>
