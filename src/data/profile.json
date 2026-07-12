@@ -11,8 +11,8 @@
   "photo": "assets/photo.jpg",
   "about": [
   "I am a master's student in Data Science and Information Technology at <a href=\"https://www.tsinghua.edu.cn\" target=\"_blank\" rel=\"noopener noreferrer\">Tsinghua University</a>, advised by Prof. Yuxing Han. I received my bachelor's degree in Computer Science and Technology from <a href=\"https://www.bjtu.edu.cn\" target=\"_blank\" rel=\"noopener noreferrer\">Beijing Jiaotong University</a> in 2023.",
-  "Currently, I am focusing on <strong> video understanding and generation systems</strong>, specifically on long video understanding, memory and generation.",
-  "My previous research focuses on <strong>computational video</strong>, including motion estimation and temporal redundancy to reduce computation in video models. During my undergraduate study, I worked on lightweight physiological signal analysis with <strong>knowledge distillation</strong>.",
+  "Currently, I am focusing on <strong> Video AI (Efficiency, Understanding and Generation)</strong>, specifically on long video understanding, generation and their efficiency.",
+  "My previous research focuses on <strong>computational video</strong>, including efficient Bayer-domain video perception systems. During my undergraduate study, I worked on lightweight physiological signal analysis with <strong>knowledge distillation</strong>.",
   "Feel free to contact me if you are interested in discussion or collaboration."
   ],
   "experience": [
