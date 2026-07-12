@@ -2,7 +2,6 @@
 import { getCollection } from "astro:content";
 import Container from "@components/Container.astro";
 import PageLayout from "@layouts/PageLayout.astro";
-import ArrowCard from "@components/ArrowCard.astro";
 import Link from "@components/Link.astro";
 import { SITE, HOME, SOCIALS } from "@consts";
 import profile from "../data/profile.json";
@@ -92,10 +91,19 @@ const blog = (await getCollection("blog"))
             See all posts
           </Link>
         </div>
-        <ul class="flex flex-col gap-4">
+        <ul class="flex flex-col divide-y divide-black/10 dark:divide-white/15">
           {blog.map(post => (
-            <li>
-              <ArrowCard entry={post} />
+            <li class="py-4 first:pt-0 last:pb-0">
+              <Link href={`/blog/${post.slug}`} underline={false}>
+                <div class="space-y-1 transition-colors hover:text-black dark:hover:text-white">
+                  <div class="font-semibold">
+                    {post.data.title}
+                  </div>
+                  <div class="text-sm opacity-75">
+                    {post.data.description}
+                  </div>
+                </div>
+              </Link>
             </li>
           ))}
         </ul>
