@@ -6,8 +6,16 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Times New Roman"', "Times", "serif"],
-        serif: ['"Times New Roman"', "Times", "serif"],
+        sans: [
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "Roboto",
+          '"Segoe UI"',
+          '"Helvetica Neue"',
+          '"Lucida Grande"',
+          "Arial",
+          "sans-serif",
+        ],
       },
     },
   },

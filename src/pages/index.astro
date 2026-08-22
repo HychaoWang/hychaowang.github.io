@@ -1,92 +1,122 @@
 ---
-import { getCollection } from "astro:content";
-import Container from "@components/Container.astro";
 import PageLayout from "@layouts/PageLayout.astro";
-import Link from "@components/Link.astro";
-import { SITE, HOME, SOCIALS } from "@consts";
+import { SITE, HOME } from "@consts";
 import profile from "../data/profile.json";
+import news from "../data/news.json";
+import publicationsData from "../data/pubs.json";
 
-const blog = (await getCollection("blog"))
-  .filter(post => !post.data.draft)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0,SITE.NUM_POSTS_ON_HOMEPAGE);
+const newsItems = [...news.news].sort((a, b) => b.date.localeCompare(a.date));
+const publications = [...publicationsData.publications].sort((a, b) => b.year - a.year);
 
+function formatNewsDate(date: string) {
+ const [year, month] = date.split("-");
+ return `${month}/${year}`;
+}
+
+const socials = [
+ { icon: "fa-location-dot", label: profile.location },
+ { icon: "fa-envelope", label: "Email", href: `mailto:${SITE.EMAIL}` },
+ { icon: "fa-brands fa-github", label: "Github", href: profile.github },
+ { icon: "fa-graduation-cap", label: "Google Scholar", href: profile.scholar },
+];
 ---
 
 <PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION}>
-  <Container>
-    <div class="space-y-16">
-      <section>
-        <div class="animate flex flex-col-reverse gap-8 sm:flex-row sm:items-start sm:justify-between">
-          <div class="space-y-3">
-            <h1 class="text-2xl font-semibold text-black">
-              {profile.name}
-            </h1>
-            <div class="space-y-1 text-sm">
-              <p>AI Researcher</p>
-            </div>
-          </div>
-          <img
-            src="/assets/photo.jpg"
-            alt={profile.name}
-            class="size-28 rounded-full object-cover ring-1 ring-black/10"
-          />
-        </div>
-        <article class="mt-8 space-y-4">
-          {profile.about.map((paragraph) => (
-            <p class="animate" set:html={paragraph} />
-          ))}
-        </article>
-        <nav class="animate mt-6 space-y-2 text-sm">
-          <div class="flex flex-wrap gap-2">
-            <Link href="/work">
-              Research experience
-            </Link>
-            <span>/</span>
-            <Link href="/projects">
-              Publications
-            </Link>
-          </div>
-          <div class="flex flex-wrap gap-2">
-            {SOCIALS.map((SOCIAL, index) => (
-              <Fragment>
-                <Link href={SOCIAL.HREF} external aria-label={`${SITE.NAME} on ${SOCIAL.NAME}`}>
-                  {SOCIAL.NAME}
-                </Link>
-                {index < SOCIALS.length - 1 && <span>/</span>}
-              </Fragment>
+ <div class="mx-auto max-w-5xl px-5">
+  <div class="flex flex-col gap-10 sm:flex-row sm:gap-12">
+   <aside class="animate w-full shrink-0 sm:w-60">
+    <div class="sm:sticky sm:top-24">
+     <img
+      src="/assets/photo.jpg"
+      alt={profile.name}
+      class="mx-auto size-40 rounded-full object-cover sm:mx-0"
+     />
+     <h3 class="mt-4 text-xl font-bold">
+      {profile.name}
+     </h3>
+     <p class="opacity-75">
+      {profile.title}, {profile.affiliation}
+     </p>
+          <ul class="mt-3 space-y-1">
+            {socials.map((social) => (
+              <li>
+                {social.href ? (
+                  <a href={social.href} target={social.href.startsWith("http") ? "_blank" : undefined}>
+                    <i class={`fa fa-fw ${social.icon}`}></i> {social.label}
+                  </a>
+                ) : (
+                  <>
+                    <i class={`fa fa-fw ${social.icon}`}></i> {social.label}
+                  </>
+                )}
+              </li>
             ))}
-          </div>
-        </nav>
-      </section>
-
-      <section class="animate space-y-6">
-        <div class="flex flex-wrap gap-y-2 items-center justify-between">
-          <h5 class="font-semibold text-black">
-            Latest posts
-          </h5>
-          <Link href="/blog">
-            See all posts
-          </Link>
-        </div>
-        <ul class="flex flex-col divide-y divide-black/10">
-          {blog.map(post => (
-            <li class="py-4 first:pt-0 last:pb-0">
-              <Link href={`/blog/${post.slug}`} underline={false}>
-                <div class="space-y-1 transition-colors hover:text-black">
-                  <div class="font-semibold">
-                    {post.data.title}
-                  </div>
-                  <div class="text-sm opacity-75">
-                    {post.data.description}
-                  </div>
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </section>
-
+          </ul>
     </div>
-  </Container>
+   </aside>
+
+   <article class="animate min-w-0 flex-1">
+    <div class="space-y-4">
+     {profile.about.map((paragraph) => (
+      <p set:html={paragraph} />
+     ))}
+    </div>
+
+        <h2 class="section-heading">Research News</h2>
+        <div class="space-y-1 leading-normal">
+          {newsItems.map((item) => (
+            <div>
+              <strong>[{formatNewsDate(item.date)}]</strong> {item.text}
+            </div>
+          ))}
+        </div>
+
+    <h2 class="section-heading">Selected Publications</h2>
+    <div class="space-y-6">
+     {publications.map((publication) => (
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
+       <div class="w-full shrink-0 sm:w-[30%]">
+        {publication.image ? (
+         <img src={publication.image} alt={publication.title} class="w-full border-0" />
+        ) : (
+         <div class="aspect-video w-full border border-stone-200 bg-stone-100"></div>
+        )}
+       </div>
+              <div class="min-w-0 flex-1 sm:w-[70%] sm:px-5">
+                <div class="font-bold">
+                  {publication.title}
+                </div>
+        <div>
+         {publication.authors.map((author, index) => (
+          <Fragment>
+           {author.highlight ? (
+            <strong>{author.name}</strong>
+           ) : (
+            <span>{author.name}</span>
+           )}
+           {"note" in author && author.note && (
+            <span class="opacity-75"> ({author.note})</span>
+           )}
+           {index < publication.authors.length - 1 && <span>, </span>}
+          </Fragment>
+         ))}
+        </div>
+        <div>
+         <em>{publication.venue}</em>, {publication.year}.
+         {publication.url && (
+          <>
+           {" "}
+           <a href={publication.url} target="_blank" rel="noopener noreferrer">
+            [paper]
+           </a>
+          </>
+         )}
+        </div>
+       </div>
+      </div>
+     ))}
+    </div>
+   </article>
+  </div>
+  </div>
 </PageLayout>

@@ -1,0 +1,41 @@
+{
+  "news": [
+    {
+      "date": "2026-04-30",
+      "text": "Our paper \"Leveraging Motion Estimation for Efficient Bayer-Domain Computer Vision\" was accepted by ICIP 2026."
+    },
+    {
+      "date": "2026-06-28",
+      "text": "Gradute from Tsinghua University."
+    },
+    {
+      "date": "2024-09-03",
+      "text": "Our paper \"DistillSleepNet: Heterogeneous Multi-Level Knowledge Distillation via Teacher Assistant for Sleep Staging\" was accepted by IEEE Transactions on Big Data."
+    },
+    {
+      "date": "2024-08-30",
+      "text": "Our paper \"Cross-Modal Knowledge Distillation for Enhanced Unimodal Emotion Recognition\" was accepted by IEEE Transactions on Affective Computing."
+    },
+    {
+      "date": "2024-05-17",
+      "text": "Our paper \"Mutual Distillation Extracting Spatial-Temporal Knowledge for Lightweight Multi-Channel Sleep Stage Classification\" was accepted by ACM SIGKDD 2024."
+    },
+    {
+      "date": "2023-09-01",
+      "text": "Start my study in Tsinghua University."
+    },
+    {
+      "date": "2023-08-19",
+      "text": "Attended IJCAI 2023 in Macau."
+    },
+    {
+      "date": "2023-07-26",
+      "text": "Our paper \"EmotionKD: A Cross-Modal Knowledge Distillation Framework for Emotion Recognition Based on Physiological Signals\" was accepted by ACM MM 2023."
+    },
+    
+    {
+      "date": "2023-04-23",
+      "text": "Our paper \"Teacher Assistant-Based Knowledge Distillation Extracting Multi-Level Features on Single Channel Sleep EEG\" was accepted by IJCAI 2023."
+    }
+  ]
+}
