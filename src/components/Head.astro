@@ -66,9 +66,6 @@ const { title, description, image = "/assets/photo.jpg" } = Astro.props;
     onScroll();
     animate();
 
-    const backToTop = document.getElementById("back-to-top");
-    backToTop?.addEventListener("click", (event) => scrollToTop(event));
-
     const backToPrev = document.getElementById("back-to-prev");
     backToPrev?.addEventListener("click", () => window.history.back());
 
@@ -91,14 +88,6 @@ const { title, description, image = "/assets/photo.jpg" } = Astro.props;
     } else {
       document.documentElement.classList.remove("scrolled");
     }
-  }
-
-  function scrollToTop(event) {
-    event.preventDefault();
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
   }
 
   document.addEventListener("DOMContentLoaded", () => init());

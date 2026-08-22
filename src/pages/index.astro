@@ -1,9 +1,15 @@
 ---
+import { getCollection } from "astro:content";
 import PageLayout from "@layouts/PageLayout.astro";
 import { SITE, HOME } from "@consts";
 import profile from "../data/profile.json";
 import news from "../data/news.json";
 import publicationsData from "../data/pubs.json";
+
+const blog = (await getCollection("blog"))
+  .filter(post => !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, SITE.NUM_POSTS_ON_HOMEPAGE);
 
 const newsItems = [...news.news].sort((a, b) => b.date.localeCompare(a.date));
 const publications = [...publicationsData.publications].sort((a, b) => b.year - a.year);
@@ -116,7 +122,17 @@ const socials = [
       </div>
      ))}
     </div>
-   </article>
+
+    <h2 class="section-heading">Blog</h2>
+    <ul class="space-y-1 leading-normal">
+     {blog.map(post => (
+      <li>
+       <strong>[{post.data.date.toLocaleDateString("en-us", { month: "2-digit", day: "2-digit", year: "numeric" })}]</strong>{" "}
+       <a href={`/blog/${post.slug}`}>{post.data.title}</a>
+      </li>
+     ))}
+    </ul>
+    </article>
   </div>
   </div>
 </PageLayout>
