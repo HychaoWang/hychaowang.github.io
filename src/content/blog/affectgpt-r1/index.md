@@ -1,5 +1,5 @@
 ---
-title: "Implementation of AffectGPT-R1"
+title: "Implementing AffectGPT-R1: A Reasoning Model for Multimodal Emotion Recognition"
 description: "The cold start stage uses large scale, coarse grained descriptive emotion data so that the model first acquires basic multimodal emotion understanding and output format alignment. It also provides a stable initialization for later reinforce"
 date: "2026-07-10"
 draft: false
