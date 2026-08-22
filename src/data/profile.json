@@ -46,24 +46,6 @@
       "desc": "Proposed multi-level and spatial-temporal knowledge distillation frameworks for lightweight EEG and physiological signal classification."
     }
   ],
-  "education": [
-    {
-      "period": "2023 - 2026",
-      "degree": "Master of Science",
-      "field": "Data Science and Information Technology",
-      "school": "Tsinghua University",
-      "schoolUrl": "https://www.tsinghua.edu.cn/en/",
-      "advisor": "Prof. Yuxing Han"
-    },
-    {
-      "period": "2019 - 2023",
-      "degree": "Bachelor of Engineering",
-      "field": "Computer Science and Technology",
-      "school": "Beijing Jiaotong University",
-      "schoolUrl": "https://www.bjtu.edu.cn",
-      "advisor": "Dr. Ziyu Jia & Prof. Jing Wang"
-    }
-  ],
   "awards": [
     "<strong>National Prize</strong>, National College Students' Innovation and Entrepreneurship Training Program",
     "<strong>Second Prize</strong>, Beijing Undergraduate Mathematical Contest in Modeling",

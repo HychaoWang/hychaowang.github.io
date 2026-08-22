@@ -28,22 +28,22 @@ const years = Object.keys(posts).sort((a, b) => parseInt(b) - parseInt(a));
 <PageLayout title={BLOG.TITLE} description={BLOG.DESCRIPTION}>
   <Container>
     <div class="space-y-10">
-      <div class="animate font-semibold text-black dark:text-white">
+      <div class="animate font-semibold text-black">
         Blog
       </div>
       <div class="space-y-4">
         {years.map(year => (
           <section class="animate space-y-4">
-            <div class="font-semibold text-black dark:text-white">
+            <div class="font-semibold text-black">
               {year}
             </div>
             <div>
-              <ul class="flex flex-col divide-y divide-black/10 dark:divide-white/15">
+              <ul class="flex flex-col divide-y divide-black/10">
                 {
                   posts[year].map((post) => (
                     <li class="py-4 first:pt-0 last:pb-0">
                       <Link href={`/blog/${post.slug}`} underline={false}>
-                        <div class="space-y-1 transition-colors hover:text-black dark:hover:text-white">
+                        <div class="space-y-1 transition-colors hover:text-black">
                           <div class="font-semibold">
                             {post.data.title}
                           </div>
