@@ -15,6 +15,40 @@ const currentPath = Astro.url.pathname.replace(/\/$/, "");
         <li><a href="/blog" aria-current={currentPath === "/blog" ? "page" : undefined}>Blog</a></li>
         <li><a href={profile.scholar} target="_blank" rel="noopener noreferrer">Scholar</a></li>
         <li><a href={profile.github} target="_blank" rel="noopener noreferrer">GitHub</a></li>
+        <li class="panel-controls" hidden>
+          <!-- Lucide panel-top-close / panel-top-open, ISC license: /licenses/lucide.txt -->
+          <button
+            type="button"
+            class="panel-button"
+            data-panel-collapse
+            aria-label="Collapse page"
+            aria-expanded="true"
+            aria-controls="site-content"
+            title="Collapse page"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect width="18" height="18" x="3" y="3" rx="2" />
+              <path d="M3 9h18" />
+              <path d="m9 16 3-3 3 3" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            class="panel-button"
+            data-panel-expand
+            aria-label="Expand page"
+            aria-expanded="false"
+            aria-controls="site-content"
+            title="Expand page"
+            hidden
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect width="18" height="18" x="3" y="3" rx="2" />
+              <path d="M3 9h18" />
+              <path d="m15 14-3 3-3-3" />
+            </svg>
+          </button>
+        </li>
       </ul>
     </nav>
   </Container>
