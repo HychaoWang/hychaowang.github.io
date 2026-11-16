@@ -22,6 +22,9 @@ const { title, description, image = "/assets/photo.jpg" } = Astro.props;
 <link rel="icon" type="image/jpeg" href="/assets/photo.jpg">
 <meta name="generator" content={Astro.generator} />
 
+<!-- Start fetching the background before the stylesheet is parsed. -->
+<link rel="preload" as="image" href="/assets/sunset-beach.webp" type="image/webp" fetchpriority="high" />
+
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
 

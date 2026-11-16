@@ -68,7 +68,10 @@ body::before {
   inset: 0;
   content: "";
   pointer-events: none;
-  background: url("/assets/sunset-beach.png") center / cover no-repeat;
+  /* Show an inline preview while the full background downloads. */
+  background:
+    url("/assets/sunset-beach.webp") center / cover no-repeat,
+    url("data:image/webp;base64,UklGRtAAAABXRUJQVlA4IMQAAADwBQCdASowABsAPu1wrVEppqQiqrgKATAdiWgAxQtz77bz6GSWncuUnSIyEU8LZIeyG/27PfOqwAD+3xdu6lzuxoyaOAWECBHZL+ondjDAfDXc2Pi3zbcUakZH2Nkw5uXVuO9r74ut9f+NNlzToXAl/t42COkO+H8TMl6DhUO2vFv0O7fBFQhsKJ8KNIVEIgjOpK+5IDEWvIdMIMfswNwZ164TcclbXJ3jFTMeOAxjYmcmW8EyoHyoa/7CoPvPquniXqAA") center / cover no-repeat;
 }
 
 .site-shell {
