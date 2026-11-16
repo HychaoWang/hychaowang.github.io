@@ -1,138 +1,54 @@
 ---
-import { getCollection } from "astro:content";
 import PageLayout from "@layouts/PageLayout.astro";
-import { SITE, HOME } from "@consts";
+import Container from "@components/Container.astro";
+import { HOME } from "@consts";
 import profile from "../data/profile.json";
 import news from "../data/news.json";
-import publicationsData from "../data/pubs.json";
-
-const blog = (await getCollection("blog"))
-  .filter(post => !post.data.draft)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, SITE.NUM_POSTS_ON_HOMEPAGE);
 
 const newsItems = [...news.news].sort((a, b) => b.date.localeCompare(a.date));
-const publications = [...publicationsData.publications].sort((a, b) => b.year - a.year);
 
 function formatNewsDate(date: string) {
- const [year, month] = date.split("-");
- return `${month}/${year}`;
+  const [year, month] = date.split("-");
+  return `${month}/${year}`;
 }
 
-const socials = [
- { icon: "fa-location-dot", label: profile.location },
- { icon: "fa-envelope", label: "Email", href: `mailto:${SITE.EMAIL}` },
- { icon: "fa-brands fa-github", label: "Github", href: profile.github },
- { icon: "fa-graduation-cap", label: "Google Scholar", href: profile.scholar },
-];
 ---
 
 <PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION}>
- <div class="mx-auto max-w-5xl px-5">
-  <div class="flex flex-col gap-10 sm:flex-row sm:gap-12">
-   <aside class="animate w-full shrink-0 sm:w-60">
-    <div class="sm:sticky sm:top-24">
-     <img
-      src="/assets/photo.jpg"
-      alt={profile.name}
-      class="mx-auto size-40 rounded-full object-cover sm:mx-0"
-     />
-     <h3 class="mt-4 text-xl font-bold">
-      {profile.name}
-     </h3>
-     <p class="opacity-75">
-      {profile.title}, {profile.affiliation}
-     </p>
-          <ul class="mt-3 space-y-1">
-            {socials.map((social) => (
-              <li>
-                {social.href ? (
-                  <a href={social.href} target={social.href.startsWith("http") ? "_blank" : undefined}>
-                    <i class={`fa fa-fw ${social.icon}`}></i> {social.label}
-                  </a>
-                ) : (
-                  <>
-                    <i class={`fa fa-fw ${social.icon}`}></i> {social.label}
-                  </>
-                )}
-              </li>
-            ))}
-          </ul>
-    </div>
-   </aside>
-
-   <article class="animate min-w-0 flex-1">
-    <div class="space-y-4">
-     {profile.about.map((paragraph) => (
-      <p set:html={paragraph} />
-     ))}
-    </div>
-
-        <h2 class="section-heading">Research News</h2>
-        <div class="space-y-1 leading-normal">
-          {newsItems.map((item) => (
-            <div>
-              <strong>[{formatNewsDate(item.date)}]</strong> {item.text}
-            </div>
-          ))}
+  <Container>
+    <section class="content-section introduction" aria-labelledby="profile-name">
+      <div class="profile-heading">
+        <img
+          src={`/${profile.photo}`}
+          alt={profile.name}
+          width="72"
+          height="72"
+          class="profile-photo"
+        />
+        <div class="profile-identity">
+          <h1 id="profile-name">{profile.name}</h1>
+          <p class="profile-meta">
+            <span>{profile.title}, {profile.affiliation}</span>
+            <span aria-hidden="true">&middot;</span>
+            <span>{profile.location}</span>
+          </p>
         </div>
-
-    <h2 class="section-heading">Publications</h2>
-    <div class="space-y-6">
-     {publications.map((publication) => (
-      <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
-       <div class="w-full shrink-0 sm:w-[30%]">
-        {publication.image ? (
-         <img src={publication.image} alt={publication.title} class="w-full border-0" />
-        ) : (
-         <div class="aspect-video w-full border border-stone-200 bg-stone-100"></div>
-        )}
-       </div>
-              <div class="min-w-0 flex-1 sm:w-[70%] sm:px-5">
-                <div class="font-bold">
-                  {publication.title}
-                </div>
-        <div>
-         {publication.authors.map((author, index) => (
-          <Fragment>
-           {author.highlight ? (
-            <strong>{author.name}</strong>
-           ) : (
-            <span>{author.name}</span>
-           )}
-           {"note" in author && author.note && (
-            <span class="opacity-75"> ({author.note})</span>
-           )}
-           {index < publication.authors.length - 1 && <span>, </span>}
-          </Fragment>
-         ))}
-        </div>
-        <div>
-         <em>{publication.venue}</em>, {publication.year}.
-         {publication.url && (
-          <>
-           {" "}
-           <a href={publication.url} target="_blank" rel="noopener noreferrer">
-            [paper]
-           </a>
-          </>
-         )}
-        </div>
-       </div>
       </div>
-     ))}
-    </div>
+      <div class="about-content">
+        {profile.about.map((paragraph) => <p set:html={paragraph} />)}
+      </div>
+    </section>
 
-    <h2 class="section-heading">Blog</h2>
-    <ul class="space-y-1 leading-normal">
-     {blog.map(post => (
-      <li>
-       <strong>[{post.data.date.toLocaleDateString("en-us", { month: "2-digit", day: "2-digit", year: "numeric" })}]</strong>{" "}
-       <a href={`/blog/${post.slug}`}>{post.data.title}</a>
-      </li>
-     ))}
-    </ul>
-    </article>
-  </div>
-  </div>
+    <section id="news" class="content-section" aria-labelledby="news-heading">
+      <h2 id="news-heading" class="section-heading">Research News</h2>
+      <ul class="news-list">
+        {newsItems.map((item) => (
+          <li class="news-item">
+            <time datetime={item.date}>{formatNewsDate(item.date)}</time>
+            <p>{item.text}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  </Container>
 </PageLayout>

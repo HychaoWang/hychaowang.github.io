@@ -1,0 +1,21 @@
+---
+import Container from "@components/Container.astro";
+import { SITE } from "@consts";
+import profile from "../data/profile.json";
+
+const currentPath = Astro.url.pathname.replace(/\/$/, "");
+---
+
+<header class="site-header">
+  <Container>
+    <nav class="site-nav" aria-label="Main navigation">
+      <a class="site-name" href="/">{SITE.NAME}</a>
+      <ul class="nav-links">
+        <li><a href="/publications" aria-current={currentPath === "/publications" ? "page" : undefined}>Publications</a></li>
+        <li><a href="/blog" aria-current={currentPath === "/blog" ? "page" : undefined}>Blog</a></li>
+        <li><a href={profile.scholar} target="_blank" rel="noopener noreferrer">Scholar</a></li>
+        <li><a href={profile.github} target="_blank" rel="noopener noreferrer">GitHub</a></li>
+      </ul>
+    </nav>
+  </Container>
+</header>

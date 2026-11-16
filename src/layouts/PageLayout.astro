@@ -1,5 +1,6 @@
 ---
 import Head from "@components/Head.astro";
+import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import { SITE } from "@consts";
 
@@ -17,9 +18,13 @@ const { title, description } = Astro.props;
     <Head title={`${title} | ${SITE.NAME}`} description={description} />
   </head>
   <body>
-    <main>
-      <slot />
-    </main>
-    <Footer />
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <div class="site-shell">
+      <Header />
+      <main id="main-content" class="site-main" tabindex="-1">
+        <slot />
+      </main>
+      <Footer />
+    </div>
   </body>
 </html>

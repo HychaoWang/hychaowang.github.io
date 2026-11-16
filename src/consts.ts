@@ -16,6 +16,11 @@ export const BLOG: Metadata = {
   DESCRIPTION: "Research notes and technical articles by Haichao Wang.",
 };
 
+export const PUBLICATIONS: Metadata = {
+  TITLE: "Publications",
+  DESCRIPTION: "Research publications by Haichao Wang.",
+};
+
 export const SOCIALS: Socials = [
   { 
     NAME: "github",
