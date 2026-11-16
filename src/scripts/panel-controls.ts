@@ -11,7 +11,7 @@ function setupPanelControls() {
   controls.hidden = false;
   let animation: Animation | null = null;
   let headerAnimations: Animation[] = [];
-  const movingElements = [name, controls];
+  const movingElements = [name];
 
   const setCollapsed = (collapsed: boolean) => {
     const startHeight = shell.getBoundingClientRect().height;
@@ -49,7 +49,7 @@ function setupPanelControls() {
     shell.classList.add("is-animating");
     shell.style.height = `${endHeight}px`;
     const timing = { duration: 420, easing: "cubic-bezier(0.22, 1, 0.36, 1)" };
-    // Preserve the current visual positions while the header changes layout.
+    // Keep the name moving smoothly while the corner controls stay fixed.
     headerAnimations = movingElements.map((element, index) => {
       const endPosition = element.getBoundingClientRect();
       const startPosition = startPositions[index];
